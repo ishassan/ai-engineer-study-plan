@@ -1,6 +1,6 @@
 # AI Engineer Study Plan
 
-A 28-week plan, at about 4 hours a week, to become a senior AI engineer who builds production agents. The plan is built around one project that grows in every phase, and this repository holds the plan and the project.
+A 28-week plan, at about 4 hours a week, that prepares a software engineer to work as an AI engineer who builds production agents. The plan is built around one project that grows in every phase, and this repository holds the plan and the project.
 
 **Contents**
 
@@ -20,9 +20,9 @@ A 28-week plan, at about 4 hours a week, to become a senior AI engineer who buil
 
 ## About the plan
 
-- **What you can skip:** Python, SQL, AWS, Terraform, data pipelines, MCP basics, Claude Code, FastAPI and team leadership are already on your CV.
+- **Who it is for:** a software engineer who wants to move into AI engineering. The plan expects you to know Python, SQL, FastAPI, Docker and one cloud platform, and it does not teach them.
 - **What the plan closes:** a production agent with evaluation, retrieval, LangGraph, guardrails, a model gateway and a self-hosted model.
-- **What the plan leaves out:** Kubernetes, cloud services such as AWS, Azure and Google Cloud, and Saudi regulation. Employers ask for them, but this plan does not teach them. Everything runs on your machine in Docker, except the Claude and OpenAI APIs and the GPU that you rent in Phase 6.
+- **What the plan leaves out:** Kubernetes, cloud services such as AWS, Azure and Google Cloud, and AI regulation. Employers ask for them, but this plan does not teach them. Everything runs on your machine in Docker, except the Claude and OpenAI APIs and the GPU that you rent in Phase 6.
 - **One project, not seven tutorials.** Each phase adds a layer to the same system, so the end result is one deep portfolio piece.
 - **Tests before agents.** Evaluation comes in Phase 3, before the agent work, so everything after it is built against a score.
 - **Weekly rhythm:** about 1 hour of reading and 3 hours of building. Each source teaches one topic, so no reading repeats another.
@@ -342,7 +342,7 @@ Beyond these seven, open a tool's documentation only when a build step uses it. 
 - Anthropic Academy MCP courses: neither course lists authorization, which Phase 5 needs. The MCP documentation has an authorization tutorial and the authorization part of the specification.
 - Anthropic's How we built our multi-agent research system, and the OpenAI Agents SDK: the plan no longer builds sub-agents or a second framework, to fit 4 hours a week.
 - Kubernetes, Helm, EKS, GKE and the KodeKloud CKAD course: Kubernetes and the second cloud are out of the plan. Many employers still ask for Kubernetes.
-- Amazon Bedrock Guardrails and other cloud services: you already know the cloud platforms, so the plan runs everything on your machine in Docker. The one exception is the rented GPU in Phase 6, because GPU work is new to you. NeMo Guardrails, with Presidio for personal data, does the same input and output checks as Bedrock Guardrails.
+- Amazon Bedrock Guardrails and other cloud services: the plan expects you to know one cloud platform already, so it runs everything on your machine in Docker. The one exception is the rented GPU in Phase 6, because serving and training models on a GPU is a skill that the plan teaches. NeMo Guardrails, with Presidio for personal data, does the same input and output checks as Bedrock Guardrails.
 - The vLLM CPU image: the rented GPU runs vLLM for both the full and the quantized model. The optional step in week 23 uses llama.cpp directly on your Mac, where it runs quantized models on the Apple GPU.
 - LlamaIndex, LangSmith and OpenTelemetry: cut to fit 4 hours a week. They are worth knowing by name.
 - Maven, AI Evals for Engineers & PMs: paid and taught live by video. The free FAQ is by the same authors and covers the method.
@@ -354,7 +354,7 @@ Beyond these seven, open a tool's documentation only when a build step uses it. 
 
 The project is a data platform assistant: an agent that answers questions about an organisation's datasets and documents, runs governed SQL, and makes catalogue changes with approval.
 
-- **Why this project:** it builds on the data platform work you already lead. It also matches three problems Saudi listings ask for: enterprise knowledge assistants, analytics agents and internal operations agents.
+- **Why this project:** it runs on free public data, and it matches three problems that AI engineering job listings ask for: enterprise knowledge assistants, analytics agents and internal operations agents.
 - **Data:** build the public version on open datasets and public documents, in English and Arabic. Keep employer data out of the public repository.
 - **At work:** if your employer agrees, run a second copy on the real catalogue. Real users are the strongest evidence you can show.
 
@@ -384,18 +384,8 @@ These are the numbers the project should produce, and the ones your CV will quot
 
 Start conversations with employers after Phase 5, around week 20, when you have evidence for agents, evaluation and guardrails.
 
-- **Go through people, not the apply button.** 43 of the 67 Saudi listings show more than 200 applicants, so referrals and direct contact with hiring managers matter.
+- **Go through people, not the apply button.** In the listing analysis behind this plan, 43 of 67 generative-AI listings showed more than 200 applicants, so referrals and direct contact with hiring managers matter.
 - **Rewrite the CV around the target.** Add a two-line summary naming the role, move the AI work to the top of your current job, and quote the capstone numbers.
-- **Use both halves of your profile.** Lead with agents and evaluation, and back it with the data platform and large-scale systems experience that senior roles ask for.
+- **Use your software engineering experience.** Lead with agents and evaluation, and back it with the systems experience that senior roles ask for.
 - **Prepare for client-style interviews.** Expect to scope a vague business problem, propose success criteria and explain when not to use a model.
 - **Re-check the market every three months.** Tool shares move quickly, so run the listing analysis again.
-
-The listings closest to your profile in November 2026 are templates for the roles to watch:
-
-| Role | Employer | Why it fits |
-| --- | --- | --- |
-| Engineering Manager, AI and Data | Cenomi Centers | Lakehouse and pipelines plus agents and evaluation practices |
-| Senior Software Engineer, AI Platform | Mirai | MCP tool servers, model gateway and access control |
-| Staff Engineer | Lean Technologies | Shared platform and agent infrastructure for other teams |
-| AI Tech Lead | Lucidya | Owns evaluation and reliability of an Arabic and English agent platform |
-| Head of Applied AI | Echelon | Distributed systems, data engineering and on-premises deployment |
