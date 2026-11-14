@@ -8,7 +8,9 @@ ENV UV_PROJECT_ENVIRONMENT=/opt/venv \
 
 WORKDIR /app
 COPY pyproject.toml uv.lock ./
-RUN uv sync --frozen --no-dev
+# The Makefile passes one "--group phaseN" for each phase that you started.
+ARG UV_GROUPS=""
+RUN uv sync --frozen --no-dev $UV_GROUPS
 
 COPY . .
 EXPOSE 8000

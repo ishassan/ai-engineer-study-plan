@@ -1,6 +1,12 @@
 # Commands of the labs. Run `make help` for the list.
 
-UV := uv run $(if $(wildcard .env),--env-file .env)
+# `make start PHASE=n` writes the number of the phase to .lab-phases. Each started phase adds
+# its Python packages (a dependency group in pyproject.toml) and its Docker services (a
+# profile in compose.yaml).
+PHASES := $(shell cat .lab-phases 2>/dev/null)
+export UV_GROUPS := $(foreach p,$(PHASES),--group phase$(p))
+UV := uv run $(UV_GROUPS) $(if $(wildcard .env),--env-file .env)
+COMPOSE := docker compose $(foreach p,$(PHASES),--profile phase$(p))
 SET ?= quick
 
 .PHONY: help start up down reset logs check check-live ask eval
@@ -17,22 +23,22 @@ help:
 	@echo "make eval SET=quick     run the test questions (SET=all ARGS=--no-cache for the full run)"
 
 start:
-	@$(UV) python scripts/lab.py start $(PHASE)
+	@uv run python scripts/lab.py start $(PHASE)
 
 up:
 	@test -f assistant/api.py || (echo "Run 'make start PHASE=1' first." && exit 1)
-	docker compose up -d --build --wait
+	$(COMPOSE) up -d --build --wait
 	@$(UV) python scripts/migrate.py
 	@$(UV) python scripts/load_catalogue.py
 
 down:
-	docker compose down
+	$(COMPOSE) down
 
 reset:
-	docker compose down --volumes
+	$(COMPOSE) down --volumes
 
 logs:
-	docker compose logs -f api
+	$(COMPOSE) logs -f api
 
 check:
 	@$(UV) python scripts/lab.py check $(if $(WEEK),--week $(WEEK)) $(if $(PHASE),--phase $(PHASE))

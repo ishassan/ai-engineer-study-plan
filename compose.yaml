@@ -18,7 +18,10 @@ services:
       retries: 30
 
   api:
-    build: .
+    build:
+      context: .
+      args:
+        UV_GROUPS: "${UV_GROUPS:-}"
     env_file:
       - path: .env
         required: false

@@ -16,6 +16,9 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+# The phases that you started, one number on each line. The Makefile reads this file to
+# install the Python packages and to start the Docker services of these phases.
+STARTED = ROOT / ".lab-phases"
 # The first and the last week of each phase.
 PHASE_WEEKS = {1: (1, 3), 2: (4, 7), 3: (8, 11), 4: (12, 17), 5: (18, 20), 6: (21, 25), 7: (26, 28)}
 
@@ -37,6 +40,8 @@ def phase_of_week(week: int) -> int:
 def start(phase: int) -> None:
     """Copy each starter file into the project, and keep each file that exists."""
     starter = phase_dir(phase) / "starter"
+    started = {int(line) for line in STARTED.read_text().split()} if STARTED.exists() else set()
+    STARTED.write_text("".join(f"{number}\n" for number in sorted(started | {phase})))
     if not starter.is_dir():
         print(f"Phase {phase} has no starter files. Open {phase_dir(phase).name}/README.md.")
         return
