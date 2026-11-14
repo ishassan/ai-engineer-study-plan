@@ -1,0 +1,2731 @@
+[
+  {
+    "id": "amount-and-percentage-of-the-industrial-wastewater",
+    "title": "Amount and percentage of the industrial wastewater",
+    "description": "This dataset contains Saudi Arabia Amount and percentage of the industrial wastewater 2014-2018 General Authority for Statistics wastewater, Follow datasource.kapsarc.org for timely data to advance energy economics research.",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Water & Agriculture"
+    ],
+    "keywords": [
+      "wastewater",
+      "treatment"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-04-21T15:28:56.435000+00:00",
+    "records_count": 10,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/amount-and-percentage-of-the-industrial-wastewater/",
+    "columns": [
+      {
+        "name": "time_period",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "city",
+        "label": "City",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "volume_of_wastewater_pumped_in_for_treatment",
+        "label": "Volume of wastewater pumped in for treatment",
+        "data_type": "double",
+        "description": null
+      },
+      {
+        "name": "treatment_capabilities",
+        "label": "Treatment capabilities",
+        "data_type": "double",
+        "description": null
+      },
+      {
+        "name": "wastewater_treatment_to_capabilities_ratio",
+        "label": "Wastewater treatment to capabilities ratio ",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "average-world-demand-for-oil-2005-2014",
+    "title": "World Demand For Oil",
+    "description": "This dataset contains information about World Oil Demand for 2000-2021. Data from Saudi Central Bank (SAMA) . Follow datasource.kapsarc.org and it’s APIs to stay in sync and advance energy economics research. * Including primary stock, bunker and refining oil.",
+    "owner": "Saudi Central Bank (SAMA)",
+    "themes": [
+      "Conventional Fuels"
+    ],
+    "keywords": [
+      "Demand"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-06-01T01:45:12.631000+00:00",
+    "records_count": 338,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/average-world-demand-for-oil-2005-2014/",
+    "columns": [
+      {
+        "name": "year",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "region",
+        "label": "Region",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "Value",
+        "data_type": "double",
+        "description": null
+      },
+      {
+        "name": "date_object",
+        "label": "Date_Object",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "periodicity",
+        "label": "Periodicity",
+        "data_type": "text",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "cargo-unloaded-in-the-main-commercial-ports-of-the-kingdom-1999-2008-ad-in-tons",
+    "title": "Cargo Unloaded in the Main Commercial Ports of the Kingdom",
+    "description": "This dataset contains Saudi Arabia Cargo Unloaded in the Main Commercial Ports of the kingdom for 1999 - 2019. Data from General Authority for Statistics , Export API data for more datasets to advance energy economics research We have used year converter to convert Hijri to Gregorian Year",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Transport"
+    ],
+    "keywords": [
+      "Cargo"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-05-05T12:54:21.869000+00:00",
+    "records_count": 148,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/cargo-unloaded-in-the-main-commercial-ports-of-the-kingdom-1999-2008-ad-in-tons/",
+    "columns": [
+      {
+        "name": "year_in_hijri",
+        "label": "Year in Hijri",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "gregorian_year",
+        "label": "Gregorian Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "type_of_cargo",
+        "label": "Type of Cargo",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "Quantity",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "cement-production-and-sales",
+    "title": "Cement Production and Sales",
+    "description": "Explore data on domestic sales and production of cement in Saudi Arabia with the SAMA Annual dataset. Find valuable insights and trends to help inform your decisions in the cement industry. Domestic Sales, Cement, Production, Sales, SAMA Annual Saudi Arabia Follow data.kapsarc.org for timely data to advance energy economics research. Unit :In thousand tons It represents the production and sales of 10 companies , 15 companies , and 17 companies after 2017.",
+    "owner": "Saudi Central Bank (SAMA)",
+    "themes": [
+      "Industry",
+      "Economy"
+    ],
+    "keywords": [
+      "Cement",
+      "Production",
+      "Sales",
+      "SAMA Annual",
+      "macroeconomic"
+    ],
+    "license": "Public Domain",
+    "update_frequency": "ANNUAL",
+    "updated_at": "2026-09-15T01:42:58.914000+00:00",
+    "records_count": 112,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/cement-production-and-sales/",
+    "columns": [
+      {
+        "name": "date",
+        "label": "Date",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "name",
+        "label": "Indicator",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "Value",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "comparisons-of-fuel-prices-paid-by-the-electricity-producers-in-the-kingdom-with",
+    "title": "Fuel Prices Kingdom's Electricity Producers",
+    "description": "This dataset contains Saudi Arabia Fuel Prices Kingdom's Electricity Producers for 2013-2015. Data from Electricity and Cogeneration Regulatory Authority ECRA Prices, Export API data for more datasets to advance energy economics research The Electricity and Cogeneration Regulatory Authority (ECRA) website has changed to Water & Electricity Regulatory Authority (WERA). This dataset was extracted from ECRA’s website and has been discontinued, to access WERA’s datasets please find the following link",
+    "owner": "Electricity and Cogeneration Regulatory Authority",
+    "themes": [
+      "Electricity"
+    ],
+    "keywords": [
+      "Prices"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-04-30T15:12:59.139000+00:00",
+    "records_count": 12,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/comparisons-of-fuel-prices-paid-by-the-electricity-producers-in-the-kingdom-with/",
+    "columns": [
+      {
+        "name": "year",
+        "label": "Year ",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "fuel_type",
+        "label": "Fuel Type",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "paid_by_the_kingdom_s_electricity_producers",
+        "label": "Paid by the Kingdom’s Electricity Producers (US$/million BTU)",
+        "data_type": "double",
+        "description": null
+      },
+      {
+        "name": "international",
+        "label": "International (US$/million BTU)",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "desalinated-water-percentage-of-total-usable-freshwater",
+    "title": "Desalinated water percentage of total usable freshwater",
+    "description": "This dataset contains Saudi Arabia Desalinated water percentage of total usable freshwater for the period 2010-2018. Data from General Authority for Statistics , Follow datasource.kapsarc.org for timely data to advance energy economics research.",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Water & Agriculture"
+    ],
+    "keywords": [
+      "desalination",
+      "Water Capacity",
+      "fresh water"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-04-21T15:28:51.278000+00:00",
+    "records_count": 27,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/desalinated-water-percentage-of-total-usable-freshwater/",
+    "columns": [
+      {
+        "name": "year",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "variable",
+        "label": "Variable",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "value",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "electricity-consumption-by-sectors",
+    "title": "Electricity Consumption by Sectors",
+    "description": "This dataset contains Electricity consumption by sector for Saudi Arabia from 2005-2021. Data from Saudi Central Bank (SAMA) . Follow datasource.kapsarc.org and it’s APIs to stay in sync and advance energy economics research. Notes: Blank Records = Not Available *others: Includes consumption for educational, health and desalination purposes. ** Data for year 2020 is Provisional, and were reclassified by the source in 2020, and Includes Saudi Electricity Company and Marafiq.",
+    "owner": "Saudi Central Bank (SAMA)",
+    "themes": [
+      "Electricity",
+      "Industry",
+      "Buildings"
+    ],
+    "keywords": [
+      "Consumption",
+      "Residential",
+      "Commercial",
+      "Governmental",
+      "Electricity Consumption",
+      "Agriculture"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-06-01T01:42:45.074000+00:00",
+    "records_count": 735,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/electricity-consumption-by-sectors/",
+    "columns": [
+      {
+        "name": "year",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "region",
+        "label": "Region",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "sector",
+        "label": "Sector",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "electricity_consumption_mwh",
+        "label": "Electricity Consumption (MWh)",
+        "data_type": "double",
+        "description": null
+      },
+      {
+        "name": "name",
+        "label": "Name",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "date_object",
+        "label": "Date_Object",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "periodicity",
+        "label": "Periodicity",
+        "data_type": "text",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "employees-compensation-by-industrial-activity",
+    "title": "Employees Compensation by Industrial Activity",
+    "description": "Explore the Employees Compensation by Industrial Activity by economic activities. This dataset provides valuable insights into industrial activities such as Mining and quarrying, Manufacturing, Electricity, gas, steam and air conditioning supply and Water supply; sewerage, waste management and remediation activities. Follow datasource.kapsarc.org (opens in a new tab) for timely data.",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Industry",
+      "Economy"
+    ],
+    "keywords": [
+      "mining",
+      "quarrying",
+      "Manufacturing",
+      "Electricity",
+      "Gas",
+      "Water",
+      "Structural Business Statistics for Industrial Activities"
+    ],
+    "license": "Public Domain",
+    "update_frequency": "ANNUAL",
+    "updated_at": "2026-06-04T13:28:39.182000+00:00",
+    "records_count": 477,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/employees-compensation-by-industrial-activity/",
+    "columns": [
+      {
+        "name": "year",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "code",
+        "label": "Code",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "economic_activity",
+        "label": "Economic activity",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "unit",
+        "label": "Unit",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "value",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "freight-among-railway-stations-2004-2008-ad",
+    "title": "Freight Among Railway Stations",
+    "description": "This dataset contains Saudi Arabia Freight Among Railway Stations for 2004 - 2013. Data from General Authority for Statistics . Export API data for more datasets to advance energy economics research. Source : Saudi Government Railroad Organization.",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Transport"
+    ],
+    "keywords": [
+      "Freight"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-05-05T12:54:06.686000+00:00",
+    "records_count": 1099,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/freight-among-railway-stations-2004-2008-ad/",
+    "columns": [
+      {
+        "name": "gregorian_year",
+        "label": "Gregorian Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "from",
+        "label": "From",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "to",
+        "label": "To",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "Value",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "fuel-consumption-for-electricity",
+    "title": "Fuel Consumption for Electricity and Seawater Desalination Industries",
+    "description": "This dataset contains Fuel Consumption by fuel type for Electricity and Seawater Desalination Industries for 2007 - 2019. Data from Electricity and Cogeneration Regulatory Authority. Follow datasource.kapsarc.org for timely data to advance energy economics research. The Electricity and Cogeneration Regulatory Authority (ECRA) website has changed to Water & Electricity Regulatory Authority (WERA). This dataset was extracted from ECRA’s website and has been discontinued, to access WERA’s datasets please find the following link TBTU: Trillion British thermal unit.",
+    "owner": "Electricity and Cogeneration Regulatory Authority",
+    "themes": [
+      "Electricity"
+    ],
+    "keywords": [
+      "Fuel Consumption",
+      "Electricity Generation"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-05-05T12:54:10.765000+00:00",
+    "records_count": 52,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/fuel-consumption-for-electricity/",
+    "columns": [
+      {
+        "name": "year",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "fuel_type",
+        "label": "Fuel Type",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "yearly_fuel_consumption_in_tbtu",
+        "label": "Yearly Fuel Consumption in TBTU",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "gas-sales-by-region-2001-2013",
+    "title": "Natural Gas Sales By Station (In Tons)",
+    "description": "This dataset contains information about Saud Arabia's natural gas sales by stations (in tons) for 2001-2013. Data from Saudi Open Data. Citation: \"Sales Of Gas By Gas Stations (In Ton) | Saudi Open Data\". Data.gov.sa . N.p., 2015. Web. 15 Mar. 2016.",
+    "owner": "Saudi Open Data",
+    "themes": [
+      "Conventional Fuels"
+    ],
+    "keywords": [
+      "Gas Sales"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-05-10T20:07:30.360000+00:00",
+    "records_count": 1352,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/gas-sales-by-region-2001-2013/",
+    "columns": [
+      {
+        "name": "year",
+        "label": "Year ",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "month",
+        "label": "Month",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "city",
+        "label": "City ",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "gas_sales_in_tons",
+        "label": "Gas sales in Tons.",
+        "data_type": "double",
+        "description": null
+      },
+      {
+        "name": "geopoint",
+        "label": "GeoPoint",
+        "data_type": "geo_point_2d",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "gcc-solar-photovoltaic-regional-costs-1983-2015",
+    "title": "Solar Photovoltaic Regional Costs",
+    "description": "Solar Photovoltaic Dataset The solar industry has witnessed remarkable declines in of costs during the past 25 years for a number of reasons including technological advancements and industry expansion. The benchmark component that is typically referred to when reporting cost trends is the solar module and many institutions publish the global average selling price for the modules on a regular basis. Indeed, the module price serves as a good indicator of developments in the solar industry and technology. However, the module price is unable to capture regional differences that arise when building solar PV systems. Variations in labor costs, legal costs, taxes and cost of capital between countries are some of the reasons why the same plant would have very different costs when built in different places. The same also applies to the levelized cost of energy; solar conditions as well as maintenance costs vary across countries, which result in different operational costs. The variations in capital expenditure and operational costs between countries become even more pronounced when considering the size of the installed system. To capture regional differences in capital and generation costs, we have compiled a large collection of data across many geographies for the three typical system sizes (i.e. residential, commercial, and utility). The costs are provided and accompanied by the assumptions that were used to arrive at these actual costs including interest rates, solar irradiation, technology type, etc, where these assumptions are given in the source. This dataset was used to build our interactive tool published on website https://www.kapsarc.org/openkapsarc/kapsarc-solar-photovoltaic-toolkit/ Users can compare the costs in a variety of ways depending on the filters that are used. For instance, a user can see how generation costs change if the financial assumptions are altered. For this reason, the Toolkit provides an excel-based Analyzing Tool to aid in experimenting and evaluating different scenarios. The raw data is also provided if a user is interested in performing further analysis. To summarize, this tool kit provides the following: 1.A spatial (map-based) interactive representation of CAPEX 2.A spatial (map-based) interactive representation of LCOE 3.A scatter chart interactive representation of CAPEX 4.A scatter chart interactive representation of LCOE 5.An interactive bar chart for annual global solar PV installations 6.An interactive bar chart for cumulative global solar PV installations 7.An LCOE Analyzer that attains the LCOE via capacity factor or solar irradiation",
+    "owner": "King Abdullah Petroleum Studies and Research Center",
+    "themes": [
+      "Renewable & Other Fuels"
+    ],
+    "keywords": [
+      "Capacity",
+      "Residential",
+      "Utility",
+      "LOCE"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2017-02-27T11:08:16+00:00",
+    "records_count": 13,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/gcc-solar-photovoltaic-regional-costs-1983-2015/",
+    "columns": [
+      {
+        "name": "region",
+        "label": "Region",
+        "data_type": "text",
+        "description": "Commercial"
+      },
+      {
+        "name": "country",
+        "label": "Country",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "scale",
+        "label": "Scale",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "year",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "lcoe_levelized_cost_of_electricity",
+        "label": "LCOE - Levelized Cost of Electricity",
+        "data_type": "double",
+        "description": null
+      },
+      {
+        "name": "capex_w",
+        "label": "Capex $/W",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "source",
+        "label": "Source",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "source_link",
+        "label": "Source Link",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "source_details",
+        "label": "Source Details",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "financial",
+        "label": "Financial",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "annual_panel_degradation",
+        "label": "Annual  Panel Degradation",
+        "data_type": "text",
+        "description": "Percentage"
+      },
+      {
+        "name": "technology",
+        "label": "Technology",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "module_efficiency",
+        "label": "Module  Efficiency",
+        "data_type": "double",
+        "description": "Percentage"
+      },
+      {
+        "name": "capacity_factor_or_solar_condition",
+        "label": "Capacity Factor  or Solar Condition",
+        "data_type": "text",
+        "description": "Percentage"
+      },
+      {
+        "name": "comments",
+        "label": "Comments",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "geoshape",
+        "label": "GeoShape",
+        "data_type": "geo_shape",
+        "description": null
+      },
+      {
+        "name": "geo_point_2d",
+        "label": "geo_point_2d",
+        "data_type": "geo_point_2d",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "household-environment-statistics",
+    "title": "Household Environment Statistics",
+    "description": "This dataset provides insights into household environmental and water-related conditions in Saudi Arabia . It includes indicators on water access and usage (such as drinking water sources, handwashing facilities, and sewage system connections), sanitation and hygiene (toilet types, fire safety equipment, and water conservation tools), and waste management (waste disposal methods, waste segregation, and tank cleaning). Additionally, it covers household exposure to pollution (air, noise, light, and visual pollution), green practices (organic food purchases and tree planting), and environmental awareness (concerns, knowledge, and key environmental issues). These indicators help assess household infrastructure, environmental behavior, and sustainability practices. Notes: Main source measures households' use of drinking water by sources Bottled water is gallon containers or bottles Other water sources: Includes covered well, open well, covered spring and surface water Service disruption is measured from all major water sources for at least one disruption during the year",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Buildings",
+      "Water & Agriculture"
+    ],
+    "keywords": [
+      "Water",
+      "house"
+    ],
+    "license": "Public Domain",
+    "update_frequency": "ANNUAL",
+    "updated_at": "2026-06-03T07:10:43.844000+00:00",
+    "records_count": 8861,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/household-environment-statistics/",
+    "columns": [
+      {
+        "name": "time_period",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "indicator",
+        "label": "Indicator",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "administrative_regions",
+        "label": "Administrative regions ",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "source",
+        "label": "Source",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "occurance_level",
+        "label": "Occurance / Level",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "type_of_toliet",
+        "label": "Type of toliet",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "type_of_tree",
+        "label": "Type of tree",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "waste_disposals_per_week",
+        "label": "Waste disposals per week ",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "pollution_type",
+        "label": "Pollution Type",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "education_level",
+        "label": "Education Level",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "income_category",
+        "label": "Income Category",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "environmental_issue",
+        "label": "Environmental Issue",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "waste_disposal_methods_system",
+        "label": "Waste disposal methods/system",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "distance_of_waste_container",
+        "label": "Distance of waste container",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "waste_sorting_methods",
+        "label": "Waste sorting methods",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "urban_rural",
+        "label": "Urban/Rural",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "average_waiting_time",
+        "label": "Average waiting time",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "emptying_a_cesspit_septic_tank",
+        "label": "Emptying a cesspit / septic tank ",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "waste_type",
+        "label": "Waste type",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "value in percentage %",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "houses-consumption-and-cost-of-electricity-in-the-administrative-regions-",
+    "title": "Houses Consumption and Cost of Electricity in the Administrative Regions",
+    "description": "This dataset contains Saudi Arabia Houses Consumption and Cost of Electricity in the Administrative Regions . Data from General Authority for Statistics . Export API data for more datasets to advance energy economics research. Data from the Household Energy Survey",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Buildings",
+      "Electricity"
+    ],
+    "keywords": [
+      "Household Energy Survey",
+      "Housing",
+      "Residential",
+      "Quantity",
+      "cost",
+      "Consumption"
+    ],
+    "license": "Public Domain",
+    "update_frequency": "ANNUAL",
+    "updated_at": "2026-05-05T12:59:05.631000+00:00",
+    "records_count": 336,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/houses-consumption-and-cost-of-electricity-in-the-administrative-regions-/",
+    "columns": [
+      {
+        "name": "time_period",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "administrative_region",
+        "label": "Administrative Region",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "season",
+        "label": "Season",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "measure",
+        "label": "Measure and Unit",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "Value",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "humidity-adjusted-cooling-and-heating-degree-days-in-saudi-arabia-s-regions",
+    "title": "Humidity Adjusted Cooling and Heating Degree Days in Saudi Arabia’s Regions",
+    "description": "This dataset contains Humidity Adjusted Cooling and Heating Degree Days in Saudi Arabia’s Regions from 1990-2019 . Follow datasource.kapsarc.org for timely data to advance energy economics research. Source: Author’s Calculation We calculate humidity-adjusted CDD and HDD, NOAA’s National Weather Service (NWS) Heat Index (HI) is used to measure the human-perceived equivalent temperature. It is calculated through a multiple regression analysis of Steadman’s equations for wind and solar radiation by using only two independent variables, ambient temperature (T) and relative humidity (Rh). To calculate the NWS HI, the regression analyses is applied to the relationships among wind and solar radiation with independent variables T and Rh. The dataset could be used by researchers who model residential electricity demand, studies of energy efficiency, and policymakers to base their potential policy scenarios on weather conditions.",
+    "owner": "King Abdullah Petroleum Studies and Research Center",
+    "themes": [
+      "Climate & Sustainability"
+    ],
+    "keywords": [
+      "CDD",
+      "HDD",
+      "Cooling Degree Days",
+      "Heating Degree Days",
+      "Humidity"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-05-07T08:11:30.595000+00:00",
+    "records_count": 240,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/humidity-adjusted-cooling-and-heating-degree-days-in-saudi-arabia-s-regions/",
+    "columns": [
+      {
+        "name": "year",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "region",
+        "label": "Region",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "coolinh_and_heating_degree_days",
+        "label": "Cooling and Heating Degree Days",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "Value",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "hydro-power-plant",
+    "title": "Hydro Powers Plant",
+    "description": "This dataset contains India Hydro Powers Plant 1902 - 2019 King Abdullah Petroleum Studies And Research Center .Export API data for more datasets to advance energy economics research",
+    "owner": "King Abdullah Petroleum Studies and Research Center",
+    "themes": [
+      "Renewable & Other Fuels"
+    ],
+    "keywords": [],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2022-07-29T08:02:20.857000+00:00",
+    "records_count": 837,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/hydro-power-plant/",
+    "columns": [
+      {
+        "name": "region",
+        "label": "Region",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "state",
+        "label": "State",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "district",
+        "label": "District",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "sub_district",
+        "label": "Sub-District",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "location",
+        "label": "Location",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "project_plant_name",
+        "label": "Project/Plant name ",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "current_owner",
+        "label": "Current Owner",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "original_developer",
+        "label": "Original Developer",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "sector",
+        "label": "Sector",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "status",
+        "label": "Status",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "unit_number",
+        "label": "Unit Number",
+        "data_type": "int",
+        "description": null
+      },
+      {
+        "name": "total_nameplate_capacity_mw",
+        "label": "Total Nameplate Capacity (MW)",
+        "data_type": "double",
+        "description": null
+      },
+      {
+        "name": "plant_type",
+        "label": "Plant Type",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "commissioning_year",
+        "label": "Commissioning year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "average_annual_output_gwh",
+        "label": "Average Annual Output (GWh)",
+        "data_type": "double",
+        "description": null
+      },
+      {
+        "name": "ppa_term_years",
+        "label": "PPA Term (Years)",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "utility_ppa",
+        "label": "Utility PPA",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "usage",
+        "label": "Usage",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "policy",
+        "label": "Policy",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "latitude",
+        "label": "Latitude",
+        "data_type": "double",
+        "description": null
+      },
+      {
+        "name": "longitude",
+        "label": "Longitude",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "imports-value-by-nature-of-items",
+    "title": "Imports Value by Nature of Items",
+    "description": "Explore the Imports Value by Nature of Items dataset, which provides insights into the international trade of finished products, raw materials, and semi-finished products. Access the Saudi Arabia International Trade Report here. Imports, Finished Products, Raw Material, Semi-Finished Products, International Trade Report Saudi Arabia Follow data.kapsarc.org for timely data to advance energy economics research. . The value of imports is calculated on the basis of (CIF) and the import values are always represented in the cost of the value subject of shipment, plus the cost of insurance, transportation or freight and other costs until the goods are delivered to the loading dock at the port of entry, except for customs duties Methodology Link: https://www.stats.gov.sa/en/node/9779",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Economy"
+    ],
+    "keywords": [
+      "Imports",
+      "Finished Products",
+      "Raw Material",
+      "Semi-Finished Products",
+      "International Trade Report"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-10-28T23:00:14.112000+00:00",
+    "records_count": 402,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/imports-value-by-nature-of-items/",
+    "columns": [
+      {
+        "name": "time_period",
+        "label": "Date",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "nature_engl",
+        "label": "Nature of Items",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "obsvalue_obsv",
+        "label": "Imports Value in Million SAR",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "imports-value-by-utilization-of-items",
+    "title": "Imports Value by Utilization of Items",
+    "description": "Explore the Imports Value by Utilization of Items dataset, covering Intermediate Consumption, Final Consumption, Fixed Assets (Capital), and more. An essential resource for analyzing Saudi Arabia's international trade trends. Intermediate Consumption, Final Consumption, Fixed Assets (Capital), Grand Total, Imports, Capital Assets, International Trade Report Saudi Arabia Follow data.kapsarc.org for timely data to advance energy economics research. . The value of imports is calculated on the basis of (CIF) and the import values are always represented in the cost of the value subject of shipment, plus the cost of insurance, transportation or freight and other costs until the goods are delivered to the loading dock at the port of entry, except for customs duties Methodology Link: https://www.stats.gov.sa/en/node/9779",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Economy"
+    ],
+    "keywords": [
+      "Imports",
+      "Final consumption",
+      "Intermediate Consumption",
+      "Fixed Assets",
+      "Capital Assets",
+      "International Trade Report"
+    ],
+    "license": "Public Domain",
+    "update_frequency": "MONTHLY",
+    "updated_at": "2026-10-31T23:00:17.956000+00:00",
+    "records_count": 402,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/imports-value-by-utilization-of-items/",
+    "columns": [
+      {
+        "name": "date",
+        "label": "Date",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "utilization_engl",
+        "label": "Item Utalization",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "obsvalue_obsv",
+        "label": "Value in Million SAR",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "imports-weight-by-nature-of-items",
+    "title": "Imports Weight by Nature of Items",
+    "description": "Explore the imports weight by nature of items dataset, featuring information on finished products, raw materials, and semi-finished products in the international trade report. Discover key insights on imports in Saudi Arabia. Imports, Finished Products, Raw Material, Semi-Finished Products, International Trade Report Saudi Arabia Follow data.kapsarc.org for timely data to advance energy economics research. . According to the foreign trade system, it means the weight of all goods and commodities imported and entering the country to cover local needs, on which all customs procedures followed in ending the import of a commodity are performed Methodology Link: https://www.stats.gov.sa/en/node/9779",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Economy"
+    ],
+    "keywords": [
+      "Imports",
+      "Finished Products",
+      "Raw Material",
+      "Semi-Finished Products",
+      "International Trade Report"
+    ],
+    "license": "Public Domain",
+    "update_frequency": "MONTHLY",
+    "updated_at": "2026-10-31T23:00:25.366000+00:00",
+    "records_count": 420,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/imports-weight-by-nature-of-items/",
+    "columns": [
+      {
+        "name": "year_month_time",
+        "label": "Date",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "nature_engl",
+        "label": "Nature of items",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "Imports volume in Tons",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "imports-weight-by-utilization-of-items",
+    "title": "Imports Weight by Utilization of Items",
+    "description": "Explore the Imports Weight by Utilization of Items dataset which provides detailed information on final consumption, intermediate consumption, fixed assets, and capital assets in Saudi Arabia. Check out the International Trade Report for valuable insights. Imports, Final consumption, Intermediate Consumption, Fixed Assets, Capital Assets, International Trade Report Saudi Arabia Follow data.kapsarc.org for timely data to advance energy economics research. . According to the foreign trade system, it means the weight of all goods and commodities imported and entering the country to cover local needs, on which all customs procedures followed in ending the import of a commodity are performed Methodology Link: https://www.stats.gov.sa/en/node/9779",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Economy"
+    ],
+    "keywords": [
+      "Imports",
+      "Final consumption",
+      "Intermediate Consumption",
+      "Fixed Assets",
+      "Capital Assets",
+      "International Trade Report"
+    ],
+    "license": "Public Domain",
+    "update_frequency": "MONTHLY",
+    "updated_at": "2026-10-21T22:00:18.462000+00:00",
+    "records_count": 417,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/imports-weight-by-utilization-of-items/",
+    "columns": [
+      {
+        "name": "year_month_time",
+        "label": "Time period",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "utilization_engl",
+        "label": "Item Utilization",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "obsvalue_obsv",
+        "label": "Value in Tons",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "increase-percentage-of-the-surface-area-of-the-protected-areas",
+    "title": "Saudi Arabia Protected Areas",
+    "description": "This dataset provides indicators on protected areas and conservation coverage in Saudi Arabia over time. It includes data on the total surface area of protected areas, wildlife protected areas, marine protected areas, and the percentage of the country’s land under protection. The dataset supports analysis of conservation efforts, trends in protected area expansion, and progress toward environmental sustainability and biodiversity preservation goals.",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Climate & Sustainability"
+    ],
+    "keywords": [
+      "nature reserves"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-05-06T13:06:41.579000+00:00",
+    "records_count": 76,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/increase-percentage-of-the-surface-area-of-the-protected-areas/",
+    "columns": [
+      {
+        "name": "year",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "variable",
+        "label": "Variable",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "Value",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "india-gas-power-plants-1965-2016-and-proposed",
+    "title": "India Gas Power Plants",
+    "description": "This dataset contains information about India's gas power plants for 1969-2015 + proposed. Data was gathered from research and public sources such as wiki",
+    "owner": "King Abdullah Petroleum Studies and Research Center",
+    "themes": [
+      "Conventional Fuels"
+    ],
+    "keywords": [
+      "Capacity",
+      "Gas Power Plants"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-05-11T15:17:17.019000+00:00",
+    "records_count": 285,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/india-gas-power-plants-1965-2016-and-proposed/",
+    "columns": [
+      {
+        "name": "region",
+        "label": "Region",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "state",
+        "label": "State",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "district",
+        "label": "District",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "location",
+        "label": "Location",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "sector",
+        "label": "Sector",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "status",
+        "label": "Status",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "sub_district",
+        "label": "Sub-District",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "project_plant_name",
+        "label": "Project/Plant name ",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "current_owner",
+        "label": "Current Owner",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "original_developer",
+        "label": "Original Developer",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "unit_number",
+        "label": "Unit Number",
+        "data_type": "int",
+        "description": null
+      },
+      {
+        "name": "total_nameplate_capacity_mw",
+        "label": "Total Nameplate Capacity (MW)",
+        "data_type": "double",
+        "description": null
+      },
+      {
+        "name": "commissioning_year",
+        "label": "Commissioning year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "boiler_type",
+        "label": "Boiler Type",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "gas_source",
+        "label": "Gas Source",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "import_country",
+        "label": "Import country",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "port",
+        "label": "Port",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "average_annual_output_gwh",
+        "label": "Average Annual Output (GWh)",
+        "data_type": "double",
+        "description": null
+      },
+      {
+        "name": "utility_ppa",
+        "label": "Utility PPA",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "lat_long",
+        "label": "GeoPoint",
+        "data_type": "geo_point_2d",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "installed-generation-capacity-peak-load-in-mw-by-region-for-2014",
+    "title": "Electricity Installed Capacity (Peak Load) by Region",
+    "description": "This dataset contains Saudi Arabia Electricity Installed Capacity (Peak Load) by region for 2004 - 2019. Data from Electricity and Cogeneration Regulatory Authority. Follow datasource.kapsarc.org for timely data to advance energy economics research. Citation: \"Installed Generation Capacity (Peak Load) In MW By Region For 2014\". ECRA . N.p., 2014. Web. 10 Mar. 2016. * 1 GW = 1000 MW The Electricity and Cogeneration Regulatory Authority (ECRA) website has changed to Water & Electricity Regulatory Authority (WERA). This dataset was extracted from ECRA’s website and has been discontinued, to access WERA’s datasets please find the following link",
+    "owner": "Electricity and Cogeneration Regulatory Authority",
+    "themes": [
+      "Electricity"
+    ],
+    "keywords": [
+      "Capacity",
+      "Peak Load",
+      "Available Capacity",
+      "Generation Capacity"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-05-05T12:52:01.480000+00:00",
+    "records_count": 160,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/installed-generation-capacity-peak-load-in-mw-by-region-for-2014/",
+    "columns": [
+      {
+        "name": "year",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "area",
+        "label": "Area",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "indicator",
+        "label": "Indicator",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value_gw",
+        "label": "Value (GW)",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "lengths-of-roads-constructed-up-till-end-of-2007-2009-ad-in-kilometres",
+    "title": "Length of Roads Constructed",
+    "description": "This dataset contains Saudi Arabia Length of Roads Constructed for 2008 - 2019. Data from General Authority for Statistics. Export API data for more datasets to advance energy economics research. Source: Ministry of Transportation We have used year converter to find the Gregorian year",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Transport"
+    ],
+    "keywords": [
+      "Roads"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-05-05T12:58:14.308000+00:00",
+    "records_count": 156,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/lengths-of-roads-constructed-up-till-end-of-2007-2009-ad-in-kilometres/",
+    "columns": [
+      {
+        "name": "year",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "region",
+        "label": "Region",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "length_of_established_roads_kilometers",
+        "label": "Length of Established Roads (Kilometers)",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "number-of-arriving-vehicles-to-makkah-by-type-of-vehicle",
+    "title": "Number of Arriving Vehicles to Makkah During Hajj by Type of Vehicle",
+    "description": "Explore the dataset on the number of arriving vehicles to Makkah by type of vehicle. Analyze data related to Other industries and the Hajj pilgrimage in Saudi Arabia. Other industries, Hajj, ITEM Saudi Arabia Follow data.kapsarc.org for timely data to advance energy economics research. .",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Transport"
+    ],
+    "keywords": [
+      "Other industries",
+      "Hajj",
+      "ITEM"
+    ],
+    "license": "Public Domain",
+    "update_frequency": "ANNUAL",
+    "updated_at": "2026-05-05T12:54:03.748000+00:00",
+    "records_count": 72,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/number-of-arriving-vehicles-to-makkah-by-type-of-vehicle/",
+    "columns": [
+      {
+        "name": "time_period",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "type_of_vehicle",
+        "label": "Type of vehicle",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "number_of_vehicles",
+        "label": "Number of vehicles",
+        "data_type": "double",
+        "description": null
+      },
+      {
+        "name": "difference_amount",
+        "label": "Difference Amount",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "difference_percentage",
+        "label": "Difference Percentage",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "number-of-new-individual-proprietorships-by-region",
+    "title": "Number of New Individual Proprietorships By Region",
+    "description": "Explore the dataset on the number of new individual proprietorships by region in Saudi Arabia. Get insights and analysis on the SAMA Annual data. Click to learn more! region, SAMA Annual Saudi Arabia Follow data.kapsarc.org for timely data to advance energy economics research. .",
+    "owner": "Saudi Central Bank (SAMA)",
+    "themes": [
+      "Industry"
+    ],
+    "keywords": [
+      "region",
+      "SAMA Annual"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-09-15T01:38:53.072000+00:00",
+    "records_count": 266,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/number-of-new-individual-proprietorships-by-region/",
+    "columns": [
+      {
+        "name": "date",
+        "label": "Date",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "region",
+        "label": "Region",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "Number of New Individual Proprietorships",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "number-of-operating-industrial-units",
+    "title": "Number of Operating Industrial Units by Category",
+    "description": "Explore the number of operating industrial units dataset in Saudi Arabia including industries such as Basic pharmaceutical products, Furniture, Chemical materials, Food products, and more. Analyze the manufacturing landscape and electricity, gas, steam, and water supply sectors. Other nonmetal products, Basic pharmaceutical products and pharmaceuticals, Leather and related products, Engine, trailer and semitrailer vehicles, Printing and copying recorded multimedia, Furniture, Cloth, Machines and equipment unclassified elsewhere, Total, Rubber and plastic products, Water collection, treatment and supply, Base metal products, Beverages, Wood, wood and cork products, Coke coal and refined petroleum products, Other manufacturing industries, Repair and installation of machinery and equipment, Textiles, Electricity, gas, steam and air conditioning supply, Chemical materials and products, Food products, Paper and its products, Computers and electronic and optical products, Manufacture of fabricated metal products, except machinery and equipment, Other transportation equipment, Electrical equipment, Chemical, Products, Manufacturing, electricity, Gas, Steam, Water, supply , SAMA Annual Saudi Arabia Follow data.kapsarc.org for timely data to advance energy economics research. . Wood, wood & cork products: Excluding furniture, and types of straw and plaiting materials.",
+    "owner": "Saudi Central Bank (SAMA)",
+    "themes": [
+      "Industry"
+    ],
+    "keywords": [
+      "Chemical",
+      "Products",
+      "Manufacturing",
+      "electricity",
+      "Gas",
+      "Steam",
+      "Water",
+      "supply",
+      "SAMA Annual"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-09-15T01:37:03.426000+00:00",
+    "records_count": 936,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/number-of-operating-industrial-units/",
+    "columns": [
+      {
+        "name": "date",
+        "label": "Date",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "category",
+        "label": "Category",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "Number of Operating Industrial Units",
+        "data_type": "int",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "number-of-stations-that-equal-or-exceed-temperatures-of-40-degrees",
+    "title": "Number of Stations That Equal or Exceed Temperatures of 40 Degrees",
+    "description": "This dataset contains Saudi Arabia Number of Stations that Equal or exceed temperatures of 40 degrees 2010-2018. General Authority for Statistics. Follow datasource.kapsarc.org for timely data to advance energy economics research.",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Climate & Sustainability"
+    ],
+    "keywords": [
+      "Tempreture",
+      "Weather"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-05-06T13:09:25.401000+00:00",
+    "records_count": 117,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/number-of-stations-that-equal-or-exceed-temperatures-of-40-degrees/",
+    "columns": [
+      {
+        "name": "year",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "months",
+        "label": "Months",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "value",
+        "data_type": "int",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "number-of-subscribers-by-branches-of-the-saudi-electricity-company-and-type-of-c",
+    "title": "Number of Subscribers by Branches of The Saudi Electricity Company and Type of Consumption",
+    "description": "This dataset contains Number of Subscribers by Branches of The Saudi Electricity Company and Type of Consumption from 2005-2022. Data from Saudi Central Bank (SAMA) . Follow datasource.kapsarc.org and it’s APIs to stay in sync and advance energy economics research. Notes: - Blank Record = Not Available - Data for year 2020 is Provisional, and were reclassified by the source in 2020, and Includes Saudi Electricity Company and Marafiq. - Among others, including: health, education and water desalination.",
+    "owner": "Saudi Central Bank (SAMA)",
+    "themes": [
+      "Electricity"
+    ],
+    "keywords": [
+      "Consumption",
+      "Subscribers"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-09-15T01:37:15.662000+00:00",
+    "records_count": 735,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/number-of-subscribers-by-branches-of-the-saudi-electricity-company-and-type-of-c/",
+    "columns": [
+      {
+        "name": "year",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "region",
+        "label": "Region",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "type_of_consumption",
+        "label": "Type of Consumption",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "number_of_subscribers",
+        "label": "Number of Subscribers",
+        "data_type": "int",
+        "description": null
+      },
+      {
+        "name": "name",
+        "label": "Name",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "date_object",
+        "label": "Date_Object",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "periodicity",
+        "label": "Periodicity",
+        "data_type": "text",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "operating-expenditures-by-industrial-activity",
+    "title": "Operating Expenditures by Industrial Activity",
+    "description": "Explore the Operating Expenditures by Industrial Activity by economic activities. This dataset provides valuable insights into industrial activities such as Mining and quarrying, Manufacturing, Electricity, gas, steam and air conditioning supply and Water supply; sewerage, waste management and remediation activities. Follow datasource.kapsarc.org (opens in a new tab) for timely data.",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Industry",
+      "Economy"
+    ],
+    "keywords": [
+      "Mining",
+      "quarrying",
+      "Manufacturing",
+      "Electricity",
+      "Gas",
+      "Water",
+      "Structural Business Statistics for Industrial Activities"
+    ],
+    "license": "Public Domain",
+    "update_frequency": "ANNUAL",
+    "updated_at": "2026-06-04T12:55:54.855000+00:00",
+    "records_count": 477,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/operating-expenditures-by-industrial-activity/",
+    "columns": [
+      {
+        "name": "year",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "code",
+        "label": "Code",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "economic_activity",
+        "label": "Economic activity",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "unit",
+        "label": "Unit",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "value",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "orcyinfnumber-of-seismic-tremors-observed-by-seismic-monitoring-devices-of-saudi",
+    "title": "Number of Seismic Tremors Observed by Seismic Monitoring Devices of Saudi Geological Survey",
+    "description": "This dataset contains Saudi Arabia Number of Seismic Tremors Observed by Seismic Monitoring Devices of Saudi Geological Survey for the period 2009-2019. Data from General Authority for statistics. Follow datasource.kapsarc.org for timely data to advance energy economics research.",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Climate & Sustainability"
+    ],
+    "keywords": [
+      "Seismic Tremors"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-05-06T13:10:22.165000+00:00",
+    "records_count": 654,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/orcyinfnumber-of-seismic-tremors-observed-by-seismic-monitoring-devices-of-saudi/",
+    "columns": [
+      {
+        "name": "year",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "level_name",
+        "label": "Level Scale",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "units",
+        "label": "Units",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "value",
+        "data_type": "int",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "per_capita_average_water_use_in_saudi_regions",
+    "title": "Per Capita Water Consumption In Saudi Regions",
+    "description": "This dataset contain p er capita water consumption In Saudi regions during the period 2009-2018. Data from General Authority for Statistics. Follow datasource.kapsarc.org for timely data to advance energy economics research. * The Per Capita Average Daily Use Of Water Is Calculated As Follows: Total quantity consumed by municipal sector (liter)/population*365",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Water & Agriculture"
+    ],
+    "keywords": [
+      "Water Consumption"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2024-02-26T12:23:10.859000+00:00",
+    "records_count": 140,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/per_capita_average_water_use_in_saudi_regions/",
+    "columns": [
+      {
+        "name": "regions",
+        "label": "Regions",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "year",
+        "label": "Year",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "Value",
+        "data_type": "int",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "percentage-of-extracted-or-produced-water-to-total-freshwater-by-source",
+    "title": "Percentage of Extracted or Produced Water to Total Freshwater by Source",
+    "description": "This dataset contains Saudi Arabia Percentage of Extracted or Produced Water to Total Freshwater by Source 2010-2016 General Authority for Statistics Water , Extracted Water ,Follow datasource.kapsarc.org for timely data to advance energy economics research.",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Water & Agriculture"
+    ],
+    "keywords": [
+      "fresh water",
+      "Water Production"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2024-02-26T11:59:55.575000+00:00",
+    "records_count": 43,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/percentage-of-extracted-or-produced-water-to-total-freshwater-by-source/",
+    "columns": [
+      {
+        "name": "year",
+        "label": "year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "variable",
+        "label": "Variable",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "million_cubic_meters_per_year_mm3_per_year",
+        "label": "Million cubic meters per year (Mm3 per year)",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "percentage-of-households-who-are-willing-to-use-solar-energy-in-their-houses-by-",
+    "title": "Percentage of Households Who are Willing to Use Solar Energy in their Houses by Region",
+    "description": "Explore the Percentage of Households Who Are Willing to Use Solar Energy in Their Houses by viewing the Household Energy Survey data for Saudi Arabia. Solar, Household Energy Survey, Housing Saudi Arabia Follow data.kapsarc.org for timely data to advance energy economics research. . Data from the Household Energy Survey",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Buildings",
+      "Renewable & Other Fuels"
+    ],
+    "keywords": [
+      "Solar",
+      "Household Energy Survey",
+      "Housing"
+    ],
+    "license": "Public Domain",
+    "update_frequency": "ANNUAL",
+    "updated_at": "2026-05-05T12:59:00.167000+00:00",
+    "records_count": 252,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/percentage-of-households-who-are-willing-to-use-solar-energy-in-their-houses-by-/",
+    "columns": [
+      {
+        "name": "time_period",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "administrative_region",
+        "label": "Administrative Region",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "indicator",
+        "label": "Indicator",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "Percentage of Households Who are Willing to Use Solar Energy",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "percentage-of-housing-units-which-use-solar-energy-in-the-administrative-region",
+    "title": "Percentage of Housing Units Which Use Solar Energy in the Administrative Region",
+    "description": "This dataset contains Saudi Arabia Percentage of Housing Units Which Use Solar Energy in the Administrative Region. Data from General Authority for Statistics . Export API data for more datasets to advance energy economics research. Data from the Household Energy Survey",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Buildings",
+      "Renewable & Other Fuels"
+    ],
+    "keywords": [
+      "Solar",
+      "Household Energy Survey",
+      "Housing"
+    ],
+    "license": "Public Domain",
+    "update_frequency": "ANNUAL",
+    "updated_at": "2026-05-05T12:54:27.291000+00:00",
+    "records_count": 140,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/percentage-of-housing-units-which-use-solar-energy-in-the-administrative-region/",
+    "columns": [
+      {
+        "name": "time_period",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "administrative_region",
+        "label": "Administrative Region",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "indicator",
+        "label": "Indicator",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "% Housing Units Use Solar Energy",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "population-by-gender-age-nationality-saudinon-saudi",
+    "title": "Population by Gender, Age Group and Nationality",
+    "description": "Explore the population data by gender, age, and nationality in Saudi Arabia. Find insights on Saudi and Non-Saudi individuals, including breakdowns for males, females, and total population. Saudi, Non-Saudi, Male, Total, Female Saudi Arabia Follow data.kapsarc.org for timely data to advance energy economics research. . Mid-year estimates",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Economy"
+    ],
+    "keywords": [
+      "Population"
+    ],
+    "license": "Public Domain",
+    "update_frequency": "ANNUAL",
+    "updated_at": "2026-10-31T23:00:17.588000+00:00",
+    "records_count": 53,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/population-by-gender-age-nationality-saudinon-saudi/",
+    "columns": [
+      {
+        "name": "year_time",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "sex_engl",
+        "label": "Gender",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "nationality_engl",
+        "label": "Nationality",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "obs_value_obsv",
+        "label": "Population",
+        "data_type": "int",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "quantity-of-water-desalinated-by-desalination-plants-in-000m2-1999-2013",
+    "title": "Quantity of Water Desalinated, by Desalination Plants",
+    "description": "TCM: Thousands Cubic Meters Source : General Organization for Desalination. * Other Plants include : Hakel-Deba-Al-Wajeh-Omloj-Rabegh-Al-Birk-Farasan-AlAzizyah. ** The low production since 2010, as a result of stop and reduce production Some units in plants (Shuaiba,Shegeg and Jubail)",
+    "owner": "Saudi Open Data",
+    "themes": [
+      "Water & Agriculture"
+    ],
+    "keywords": [
+      "Desalinated water"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2017-01-24T12:53:00+00:00",
+    "records_count": 120,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/quantity-of-water-desalinated-by-desalination-plants-in-000m2-1999-2013/",
+    "columns": [
+      {
+        "name": "year",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "plant",
+        "label": "Plant",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "value",
+        "data_type": "text",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "real-estate-indices-by-regions",
+    "title": "Real Estate Indices by Regions and Sectors (2014=100)",
+    "description": "Explore real estate price indices by regions in Saudi Arabia. This dataset includes information on apartment, villa, agricultural land, commercial centers, and more. Find detailed data on general index for residential and commercial properties, as well as agriculture sector. Apartment, Villa, Agricultural, House, Agricultural Land, Commercial Center, Gallery/ Shop, Plot, General Index, Building, Real Estate, Index, Residential, Commercial, Agriculture, region, Real Estate Price Index data Saudi Arabia Follow data.kapsarc.org for timely data to advance energy economics research. .",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Economy"
+    ],
+    "keywords": [
+      "Real Estate",
+      "Index",
+      "Residential",
+      "Commercial",
+      "Agriculture",
+      "region",
+      "Real Estate Price Index data"
+    ],
+    "license": "Public Domain",
+    "update_frequency": "QUARTERLY",
+    "updated_at": "2026-11-01T09:00:03.639000+00:00",
+    "records_count": 499,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/real-estate-indices-by-regions/",
+    "columns": [
+      {
+        "name": "year",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "quarter",
+        "label": "Quarter",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "item_engl",
+        "label": "Sector",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "region_engl",
+        "label": "Region",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "obsvalue_obsv",
+        "label": "Index value",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "saudi-aircraft-traffic-passengercargo-by-domestic-airports-in-2008-and-2009",
+    "title": "Saudi Aircraft Traffic (Passenger & Cargo) by Domestic Airports",
+    "description": "This dataset contains Saudi Aircraft Traffic (Passenger & Cargo) of Saudia Aircrafts in the Kingdom's Domestic airports, for 2008 - 2016. Data from General Authority for Statistics . Export API data for more datasets to advance energy economics research. Source : Saudi Arabian Airlines Organization.",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Transport"
+    ],
+    "keywords": [
+      "Saudi Airlines",
+      "ITEM"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-05-11T20:42:33.407000+00:00",
+    "records_count": 964,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/saudi-aircraft-traffic-passengercargo-by-domestic-airports-in-2008-and-2009/",
+    "columns": [
+      {
+        "name": "year",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "arr_dep",
+        "label": "Arr/Dep",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "domestic_airport",
+        "label": "Domestic Airport",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "aircraft_traffic",
+        "label": "Aircraft Traffic ",
+        "data_type": "double",
+        "description": null
+      },
+      {
+        "name": "lat_long",
+        "label": "GeoPoint",
+        "data_type": "geo_point_2d",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "saudi-arabia-electricity-stat-1992-2009",
+    "title": "Electricity Consumption, Number of Subscribers, Peak Load and Actual Generating Capacity by Region",
+    "description": "This dataset contains Saudi Arabia Electricity Consumption, Number of Subscribers, Peak Load and Actual Generating Capacity by Region 1992-2009 Saudi Open Data , Export API data for more datasets to advance energy economics research.",
+    "owner": "Saudi Open Data",
+    "themes": [
+      "Electricity"
+    ],
+    "keywords": [],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-05-05T12:52:04.405000+00:00",
+    "records_count": 495,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/saudi-arabia-electricity-stat-1992-2009/",
+    "columns": [
+      {
+        "name": "year",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "region",
+        "label": "Region",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "indicator",
+        "label": "Indicator",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "value",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "saudi-aramco-production-of-natural-gas-liquids",
+    "title": "Saudi Aramco Production of Natural Gas Liquids",
+    "description": "This dataset contains Saudi Aramco Production of Natural gas liquids for 1962-2021. Data from Saudi Central Bank (SAMA). Natural Gas Liquids (NGL): Ethan Propane Butane Natural Gasoline Condensate",
+    "owner": "Saudi Central Bank (SAMA)",
+    "themes": [
+      "Conventional Fuels"
+    ],
+    "keywords": [
+      "Production",
+      "Average Daily"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-09-15T01:32:28.782000+00:00",
+    "records_count": 180,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/saudi-aramco-production-of-natural-gas-liquids/",
+    "columns": [
+      {
+        "name": "time_period",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "production",
+        "label": "Production",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "Value",
+        "data_type": "double",
+        "description": null
+      },
+      {
+        "name": "date_object",
+        "label": "Date_Object",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "periodicity",
+        "label": "Periodicity",
+        "data_type": "text",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "saudi-crude-oil-production-from-sama-annual-statistics-2015-dec",
+    "title": "Crude Oil Production",
+    "description": "This open dataset contains information about Saudi Arabia crude oil production for 1962-2021 with daily average, and percentage change. Data from Saudi Central Bank (SAMA) . Follow datasource.kapsarc.org and it’s APIs to stay in sync and advance energy economics research.",
+    "owner": "Saudi Central Bank (SAMA)",
+    "themes": [
+      "Conventional Fuels"
+    ],
+    "keywords": [
+      "Production",
+      "Average daily production"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-06-01T01:34:12.370000+00:00",
+    "records_count": 192,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/saudi-crude-oil-production-from-sama-annual-statistics-2015-dec/",
+    "columns": [
+      {
+        "name": "time_period",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "production_indicator",
+        "label": "Production Indicator",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "Value",
+        "data_type": "double",
+        "description": null
+      },
+      {
+        "name": "periodicity",
+        "label": "Periodicity",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "date_object",
+        "label": "Date_Object",
+        "data_type": "date",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "ships-arriving-at-saudi-ports-by-country-of-registration-and-port-2008-ad",
+    "title": "Ships Arriving at Saudi Ports, by Country of Registration and Port",
+    "description": "This dataset contains Saudi Arabia Ships Arriving at Saudi Ports, by Country of Registration and port for 2008 - 2019. Data from General Authority for Statistics. Export API data for more datasets to advance energy economics research. We have used year converter to find the Gregorian year http://www.menalib.de/index.php?id=97",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Transport"
+    ],
+    "keywords": [
+      "Ports"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-05-05T12:54:38.067000+00:00",
+    "records_count": 2917,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/ships-arriving-at-saudi-ports-by-country-of-registration-and-port-2008-ad/",
+    "columns": [
+      {
+        "name": "year",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "country_of_registration",
+        "label": " Country of  Registration",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "port",
+        "label": "Port",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "No. Ships Arriving at Saudi Ports",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "solor-pv-dataset",
+    "title": "World Solar Photovoltaic Regional Costs",
+    "description": "Solar Photovoltaic Dataset The solar industry has witnessed remarkable declines in of costs during the past 25 years for a number of reasons including technological advancements and industry expansion. The benchmark component that is typically referred to when reporting cost trends is the solar module and many institutions publish the global average selling price for the modules on a regular basis. Indeed, the module price serves as a good indicator of developments in the solar industry and technology. However, the module price is unable to capture regional differences that arise when building solar PV systems. Variations in labor costs, legal costs, taxes and cost of capital between countries are some of the reasons why the same plant would have very different costs when built in different places. The same also applies to the levelized cost of energy; solar conditions as well as maintenance costs vary across countries, which result in different operational costs. The variations in capital expenditure and operational costs between countries become even more pronounced when considering the size of the installed system. To capture regional differences in capital and generation costs, we have compiled a large collection of data across many geographies for the three typical system sizes (i.e. residential, commercial, and utility). The costs are provided and accompanied by the assumptions that were used to arrive at these actual costs including interest rates, solar irradiation, technology type, etc, where these assumptions are given in the source. This dataset was used to build our interactive tool published on website https://www.kapsarc.org/openkapsarc/kapsarc-solar-photovoltaic-toolkit/ Users can compare the costs in a variety of ways depending on the filters that are used. For instance, a user can see how generation costs change if the financial assumptions are altered. For this reason, the Toolkit provides an excel-based Analyzing Tool to aid in experimenting and evaluating different scenarios. The raw data is also provided if a user is interested in performing further analysis. To summarize, this tool kit provides the following: 1.A spatial (map-based) interactive representation of CAPEX 2.A spatial (map-based) interactive representation of LCOE 3.A scatter chart interactive representation of CAPEX 4.A scatter chart interactive representation of LCOE 5.An interactive bar chart for annual global solar PV installations 6.An interactive bar chart for cumulative global solar PV installations 7.An LCOE Analyzer that attains the LCOE via capacity factor or solar irradiation",
+    "owner": "King Abdullah Petroleum Studies and Research Center",
+    "themes": [
+      "Renewable & Other Fuels"
+    ],
+    "keywords": [
+      "Solar",
+      "Capacity"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2017-02-27T11:08:16+00:00",
+    "records_count": 1967,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/solor-pv-dataset/",
+    "columns": [
+      {
+        "name": "region",
+        "label": "Region",
+        "data_type": "text",
+        "description": "Commercial"
+      },
+      {
+        "name": "country",
+        "label": "Country",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "scale",
+        "label": "Scale",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "year",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "lcoe",
+        "label": "LCOE - Levelized Cost of Electricity",
+        "data_type": "double",
+        "description": null
+      },
+      {
+        "name": "capex",
+        "label": "Capex $/W",
+        "data_type": "double",
+        "description": null
+      },
+      {
+        "name": "source",
+        "label": "Source",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "source_link",
+        "label": "Source Link",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "source_details",
+        "label": "Source Details",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "financial",
+        "label": "Financial",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "annual_panel_degradation",
+        "label": "Annual \nPanel\nDegradation",
+        "data_type": "text",
+        "description": "Percentage"
+      },
+      {
+        "name": "technology",
+        "label": "Technology",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "module_efficiency",
+        "label": "Module\n Efficiency",
+        "data_type": "double",
+        "description": "Percentage"
+      },
+      {
+        "name": "capacity_factor_or_solar_condition",
+        "label": "Capacity\nFactor \nor Solar Condition",
+        "data_type": "text",
+        "description": "Percentage"
+      },
+      {
+        "name": "comments",
+        "label": "Comments",
+        "data_type": "text",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "the-amount-of-drinking-water-consumption-of-areas-from-all-sources-2014",
+    "title": "Drinking water consumption by region",
+    "description": "This dataset contains Saudi Arabia Drinking Water Consumption by Region for 2014-2021 Data from Ministry of Environment, Water and Agriculture. Follow datasource.kapsarc.org for timely data to advance energy economics research.",
+    "owner": "Ministry of Environment, Water and Agriculture",
+    "themes": [
+      "Water & Agriculture"
+    ],
+    "keywords": [
+      "Drinking water",
+      "Water Consumption"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-05-12T09:47:56.461000+00:00",
+    "records_count": 104,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/the-amount-of-drinking-water-consumption-of-areas-from-all-sources-2014/",
+    "columns": [
+      {
+        "name": "year",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "region",
+        "label": "Region ",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "amount_of_water_consumption_million_m3",
+        "label": "Amount of Water Consumption (Million M3)",
+        "data_type": "double",
+        "description": null
+      },
+      {
+        "name": "ratio_of_the_total_water_consumed",
+        "label": "Ratio of the total water consumed",
+        "data_type": "double",
+        "description": null
+      },
+      {
+        "name": "population",
+        "label": "Population",
+        "data_type": "int",
+        "description": null
+      },
+      {
+        "name": "ratio_of_population_in_kingdom",
+        "label": "Ratio of population in kingdom",
+        "data_type": "double",
+        "description": null
+      },
+      {
+        "name": "water_per_capita_liter_day",
+        "label": "Water per capita (Liter/day)",
+        "data_type": "double",
+        "description": null
+      },
+      {
+        "name": "geo_shape",
+        "label": "geo_shape",
+        "data_type": "geo_shape",
+        "description": null
+      },
+      {
+        "name": "geo_point_2d",
+        "label": "geo_point_2d",
+        "data_type": "geo_point_2d",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "total-finance-of-operating-industrial-units",
+    "title": "Total Finance of Operating Industrial Units",
+    "description": "Explore the total finance of operating industrial units in Saudi Arabia with this comprehensive dataset. Discover insights on various manufacturing sectors including beverages, food products, textiles, and more. Other nonmetal products, Basic pharmaceutical products and pharmaceuticals, Leather and related products, Engine, trailer and semitrailer vehicles, Printing and copying recorded multimedia, Furniture, Cloth, Machines and equipment unclassified elsewhere, Total, Rubber and plastic products, Water collection, treatment and supply, Base metal products, Beverages, Coke coal and refined petroleum products, Other manufacturing industries, Repair and installation of machinery and equipment, Textiles, Electricity, gas, steam and air conditioning supply, Chemical materials and products, Wood, wood and cork products, Food products, Paper and its products, Computers and electronic and optical products, Manufacture of fabricated metal products, except machinery and equipment, Other transportation equipment, Electrical equipment, Chemical, Products, Manufacturing, electricity, Gas, Steam, Water, supply , SAMA Annual Saudi Arabia Follow data.kapsarc.org for timely data to advance energy economics research. Notes: Wood, wood & cork products: Excluding furniture, and types of straw and plaiting materials.",
+    "owner": "Saudi Central Bank (SAMA)",
+    "themes": [
+      "Industry",
+      "Economy",
+      "Buildings"
+    ],
+    "keywords": [
+      "Chemical",
+      "Products",
+      "Manufacturing",
+      "electricity",
+      "Gas",
+      "Steam",
+      "Water",
+      "supply",
+      "SAMA Annual",
+      "petrochemical",
+      "Industrial"
+    ],
+    "license": "Public Domain",
+    "update_frequency": "ANNUAL",
+    "updated_at": "2026-09-15T01:32:22.275000+00:00",
+    "records_count": 884,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/total-finance-of-operating-industrial-units/",
+    "columns": [
+      {
+        "name": "date",
+        "label": "Date",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "category",
+        "label": "Category",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "Total Finance in Million SAR",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "total-nature-reserves-area-per-year-1986-2018",
+    "title": "Percentage and area of reserves in the kingdom of Saudi Arabia",
+    "description": "This dataset contain percentage and area of reserves in the Kingdom of Saudi Arabia for the years 1986 - 2018 from the General Authority for Statistics. Follow datasource.kapsarc.org for timely data to advance energy economics research.",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Climate & Sustainability"
+    ],
+    "keywords": [
+      "Nature",
+      "reserves",
+      "nature reserves"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-05-06T14:49:22.829000+00:00",
+    "records_count": 12,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/total-nature-reserves-area-per-year-1986-2018/",
+    "columns": [
+      {
+        "name": "year",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "rate_of_nature_reserves_area_increase",
+        "label": "Rate of nature reserves area increase",
+        "data_type": "double",
+        "description": null
+      },
+      {
+        "name": "total_of_nature_reserves_area",
+        "label": "Total of nature reserves area",
+        "data_type": "double",
+        "description": null
+      },
+      {
+        "name": "ratio_of_nature_reserves_area_to_the_state_land_area",
+        "label": "Ratio of nature reserves area to the state land area %",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "waste_production_rate_per_individual_en_0",
+    "title": "Household Waste Generation Per Individual",
+    "description": "This dataset contains Saudi Arabia Waste Production Rate Per Individual 2010-2018 Follow datasource.kapsarc.org for timely data to advance energy economics research. - Volume: Waste (1,000 tons) - Volume: Per capita generation (kg) -The Quantity of household waste from year 2010 to 2016 is estimated. -The decreasing in the Quantity of household waste in 2018 compared to 2017 due to oblige business owners to use their own waste containers.",
+    "owner": "General Authority for Statistics",
+    "themes": [
+      "Climate & Sustainability"
+    ],
+    "keywords": [
+      "Waste"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-05-04T13:41:33.032000+00:00",
+    "records_count": 26,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/waste_production_rate_per_individual_en_0/",
+    "columns": [
+      {
+        "name": "variable",
+        "label": "Variable",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "year",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "Value",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "world-nuclear-energy-share-in-total-energy-consumption-2005-2014",
+    "title": "Nuclear Energy Share in Total Energy Consumption",
+    "description": "This dataset contains Share of Nuclear Energy in Total Energy Consumption 2005-2019. Data from Saudi Central Bank (SAMA) Follow datasource.kapsarc.org and it’s APIs to stay in sync and advance energy economics research. Note: - Empty fields: Not available",
+    "owner": "Saudi Central Bank (SAMA)",
+    "themes": [
+      "Renewable & Other Fuels"
+    ],
+    "keywords": [
+      "Consumption"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2022-07-29T07:34:24.385000+00:00",
+    "records_count": 105,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/world-nuclear-energy-share-in-total-energy-consumption-2005-2014/",
+    "columns": [
+      {
+        "name": "time_period",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "countryregion",
+        "label": "Country/Region",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "nuclear_share_",
+        "label": "Nuclear Share %",
+        "data_type": "double",
+        "description": null
+      }
+    ]
+  },
+  {
+    "id": "world-oil-production",
+    "title": "World Oil Production*",
+    "description": "This dataset contains information about world oil production for OPEC, OECD and the major non-OPEC producers. for 1983-2021. Data from Saudi Central Bank (SAMA). Follow datasource.kapsarc.org and it’s APIs to stay in sync and advance energy economics research. Note: * Including Condensates and Natural gas liquids",
+    "owner": "Saudi Central Bank (SAMA)",
+    "themes": [
+      "Conventional Fuels"
+    ],
+    "keywords": [
+      "OPEC",
+      "OECD",
+      "World",
+      "Production"
+    ],
+    "license": "Public Domain",
+    "update_frequency": null,
+    "updated_at": "2026-06-01T01:34:17.707000+00:00",
+    "records_count": 473,
+    "source_url": "https://datasource.kapsarc.org/explore/dataset/world-oil-production/",
+    "columns": [
+      {
+        "name": "time_period",
+        "label": "Year",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "producers",
+        "label": "Producers",
+        "data_type": "text",
+        "description": null
+      },
+      {
+        "name": "value",
+        "label": "Value",
+        "data_type": "double",
+        "description": null
+      },
+      {
+        "name": "date_object",
+        "label": "Date_Object",
+        "data_type": "date",
+        "description": null
+      },
+      {
+        "name": "periodicity",
+        "label": "Periodicity",
+        "data_type": "text",
+        "description": null
+      }
+    ]
+  }
+]
