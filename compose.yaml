@@ -29,6 +29,7 @@ services:
       DATABASE_URL: postgresql://assistant:assistant@db:5432/assistant
       EMBEDDINGS_URL: http://embeddings:80
       RERANKER_URL: http://reranker:80
+      LANGFUSE_BASE_URL: http://langfuse-web:3000
     ports:
       - "127.0.0.1:8000:8000"
     volumes:
@@ -49,6 +50,8 @@ services:
   # into its volume. Both models accept 8192 tokens, and at the start the server tests one
   # input of the maximum length, which needs about 10 GB of memory. The limit of 2048 tokens
   # keeps each service near 3 GB. Longer inputs are cut at 2048 tokens.
+  # EMBEDDINGS_MODEL_VOLUME and RERANKER_MODEL_VOLUME can name a folder in place of the volume.
+  # The CI workflow of Phase 3 uses this to keep the model files in its cache.
   embeddings:
     profiles: ["phase2"]
     image: ghcr.io/huggingface/text-embeddings-inference:${TEI_TAG:-cpu-arm64-1.9.4}
@@ -59,7 +62,7 @@ services:
     ports:
       - "127.0.0.1:${EMBEDDINGS_PORT:-8081}:80"
     volumes:
-      - embeddings-model:/data
+      - ${EMBEDDINGS_MODEL_VOLUME:-embeddings-model}:/data
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://localhost:80/health"]
       interval: 10s
@@ -78,7 +81,7 @@ services:
     ports:
       - "127.0.0.1:${RERANKER_PORT:-8082}:80"
     volumes:
-      - reranker-model:/data
+      - ${RERANKER_MODEL_VOLUME:-reranker-model}:/data
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://localhost:80/health"]
       interval: 10s
@@ -87,7 +90,170 @@ services:
       start_period: 30m
       start_interval: 5s
 
+  # Phase 3: self-hosted Langfuse for the traces, the datasets and the scores.
+  # Source: docker-compose.yml of Langfuse release v4.80.0
+  # (https://github.com/langfuse/langfuse/blob/v4.80.0/docker-compose.yml).
+  # Changes for the lab:
+  # - The service names start with "langfuse-", so they do not clash with `db` and `api`.
+  # - Only the web UI (3000) and MinIO (9090, for media uploads from the browser) have a port
+  #   on your machine, and both bind to 127.0.0.1. The databases have no port on your machine.
+  # - The settings are fixed values and not ${...} variables, because Compose reads .env and
+  #   names such as DATABASE_URL already mean the database of the assistant.
+  # - Headless initialisation: the first start creates an organisation, a project, a user and
+  #   the API keys of .env.example, so no click in the UI is necessary.
+  # - Telemetry to Langfuse is off. No `restart: always`. The AI gateway is not included,
+  #   because the lab does not use it.
+  # The passwords are for a service that only your machine can reach. Change them before you
+  # run Langfuse anywhere else.
+  langfuse-worker:
+    profiles: ["phase3"]
+    image: docker.langfuse.com/langfuse/langfuse-worker:4.80.0
+    depends_on: &langfuse-depends-on
+      langfuse-postgres:
+        condition: service_healthy
+      langfuse-minio:
+        condition: service_healthy
+      langfuse-redis:
+        condition: service_healthy
+      langfuse-clickhouse:
+        condition: service_healthy
+    environment: &langfuse-env
+      NEXTAUTH_URL: http://localhost:${LANGFUSE_PORT:-3000}
+      DATABASE_URL: postgresql://postgres:langfuse@langfuse-postgres:5432/postgres
+      SALT: lab-salt-change-me
+      ENCRYPTION_KEY: 07e5376a357213a1ea22563a24c9799dba10697ab41437eb03e13e16124e8451
+      TELEMETRY_ENABLED: "false"
+      LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES: "false"
+      CLICKHOUSE_MIGRATION_URL: clickhouse://langfuse-clickhouse:9000
+      CLICKHOUSE_URL: http://langfuse-clickhouse:8123
+      CLICKHOUSE_USER: clickhouse
+      CLICKHOUSE_PASSWORD: clickhouse
+      CLICKHOUSE_CLUSTER_ENABLED: "false"
+      LANGFUSE_S3_EVENT_UPLOAD_BUCKET: langfuse
+      LANGFUSE_S3_EVENT_UPLOAD_REGION: auto
+      LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID: minio
+      LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY: miniosecret
+      LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT: http://langfuse-minio:9000
+      LANGFUSE_S3_EVENT_UPLOAD_FORCE_PATH_STYLE: "true"
+      LANGFUSE_S3_EVENT_UPLOAD_PREFIX: events/
+      LANGFUSE_S3_MEDIA_UPLOAD_BUCKET: langfuse
+      LANGFUSE_S3_MEDIA_UPLOAD_REGION: auto
+      LANGFUSE_S3_MEDIA_UPLOAD_ACCESS_KEY_ID: minio
+      LANGFUSE_S3_MEDIA_UPLOAD_SECRET_ACCESS_KEY: miniosecret
+      LANGFUSE_S3_MEDIA_UPLOAD_ENDPOINT: http://langfuse-minio:9000
+      LANGFUSE_S3_MEDIA_UPLOAD_FORCE_PATH_STYLE: "true"
+      LANGFUSE_S3_MEDIA_UPLOAD_PREFIX: media/
+      LANGFUSE_S3_BATCH_EXPORT_ENABLED: "false"
+      REDIS_HOST: langfuse-redis
+      REDIS_PORT: "6379"
+      REDIS_AUTH: myredissecret
+      REDIS_TLS_ENABLED: "false"
+
+  langfuse-web:
+    profiles: ["phase3"]
+    image: docker.langfuse.com/langfuse/langfuse:4.80.0
+    depends_on: *langfuse-depends-on
+    ports:
+      - "127.0.0.1:${LANGFUSE_PORT:-3000}:3000"
+    environment:
+      <<: *langfuse-env
+      NEXTAUTH_SECRET: lab-nextauth-secret-change-me
+      LANGFUSE_S3_MEDIA_UPLOAD_ENDPOINT: http://localhost:9090
+      LANGFUSE_S3_MEDIA_UPLOAD_INTERNAL_ENDPOINT: http://langfuse-minio:9000
+      # Headless initialisation. Do not put quotes around these values.
+      LANGFUSE_INIT_ORG_ID: lab
+      LANGFUSE_INIT_ORG_NAME: Lab
+      LANGFUSE_INIT_PROJECT_ID: assistant
+      LANGFUSE_INIT_PROJECT_NAME: assistant
+      LANGFUSE_INIT_PROJECT_PUBLIC_KEY: ${LANGFUSE_PUBLIC_KEY:-pk-lf-local-lab}
+      LANGFUSE_INIT_PROJECT_SECRET_KEY: ${LANGFUSE_SECRET_KEY:-sk-lf-local-lab}
+      LANGFUSE_INIT_USER_EMAIL: lab@example.com
+      LANGFUSE_INIT_USER_NAME: Lab
+      LANGFUSE_INIT_USER_PASSWORD: lab-password
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://$$HOSTNAME:3000/api/public/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 10m
+      start_interval: 5s
+
+  langfuse-clickhouse:
+    profiles: ["phase3"]
+    image: docker.io/clickhouse/clickhouse-server:26.3.62.3
+    user: "101:101"
+    environment:
+      CLICKHOUSE_DB: default
+      CLICKHOUSE_USER: clickhouse
+      CLICKHOUSE_PASSWORD: clickhouse
+    volumes:
+      - langfuse-clickhouse-data:/var/lib/clickhouse
+      - langfuse-clickhouse-logs:/var/log/clickhouse-server
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:8123/ping || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 1s
+
+  langfuse-minio:
+    profiles: ["phase3"]
+    # The publisher gives this image only with the tag "latest". The digest pins one build.
+    image: cgr.dev/chainguard/minio@sha256:634c989a2f1029162fc2676c263caa181213b9410449968532f750a6fb77532d
+    entrypoint: sh
+    # Create the bucket "langfuse" before the server starts.
+    command: -c 'mkdir -p /data/langfuse && minio server --address ":9000" --console-address ":9001" /data'
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: miniosecret
+    ports:
+      - "127.0.0.1:9090:9000"
+    volumes:
+      - langfuse-minio-data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+      start_period: 1s
+
+  langfuse-redis:
+    profiles: ["phase3"]
+    image: docker.io/redis:7.4.12
+    command: >
+      --requirepass myredissecret
+      --maxmemory-policy noeviction
+    volumes:
+      - langfuse-redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 10s
+      retries: 10
+
+  langfuse-postgres:
+    profiles: ["phase3"]
+    image: docker.io/postgres:17.12
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: langfuse
+      POSTGRES_DB: postgres
+      TZ: UTC
+      PGTZ: UTC
+    volumes:
+      - langfuse-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
 volumes:
   db-data:
   embeddings-model:
   reranker-model:
+  langfuse-postgres-data:
+  langfuse-clickhouse-data:
+  langfuse-clickhouse-logs:
+  langfuse-minio-data:
+  langfuse-redis-data:

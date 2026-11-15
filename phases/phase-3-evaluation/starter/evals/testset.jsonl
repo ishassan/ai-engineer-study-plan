@@ -1,0 +1,3 @@
+{"id": "t001", "language": "en", "question": "Which dataset has the crude oil production of Saudi Arabia?", "expected_dataset_ids": ["saudi-crude-oil-production-from-sama-annual-statistics-2015-dec"], "expected_chunk_ids": []}
+{"id": "t031", "language": "en", "question": "How many points of sale and price quotes are in the sample of the Average Prices of Goods and Services Survey?", "expected_dataset_ids": [], "expected_chunk_ids": ["gastat-average-prices-en:p10:c1"]}
+{"id": "t056", "language": "ar", "question": "ما هي الفترة المرجعية لإحصاءات الإسقاطات والتقديرات السكانية؟", "expected_dataset_ids": [], "expected_chunk_ids": ["gastat-population-estimates-ar:p7:c1"]}

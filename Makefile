@@ -9,7 +9,8 @@ UV := uv run $(UV_GROUPS) $(if $(wildcard .env),--env-file .env)
 COMPOSE := docker compose $(foreach p,$(PHASES),--profile phase$(p))
 SET ?= quick
 
-.PHONY: help start up down reset logs check check-live ask eval documents ingest embed recall notebook
+.PHONY: help start up down reset logs check check-live ask eval documents ingest embed recall notebook \
+	testset failures-dataset evals snapshot restore
 
 help:
 	@echo "make start PHASE=1      copy the starter files of a phase into the project"
@@ -26,6 +27,11 @@ help:
 	@echo "make embed              Phase 2: embed the chunks that have no vector"
 	@echo "make recall             Phase 2: measure the recall (ARGS='--modes vector' for one mode)"
 	@echo "make notebook NB=path   open a notebook of a lab in JupyterLab"
+	@echo "make testset            Phase 3: run evals/testset.jsonl, one Langfuse trace for each case"
+	@echo "make failures-dataset   Phase 3: send the failing cases of your notes to a Langfuse dataset"
+	@echo "make evals              Phase 3: run the evaluation suite tests/evals (real Claude API)"
+	@echo "make snapshot           Phase 3: write the documents and chunks to data/snapshot/chunks.sql.gz"
+	@echo "make restore            Phase 3: replace the documents and chunks with the snapshot"
 
 start:
 	@uv run python scripts/lab.py start $(PHASE)
@@ -74,3 +80,27 @@ recall:
 NB ?= phases/phase-2-retrieval/notebooks/recall.ipynb
 notebook:
 	@$(UV) --with jupyterlab --with pandas jupyter lab $(NB)
+
+# Phase 3
+testset:
+	@$(UV) python -m evals.run_testset $(ARGS)
+
+failures-dataset:
+	@$(UV) python -m evals.failures_dataset
+
+# The suite calls the real Claude API, so the fake API of the lab checks is turned off.
+evals:
+	@$(UV) python -m pytest tests/evals -p no:labkit.plugin $(ARGS)
+
+# The documents and the chunks with their vectors, without the schema: the migrations make it.
+SNAPSHOT := data/snapshot/chunks.sql.gz
+snapshot:
+	@mkdir -p $(dir $(SNAPSHOT))
+	$(COMPOSE) exec -T db pg_dump -U assistant --data-only --table=documents --table=chunks | gzip -9 > $(SNAPSHOT)
+	@ls -lh $(SNAPSHOT)
+
+restore:
+	@test -f $(SNAPSHOT) || (echo "$(SNAPSHOT) does not exist. Run 'make snapshot' first." && exit 1)
+	(echo "TRUNCATE documents, chunks;" && gunzip -c $(SNAPSHOT)) | \
+		$(COMPOSE) exec -T db psql -U assistant -d assistant -q -v ON_ERROR_STOP=1 --single-transaction
+	@$(COMPOSE) exec -T db psql -U assistant -d assistant -t -c "SELECT count(*) || ' chunks' FROM chunks"
