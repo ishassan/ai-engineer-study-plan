@@ -9,7 +9,7 @@ UV := uv run $(UV_GROUPS) $(if $(wildcard .env),--env-file .env)
 COMPOSE := docker compose $(foreach p,$(PHASES),--profile phase$(p))
 SET ?= quick
 
-.PHONY: help start up down reset logs check check-live ask eval
+.PHONY: help start up down reset logs check check-live ask eval documents ingest embed recall notebook
 
 help:
 	@echo "make start PHASE=1      copy the starter files of a phase into the project"
@@ -21,6 +21,11 @@ help:
 	@echo "make check-live WEEK=1  run the checks that call the real Claude API"
 	@echo "make ask Q='...'        send one question to the running API"
 	@echo "make eval SET=quick     run the test questions (SET=all ARGS=--no-cache for the full run)"
+	@echo "make documents          Phase 2: download the documents of data/documents.csv"
+	@echo "make ingest             Phase 2: parse, chunk and store the documents"
+	@echo "make embed              Phase 2: embed the chunks that have no vector"
+	@echo "make recall             Phase 2: measure the recall (ARGS='--modes vector' for one mode)"
+	@echo "make notebook NB=path   open a notebook of a lab in JupyterLab"
 
 start:
 	@uv run python scripts/lab.py start $(PHASE)
@@ -35,7 +40,8 @@ down:
 	$(COMPOSE) down
 
 reset:
-	$(COMPOSE) down --volumes
+	$(COMPOSE) down
+	docker volume rm --force assistant_db-data
 
 logs:
 	$(COMPOSE) logs -f api
@@ -51,3 +57,20 @@ ask:
 
 eval:
 	@$(UV) python -m evals.run --set $(SET) $(ARGS)
+
+documents:
+	@$(UV) python scripts/fetch_documents.py
+
+ingest:
+	@$(UV) python -m assistant.ingest
+
+embed:
+	@$(UV) python -m assistant.ingest --embed
+
+recall:
+	@$(UV) python -m evals.recall $(ARGS)
+
+# JupyterLab and pandas are not packages of the project. uv installs them in a cache for this command.
+NB ?= phases/phase-2-retrieval/notebooks/recall.ipynb
+notebook:
+	@$(UV) --with jupyterlab --with pandas jupyter lab $(NB)

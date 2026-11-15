@@ -31,7 +31,8 @@ def assistant_blocks(body, index=1):
 def test_the_three_tools_are_defined():
     from assistant.tools import TOOLS
 
-    assert {tool["name"] for tool in TOOLS} == TOOL_NAMES
+    # Later phases add tools, so the check accepts more than these three.
+    assert TOOL_NAMES <= {tool["name"] for tool in TOOLS}
     for tool in TOOLS:
         assert len(tool["description"]) >= 150, (
             f"{tool['name']}: the description is the main thing that the model reads to choose "
@@ -112,7 +113,7 @@ def test_the_loop_runs_a_tool_and_sends_the_result_back(client, fake, database):
 
     assert len(fake.requests) == 2, "One request asks for the tool. The next request holds its result."
     first, second = fake.requests
-    assert {tool["name"] for tool in first["tools"]} == TOOL_NAMES, "Send the tool definitions."
+    assert TOOL_NAMES <= {tool["name"] for tool in first["tools"]}, "Send the tool definitions."
     assert [m["role"] for m in second["messages"]] == ["user", "assistant", "user"]
 
     sent_back = assistant_blocks(second)

@@ -1,0 +1,2 @@
+{"id": "r01", "language": "en", "question": "How far is Miqat Yalamlam from Makkah?", "expected_chunk_ids": ["gastat-umrah-en:p7:c2"]}
+{"id": "r02", "language": "ar", "question": "ما هي سنة الأساس للرقم القياسي لأسعار العقارات؟", "expected_chunk_ids": ["gastat-real-estate-prices-ar:p7:c1"]}
