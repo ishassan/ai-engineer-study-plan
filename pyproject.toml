@@ -27,7 +27,19 @@ phase2 = [
 phase3 = [
     "langfuse>=5.2,<6",
 ]
-phase4 = []
+phase4 = [
+    "langchain-anthropic>=1.7.10,<2",
+    "langchain-core>=1.8,<2",
+    "langchain-openai>=1.8,<2",
+    "langgraph>=1.2.22,<2",
+    # Week 15: the checkpointer and the store in Postgres.
+    "langgraph-checkpoint-postgres>=3.2.1,<4",
+    "psycopg-pool>=3.3,<4",
+    # Week 16: the MCP servers and the client of the graph. langchain-mcp-adapters 0.3
+    # needs mcp below 2.
+    "langchain-mcp-adapters>=0.3.2,<0.4",
+    "mcp>=1.30,<2",
+]
 phase5 = []
 phase6 = []
 phase7 = []

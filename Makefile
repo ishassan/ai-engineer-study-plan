@@ -10,7 +10,7 @@ COMPOSE := docker compose $(foreach p,$(PHASES),--profile phase$(p))
 SET ?= quick
 
 .PHONY: help start up down reset logs check check-live ask eval documents ingest embed recall notebook \
-	testset failures-dataset evals snapshot restore
+	testset failures-dataset evals snapshot restore compare lines agent-eval
 
 help:
 	@echo "make start PHASE=1      copy the starter files of a phase into the project"
@@ -32,6 +32,9 @@ help:
 	@echo "make evals              Phase 3: run the evaluation suite tests/evals (real Claude API)"
 	@echo "make snapshot           Phase 3: write the documents and chunks to data/snapshot/chunks.sql.gz"
 	@echo "make restore            Phase 3: replace the documents and chunks with the snapshot"
+	@echo "make compare IMPL=langgraph PROVIDER=openai   Phase 4: run the test set on one loop and provider"
+	@echo "make lines              Phase 4: count the lines of code of the hand-written loop and the graph"
+	@echo "make agent-eval         Phase 4: score the agent on evals/agent_tasks.jsonl (result and path)"
 
 start:
 	@uv run python scripts/lab.py start $(PHASE)
@@ -41,6 +44,7 @@ up:
 	$(COMPOSE) up -d --build --wait
 	@$(UV) python scripts/migrate.py
 	@$(UV) python scripts/load_catalogue.py
+	@$(UV) python scripts/load_tables.py
 
 down:
 	$(COMPOSE) down
@@ -104,3 +108,15 @@ restore:
 	(echo "TRUNCATE documents, chunks;" && gunzip -c $(SNAPSHOT)) | \
 		$(COMPOSE) exec -T db psql -U assistant -d assistant -q -v ON_ERROR_STOP=1 --single-transaction
 	@$(COMPOSE) exec -T db psql -U assistant -d assistant -t -c "SELECT count(*) || ' chunks' FROM chunks"
+
+# Phase 4
+IMPL ?= langgraph
+PROVIDER ?= anthropic
+compare:
+	@$(UV) python -m evals.compare --impl $(IMPL) --provider $(PROVIDER) $(ARGS)
+
+lines:
+	@$(UV) python scripts/count_lines.py
+
+agent-eval:
+	@$(UV) python -m evals.agent_eval $(ARGS)

@@ -1,0 +1,242 @@
+[
+ {
+  "table": "cement",
+  "dataset_id": "cement-production-and-sales",
+  "title": "Cement Production and Sales",
+  "publisher": "Saudi Central Bank (SAMA)",
+  "license": "Public Domain",
+  "source_url": "https://datasource.kapsarc.org/api/explore/v2.1/catalog/datasets/cement-production-and-sales/exports/csv?delimiter=%2C",
+  "fetched_at": "2026-11-15T20:54:34+00:00",
+  "records": 112,
+  "columns": [
+   {
+    "name": "date",
+    "type": "date"
+   },
+   {
+    "name": "name",
+    "type": "text"
+   },
+   {
+    "name": "value",
+    "type": "double"
+   }
+  ]
+ },
+ {
+  "table": "crude_oil_production",
+  "dataset_id": "saudi-crude-oil-production-from-sama-annual-statistics-2015-dec",
+  "title": "Crude Oil Production",
+  "publisher": "Saudi Central Bank (SAMA)",
+  "license": "Public Domain",
+  "source_url": "https://datasource.kapsarc.org/api/explore/v2.1/catalog/datasets/saudi-crude-oil-production-from-sama-annual-statistics-2015-dec/exports/csv?delimiter=%2C",
+  "fetched_at": "2026-11-15T20:54:35+00:00",
+  "records": 192,
+  "columns": [
+   {
+    "name": "time_period",
+    "type": "date"
+   },
+   {
+    "name": "production_indicator",
+    "type": "text"
+   },
+   {
+    "name": "value",
+    "type": "double"
+   },
+   {
+    "name": "periodicity",
+    "type": "text"
+   },
+   {
+    "name": "date_object",
+    "type": "date"
+   }
+  ]
+ },
+ {
+  "table": "electricity_consumption",
+  "dataset_id": "electricity-consumption-by-sectors",
+  "title": "Electricity Consumption by Sectors",
+  "publisher": "Saudi Central Bank (SAMA)",
+  "license": "Public Domain",
+  "source_url": "https://datasource.kapsarc.org/api/explore/v2.1/catalog/datasets/electricity-consumption-by-sectors/exports/csv?delimiter=%2C",
+  "fetched_at": "2026-11-15T20:54:51+00:00",
+  "records": 735,
+  "columns": [
+   {
+    "name": "year",
+    "type": "date"
+   },
+   {
+    "name": "region",
+    "type": "text"
+   },
+   {
+    "name": "sector",
+    "type": "text"
+   },
+   {
+    "name": "electricity_consumption_mwh",
+    "type": "double"
+   },
+   {
+    "name": "name",
+    "type": "text"
+   },
+   {
+    "name": "date_object",
+    "type": "date"
+   },
+   {
+    "name": "periodicity",
+    "type": "text"
+   }
+  ]
+ },
+ {
+  "table": "gas_sales",
+  "dataset_id": "gas-sales-by-region-2001-2013",
+  "title": "Natural Gas Sales By Station (In Tons)",
+  "publisher": "Saudi Open Data",
+  "license": "Public Domain",
+  "source_url": "https://datasource.kapsarc.org/api/explore/v2.1/catalog/datasets/gas-sales-by-region-2001-2013/exports/csv?delimiter=%2C",
+  "fetched_at": "2026-11-15T20:55:06+00:00",
+  "records": 1352,
+  "columns": [
+   {
+    "name": "year",
+    "type": "date"
+   },
+   {
+    "name": "month",
+    "type": "text"
+   },
+   {
+    "name": "city",
+    "type": "text"
+   },
+   {
+    "name": "gas_sales_in_tons",
+    "type": "double"
+   },
+   {
+    "name": "geopoint",
+    "type": "geo_point_2d"
+   }
+  ]
+ },
+ {
+  "table": "generation_capacity",
+  "dataset_id": "installed-generation-capacity-peak-load-in-mw-by-region-for-2014",
+  "title": "Electricity Installed Capacity (Peak Load) by Region",
+  "publisher": "Electricity and Cogeneration Regulatory Authority",
+  "license": "Public Domain",
+  "source_url": "https://datasource.kapsarc.org/api/explore/v2.1/catalog/datasets/installed-generation-capacity-peak-load-in-mw-by-region-for-2014/exports/csv?delimiter=%2C",
+  "fetched_at": "2026-11-15T20:55:21+00:00",
+  "records": 160,
+  "columns": [
+   {
+    "name": "year",
+    "type": "date"
+   },
+   {
+    "name": "area",
+    "type": "text"
+   },
+   {
+    "name": "indicator",
+    "type": "text"
+   },
+   {
+    "name": "value_gw",
+    "type": "double"
+   }
+  ]
+ },
+ {
+  "table": "population",
+  "dataset_id": "population-by-gender-age-nationality-saudinon-saudi",
+  "title": "Population by Gender, Age Group and Nationality",
+  "publisher": "General Authority for Statistics",
+  "license": "Public Domain",
+  "source_url": "https://datasource.kapsarc.org/api/explore/v2.1/catalog/datasets/population-by-gender-age-nationality-saudinon-saudi/exports/csv?delimiter=%2C",
+  "fetched_at": "2026-11-15T20:55:36+00:00",
+  "records": 53,
+  "columns": [
+   {
+    "name": "year_time",
+    "type": "date"
+   },
+   {
+    "name": "sex_engl",
+    "type": "text"
+   },
+   {
+    "name": "nationality_engl",
+    "type": "text"
+   },
+   {
+    "name": "obs_value_obsv",
+    "type": "int"
+   }
+  ]
+ },
+ {
+  "table": "water_use_per_capita",
+  "dataset_id": "per_capita_average_water_use_in_saudi_regions",
+  "title": "Per Capita Water Consumption In Saudi Regions",
+  "publisher": "General Authority for Statistics",
+  "license": "Public Domain",
+  "source_url": "https://datasource.kapsarc.org/api/explore/v2.1/catalog/datasets/per_capita_average_water_use_in_saudi_regions/exports/csv?delimiter=%2C",
+  "fetched_at": "2026-11-15T20:56:26+00:00",
+  "records": 140,
+  "columns": [
+   {
+    "name": "regions",
+    "type": "text"
+   },
+   {
+    "name": "year",
+    "type": "text"
+   },
+   {
+    "name": "value",
+    "type": "int"
+   }
+  ]
+ },
+ {
+  "table": "world_oil_production",
+  "dataset_id": "world-oil-production",
+  "title": "World Oil Production*",
+  "publisher": "Saudi Central Bank (SAMA)",
+  "license": "Public Domain",
+  "source_url": "https://datasource.kapsarc.org/api/explore/v2.1/catalog/datasets/world-oil-production/exports/csv?delimiter=%2C",
+  "fetched_at": "2026-11-15T20:57:11+00:00",
+  "records": 473,
+  "columns": [
+   {
+    "name": "time_period",
+    "type": "date"
+   },
+   {
+    "name": "producers",
+    "type": "text"
+   },
+   {
+    "name": "value",
+    "type": "double"
+   },
+   {
+    "name": "date_object",
+    "type": "date"
+   },
+   {
+    "name": "periodicity",
+    "type": "text"
+   }
+  ]
+ }
+]

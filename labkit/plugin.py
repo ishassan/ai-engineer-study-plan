@@ -1,9 +1,10 @@
 """Pytest plugin for the lab checks.
 
 Offline checks (the default): the plugin starts the fake Claude API before any
-test runs and points the `anthropic` SDK at it with ANTHROPIC_BASE_URL. The
-response cache and the request log go to a temporary folder, so a check never
-touches your own cache or logs.
+test runs and points the `anthropic` SDK at it with ANTHROPIC_BASE_URL. From Phase 4
+it also starts the fake OpenAI API and points the `openai` SDK at it with
+OPENAI_BASE_URL. The response cache and the request log go to a temporary folder, so
+a check never touches your own cache or logs.
 
 Live checks (`--live`): the plugin changes nothing. The checks in files named
 `*_live.py` call the real API with the key from your `.env` file.
@@ -21,6 +22,7 @@ from typing import Any, Iterator
 import pytest
 
 from labkit.fake_claude import FakeClaude, FakeClaudeServer
+from labkit.fake_openai import FakeOpenAI, FakeOpenAIServer
 
 REPO = Path(__file__).resolve().parent.parent
 _state: dict[str, Any] = {}
@@ -40,11 +42,15 @@ def pytest_configure(config: pytest.Config) -> None:
         return
     server = FakeClaudeServer()
     fake = server.start()
+    openai_server = FakeOpenAIServer()
+    fake_openai = openai_server.start()
     work = Path(tempfile.mkdtemp(prefix="lab-checks-"))
-    _state.update(server=server, fake=fake, work=work)
+    _state.update(server=server, fake=fake, openai_server=openai_server, fake_openai=fake_openai, work=work)
     os.environ.update(
         ANTHROPIC_BASE_URL=fake.url,
         ANTHROPIC_API_KEY="offline-check-key",
+        OPENAI_BASE_URL=fake_openai.url,
+        OPENAI_API_KEY="offline-check-key",
         RESPONSE_CACHE="on",
         RESPONSE_CACHE_DIR=str(work / "responses"),
         REQUEST_LOG_PATH=str(work / "requests.jsonl"),
@@ -55,6 +61,7 @@ def pytest_unconfigure(config: pytest.Config) -> None:
     server = _state.pop("server", None)
     if server is not None:
         server.stop()
+        _state.pop("openai_server").stop()
         shutil.rmtree(_state.pop("work"), ignore_errors=True)
 
 
@@ -73,6 +80,7 @@ def _clean_state(request: pytest.FixtureRequest, monkeypatch: pytest.MonkeyPatch
     """Each offline check starts with an empty cache, an empty log and an empty script."""
     if "fake" in _state:
         _state["fake"].reset()
+        _state["fake_openai"].reset()
         shutil.rmtree(_state["work"] / "responses", ignore_errors=True)
         (_state["work"] / "requests.jsonl").unlink(missing_ok=True)
         monkeypatch.setenv("RESPONSE_CACHE", "on")
@@ -85,6 +93,14 @@ def fake() -> FakeClaude:
     if "fake" not in _state:
         pytest.skip("The fake Claude API does not run in a live check.")
     return _state["fake"]
+
+
+@pytest.fixture
+def fake_openai() -> FakeOpenAI:
+    """The fake OpenAI API. Script its replies and read the requests it received."""
+    if "fake_openai" not in _state:
+        pytest.skip("The fake OpenAI API does not run in a live check.")
+    return _state["fake_openai"]
 
 
 @pytest.fixture

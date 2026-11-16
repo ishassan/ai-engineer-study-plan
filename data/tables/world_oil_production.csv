@@ -1,0 +1,474 @@
+time_period,producers,value,date_object,periodicity
+2025,Major non-OPEC Producers : U.S.A.,21.18,2025-01-01,Annually
+2025,Major non-OPEC Producers : UK,0.72,2025-01-01,Annually
+2025,Major non-OPEC Producers : Norway,2.05,2025-01-01,Annually
+2025,Major non-OPEC Producers : Mexico,1.83,2025-01-01,Annually
+2025,OPEC,34.03,2025-01-01,Annually
+2025,OECD,33.1,2025-01-01,Annually
+2025,Major non-OPEC Producers : Canada,6.35,2025-01-01,Annually
+2025,Major non-OPEC Producers : FSU,13.58,2025-01-01,Annually
+2025,Major non-OPEC Producers : China,4.41,2025-01-01,Annually
+2025,Total Non  - OPEC,72.09,2025-01-01,Annually
+2025,Total World,106.12,2025-01-01,Annually
+2024,Major non-OPEC Producers : FSU,13.49,2024-01-01,Annually
+2024,Major non-OPEC Producers : China,4.34,2024-01-01,Annually
+2024,Total World,103.07,2024-01-01,Annually
+2024,OPEC,32.77,2024-01-01,Annually
+2024,OECD,32.09,2024-01-01,Annually
+2024,Major non-OPEC Producers : UK,0.7,2024-01-01,Annually
+2024,Major non-OPEC Producers : Norway,2.0,2024-01-01,Annually
+2024,Total Non  - OPEC,70.3,2024-01-01,Annually
+2024,Major non-OPEC Producers : U.S.A.,20.39,2024-01-01,Annually
+2024,Major non-OPEC Producers : Mexico,1.97,2024-01-01,Annually
+2024,Major non-OPEC Producers : Canada,6.09,2024-01-01,Annually
+2023,OPEC,32.94,2023-01-01,Annually
+2023,OECD,31.14,2023-01-01,Annually
+2023,Major non-OPEC Producers : UK,0.73,2023-01-01,Annually
+2023,Total World,102.25,2023-01-01,Annually
+2023,Major non-OPEC Producers : FSU,13.84,2023-01-01,Annually
+2023,Major non-OPEC Producers : Mexico,2.1,2023-01-01,Annually
+2023,Major non-OPEC Producers : Norway,2.02,2023-01-01,Annually
+2023,Major non-OPEC Producers : China,4.27,2023-01-01,Annually
+2023,Major non-OPEC Producers : Canada,5.83,2023-01-01,Annually
+2023,Total Non  - OPEC,69.31,2023-01-01,Annually
+2023,Major non-OPEC Producers : U.S.A.,19.52,2023-01-01,Annually
+2022,Major non-OPEC Producers : China,4.18,2022-01-01,Annually
+2022,Major non-OPEC Producers : Norway,1.9,2022-01-01,Annually
+2022,Total Non  - OPEC,66.73,2022-01-01,Annually
+2022,Total World,100.05,2022-01-01,Annually
+2022,Major non-OPEC Producers : Mexico,2.01,2022-01-01,Annually
+2022,OECD,29.36,2022-01-01,Annually
+2022,OPEC,33.32,2022-01-01,Annually
+2022,Major non-OPEC Producers : U.S.A.,17.93,2022-01-01,Annually
+2022,Major non-OPEC Producers : Canada,5.76,2022-01-01,Annually
+2022,Major non-OPEC Producers : FSU,13.89,2022-01-01,Annually
+2022,Major non-OPEC Producers : UK,0.83,2022-01-01,Annually
+2021,Major non-OPEC Producers : U.S.A.,16.83,2021-01-01,Annually
+2021,Major non-OPEC Producers : Mexico,1.95,2021-01-01,Annually
+2021,Major non-OPEC Producers : Canada,5.59,2021-01-01,Annually
+2021,OPEC,31.55,2021-01-01,Annually
+2021,Major non-OPEC Producers : FSU,13.77,2021-01-01,Annually
+2021,Total Non  - OPEC,63.84,2021-01-01,Annually
+2021,OECD,28.29,2021-01-01,Annually
+2021,Major non-OPEC Producers : UK,0.88,2021-01-01,Annually
+2021,Major non-OPEC Producers : Norway,2.05,2021-01-01,Annually
+2021,Major non-OPEC Producers : China,4.06,2021-01-01,Annually
+2021,Total World,95.39,2021-01-01,Annually
+2020,Major non-OPEC Producers : Canada,5.35,2020-01-01,Annually
+2020,OPEC,30.8,2020-01-01,Annually
+2020,Major non-OPEC Producers : FSU,13.5,2020-01-01,Annually
+2020,Total Non  - OPEC,63.0,2020-01-01,Annually
+2020,Major non-OPEC Producers : Mexico,1.93,2020-01-01,Annually
+2020,Major non-OPEC Producers : UK,1.08,2020-01-01,Annually
+2020,OECD,27.92,2020-01-01,Annually
+2020,Major non-OPEC Producers : Norway,2.01,2020-01-01,Annually
+2020,Total World,93.8,2020-01-01,Annually
+2020,Major non-OPEC Producers : U.S.A.,16.56,2020-01-01,Annually
+2020,Major non-OPEC Producers : China,3.97,2020-01-01,Annually
+2019,Major non-OPEC Producers : Canada,5.54,2019-01-01,Annually
+2019,Major non-OPEC Producers : UK,1.13,2019-01-01,Annually
+2019,Major non-OPEC Producers : FSU,14.64,2019-01-01,Annually
+2019,OECD,28.51,2019-01-01,Annually
+2019,Total World,100.5,2019-01-01,Annually
+2019,Major non-OPEC Producers : U.S.A.,17.16,2019-01-01,Annually
+2019,Major non-OPEC Producers : Mexico,1.93,2019-01-01,Annually
+2019,Total Non  - OPEC,65.6,2019-01-01,Annually
+2019,OPEC,34.9,2019-01-01,Annually
+2019,Major non-OPEC Producers : China,3.92,2019-01-01,Annually
+2019,Major non-OPEC Producers : Norway,1.74,2019-01-01,Annually
+2018,Major non-OPEC Producers : U.S.A.,15.54,2018-01-01,Annually
+2018,Major non-OPEC Producers : Mexico,2.07,2018-01-01,Annually
+2018,Major non-OPEC Producers : Canada,5.41,2018-01-01,Annually
+2018,Major non-OPEC Producers : Norway,1.85,2018-01-01,Annually
+2018,Total Non  - OPEC,62.94,2018-01-01,Annually
+2018,OECD,26.9,2018-01-01,Annually
+2018,OPEC,37.38,2018-01-01,Annually
+2018,Major non-OPEC Producers : FSU,14.56,2018-01-01,Annually
+2018,Major non-OPEC Producers : China,3.81,2018-01-01,Annually
+2018,Major non-OPEC Producers : UK,1.11,2018-01-01,Annually
+2018,Total World,100.32,2018-01-01,Annually
+2017,OPEC,37.52,2017-01-01,Annually
+2017,Major non-OPEC Producers : Mexico,2.23,2017-01-01,Annually
+2017,Total World,97.4,2017-01-01,Annually
+2017,OECD,24.2,2017-01-01,Annually
+2017,Major non-OPEC Producers : UK,1.01,2017-01-01,Annually
+2017,Major non-OPEC Producers : FSU,14.3,2017-01-01,Annually
+2017,Major non-OPEC Producers : Canada,4.82,2017-01-01,Annually
+2017,Major non-OPEC Producers : U.S.A.,13.27,2017-01-01,Annually
+2017,Major non-OPEC Producers : China,3.87,2017-01-01,Annually
+2017,Major non-OPEC Producers : Norway,1.97,2017-01-01,Annually
+2017,Total Non  - OPEC,59.88,2017-01-01,Annually
+2016,Major non-OPEC Producers : UK,1.03,2016-01-01,Annually
+2016,OECD,23.42,2016-01-01,Annually
+2016,Major non-OPEC Producers : U.S.A.,12.53,2016-01-01,Annually
+2016,Major non-OPEC Producers : Norway,1.99,2016-01-01,Annually
+2016,OPEC,39.59,2016-01-01,Annually
+2016,Major non-OPEC Producers : FSU,14.24,2016-01-01,Annually
+2016,Total World,96.96,2016-01-01,Annually
+2016,Major non-OPEC Producers : Mexico,2.47,2016-01-01,Annually
+2016,Major non-OPEC Producers : China,3.98,2016-01-01,Annually
+2016,Major non-OPEC Producers : Canada,4.47,2016-01-01,Annually
+2016,Total Non  - OPEC,57.37,2016-01-01,Annually
+2015,Major non-OPEC Producers : Canada,4.39,2015-01-01,Annually
+2015,Major non-OPEC Producers : Norway,1.95,2015-01-01,Annually
+2015,Total World,96.59,2015-01-01,Annually
+2015,Major non-OPEC Producers : Mexico,2.6,2015-01-01,Annually
+2015,Major non-OPEC Producers : UK,0.96,2015-01-01,Annually
+2015,OECD,23.92,2015-01-01,Annually
+2015,OPEC,38.14,2015-01-01,Annually
+2015,Major non-OPEC Producers : China,4.33,2015-01-01,Annually
+2015,Total Non  - OPEC,58.45,2015-01-01,Annually
+2015,Major non-OPEC Producers : FSU,14.0,2015-01-01,Annually
+2015,Major non-OPEC Producers : U.S.A.,12.99,2015-01-01,Annually
+2014,OECD,22.91,2014-01-01,Annually
+2014,Major non-OPEC Producers : UK,0.87,2014-01-01,Annually
+2014,Total Non  - OPEC,56.29,2014-01-01,Annually
+2014,Major non-OPEC Producers : Canada,4.28,2014-01-01,Annually
+2014,OPEC,37.48,2014-01-01,Annually
+2014,Major non-OPEC Producers : U.S.A.,11.99,2014-01-01,Annually
+2014,Total World,93.74,2014-01-01,Annually
+2014,Major non-OPEC Producers : FSU,13.87,2014-01-01,Annually
+2014,Major non-OPEC Producers : Norway,1.89,2014-01-01,Annually
+2014,Major non-OPEC Producers : Mexico,2.81,2014-01-01,Annually
+2014,Major non-OPEC Producers : China,4.25,2014-01-01,Annually
+2013,Total Non  - OPEC,54.62,2013-01-01,Annually
+2013,Total World,91.39,2013-01-01,Annually
+2013,Major non-OPEC Producers : Mexico,2.89,2013-01-01,Annually
+2013,Major non-OPEC Producers : Canada,3.97,2013-01-01,Annually
+2013,Major non-OPEC Producers : UK,0.89,2013-01-01,Annually
+2013,Major non-OPEC Producers : Norway,1.84,2013-01-01,Annually
+2013,OPEC,36.72,2013-01-01,Annually
+2013,OECD,20.91,2013-01-01,Annually
+2013,Major non-OPEC Producers : FSU,13.88,2013-01-01,Annually
+2013,Major non-OPEC Producers : U.S.A.,10.24,2013-01-01,Annually
+2013,Major non-OPEC Producers : China,4.18,2013-01-01,Annually
+2012,OPEC,37.58,2012-01-01,Annually
+2012,Major non-OPEC Producers : China,4.18,2012-01-01,Annually
+2012,OECD,19.88,2012-01-01,Annually
+2012,Major non-OPEC Producers : U.S.A.,9.18,2012-01-01,Annually
+2012,Major non-OPEC Producers : UK,0.94,2012-01-01,Annually
+2012,Total World,90.94,2012-01-01,Annually
+2012,Total Non  - OPEC,53.36,2012-01-01,Annually
+2012,Major non-OPEC Producers : FSU,13.62,2012-01-01,Annually
+2012,Major non-OPEC Producers : Canada,3.75,2012-01-01,Annually
+2012,Major non-OPEC Producers : Norway,1.91,2012-01-01,Annually
+2012,Major non-OPEC Producers : Mexico,2.92,2012-01-01,Annually
+2011,OPEC,35.65,2011-01-01,Annually
+2011,Total Non  - OPEC,52.78,2011-01-01,Annually
+2011,Major non-OPEC Producers : U.S.A.,8.14,2011-01-01,Annually
+2011,Major non-OPEC Producers : Canada,3.51,2011-01-01,Annually
+2011,Major non-OPEC Producers : Norway,2.04,2011-01-01,Annually
+2011,OECD,18.94,2011-01-01,Annually
+2011,Major non-OPEC Producers : UK,1.11,2011-01-01,Annually
+2011,Total World,88.44,2011-01-01,Annually
+2011,Major non-OPEC Producers : FSU,13.57,2011-01-01,Annually
+2011,Major non-OPEC Producers : Mexico,2.94,2011-01-01,Annually
+2011,Major non-OPEC Producers : China,4.1,2011-01-01,Annually
+2010,OPEC,34.75,2010-01-01,Annually
+2010,Major non-OPEC Producers : U.S.A.,7.77,2010-01-01,Annually
+2010,Major non-OPEC Producers : Canada,3.37,2010-01-01,Annually
+2010,Major non-OPEC Producers : UK,1.36,2010-01-01,Annually
+2010,Major non-OPEC Producers : Norway,2.14,2010-01-01,Annually
+2010,Major non-OPEC Producers : Mexico,2.96,2010-01-01,Annually
+2010,Major non-OPEC Producers : China,4.1,2010-01-01,Annually
+2010,Total World,87.33,2010-01-01,Annually
+2010,Major non-OPEC Producers : FSU,13.55,2010-01-01,Annually
+2010,OECD,18.86,2010-01-01,Annually
+2010,Total Non  - OPEC,52.58,2010-01-01,Annually
+2009,Major non-OPEC Producers : UK,1.48,2009-01-01,Annually
+2009,Total Non  - OPEC,51.7,2009-01-01,Annually
+2009,OECD,18.81,2009-01-01,Annually
+2009,Major non-OPEC Producers : Mexico,2.97,2009-01-01,Annually
+2009,Total World,85.2,2009-01-01,Annually
+2009,Major non-OPEC Producers : FSU,13.28,2009-01-01,Annually
+2009,Major non-OPEC Producers : Canada,3.22,2009-01-01,Annually
+2009,OPEC,33.5,2009-01-01,Annually
+2009,Major non-OPEC Producers : U.S.A.,7.44,2009-01-01,Annually
+2009,Major non-OPEC Producers : China,3.89,2009-01-01,Annually
+2009,Major non-OPEC Producers : Norway,2.39,2009-01-01,Annually
+2008,OPEC,35.63,2008-01-01,Annually
+2008,Total World,86.38,2008-01-01,Annually
+2008,Major non-OPEC Producers : FSU,12.82,2008-01-01,Annually
+2008,Major non-OPEC Producers : U.S.A.,7.52,2008-01-01,Annually
+2008,Major non-OPEC Producers : Norway,2.46,2008-01-01,Annually
+2008,Total Non  - OPEC,50.75,2008-01-01,Annually
+2008,Major non-OPEC Producers : Mexico,3.16,2008-01-01,Annually
+2008,Major non-OPEC Producers : China,3.79,2008-01-01,Annually
+2008,Major non-OPEC Producers : Canada,3.25,2008-01-01,Annually
+2008,Major non-OPEC Producers : UK,1.56,2008-01-01,Annually
+2008,OECD,19.33,2008-01-01,Annually
+2007,Major non-OPEC Producers : U.S.A.,7.47,2007-01-01,Annually
+2007,Major non-OPEC Producers : Mexico,3.48,2007-01-01,Annually
+2007,Major non-OPEC Producers : Canada,3.32,2007-01-01,Annually
+2007,Major non-OPEC Producers : UK,1.66,2007-01-01,Annually
+2007,Major non-OPEC Producers : FSU,12.77,2007-01-01,Annually
+2007,Major non-OPEC Producers : Norway,2.56,2007-01-01,Annually
+2007,Total Non  - OPEC,50.69,2007-01-01,Annually
+2007,OPEC,34.86,2007-01-01,Annually
+2007,OECD,19.85,2007-01-01,Annually
+2007,Total World,85.55,2007-01-01,Annually
+2007,Major non-OPEC Producers : China,3.73,2007-01-01,Annually
+2006,OECD,19.97,2006-01-01,Annually
+2006,Major non-OPEC Producers : UK,1.66,2006-01-01,Annually
+2006,Total World,85.43,2006-01-01,Annually
+2006,Major non-OPEC Producers : Mexico,3.68,2006-01-01,Annually
+2006,Major non-OPEC Producers : China,3.67,2006-01-01,Annually
+2006,Major non-OPEC Producers : FSU,12.25,2006-01-01,Annually
+2006,Major non-OPEC Producers : Canada,3.19,2006-01-01,Annually
+2006,Major non-OPEC Producers : Norway,2.78,2006-01-01,Annually
+2006,Total Non  - OPEC,51.09,2006-01-01,Annually
+2006,Major non-OPEC Producers : U.S.A.,7.34,2006-01-01,Annually
+2006,OPEC,34.34,2006-01-01,Annually
+2005,Major non-OPEC Producers : UK,1.84,2005-01-01,Annually
+2005,OPEC,34.2,2005-01-01,Annually
+2005,Major non-OPEC Producers : Canada,3.06,2005-01-01,Annually
+2005,Total Non  - OPEC,50.25,2005-01-01,Annually
+2005,Major non-OPEC Producers : FSU,11.64,2005-01-01,Annually
+2005,Major non-OPEC Producers : U.S.A.,7.32,2005-01-01,Annually
+2005,OECD,20.33,2005-01-01,Annually
+2005,Major non-OPEC Producers : Mexico,3.76,2005-01-01,Annually
+2005,Total World,84.45,2005-01-01,Annually
+2005,Major non-OPEC Producers : China,3.62,2005-01-01,Annually
+2005,Major non-OPEC Producers : Norway,2.97,2005-01-01,Annually
+2004,OPEC,32.97,2004-01-01,Annually
+2004,Major non-OPEC Producers : FSU,11.22,2004-01-01,Annually
+2004,Major non-OPEC Producers : U.S.A.,7.66,2004-01-01,Annually
+2004,Major non-OPEC Producers : China,3.48,2004-01-01,Annually
+2004,Major non-OPEC Producers : Canada,3.09,2004-01-01,Annually
+2004,Major non-OPEC Producers : Norway,3.19,2004-01-01,Annually
+2004,OECD,21.25,2004-01-01,Annually
+2004,Total Non  - OPEC,50.12,2004-01-01,Annually
+2004,Major non-OPEC Producers : Mexico,3.83,2004-01-01,Annually
+2004,Major non-OPEC Producers : UK,2.06,2004-01-01,Annually
+2004,Total World,83.07,2004-01-01,Annually
+2003,Major non-OPEC Producers : FSU,10.31,2003-01-01,Annually
+2003,Major non-OPEC Producers : UK,2.28,2003-01-01,Annually
+2003,Major non-OPEC Producers : Norway,3.26,2003-01-01,Annually
+2003,Major non-OPEC Producers : U.S.A.,7.82,2003-01-01,Annually
+2003,OPEC,30.66,2003-01-01,Annually
+2003,OECD,21.6,2003-01-01,Annually
+2003,Major non-OPEC Producers : Mexico,3.79,2003-01-01,Annually
+2003,Major non-OPEC Producers : Canada,3.0,2003-01-01,Annually
+2003,Total World,79.67,2003-01-01,Annually
+2003,Major non-OPEC Producers : China,3.41,2003-01-01,Annually
+2003,Total Non  - OPEC,49.01,2003-01-01,Annually
+2002,Major non-OPEC Producers : China,3.39,2002-01-01,Annually
+2002,Major non-OPEC Producers : Norway,3.33,2002-01-01,Annually
+2002,Total Non  - OPEC,47.97,2002-01-01,Annually
+2002,Total World,76.52,2002-01-01,Annually
+2002,Major non-OPEC Producers : FSU,9.37,2002-01-01,Annually
+2002,Major non-OPEC Producers : Canada,2.86,2002-01-01,Annually
+2002,Major non-OPEC Producers : Mexico,3.59,2002-01-01,Annually
+2002,OPEC,28.55,2002-01-01,Annually
+2002,OECD,21.88,2002-01-01,Annually
+2002,Major non-OPEC Producers : U.S.A.,8.06,2002-01-01,Annually
+2002,Major non-OPEC Producers : UK,2.5,2002-01-01,Annually
+2001,OPEC,30.11,2001-01-01,Annually
+2001,Major non-OPEC Producers : FSU,8.56,2001-01-01,Annually
+2001,Major non-OPEC Producers : U.S.A.,8.07,2001-01-01,Annually
+2001,Major non-OPEC Producers : China,3.3,2001-01-01,Annually
+2001,Total Non  - OPEC,46.67,2001-01-01,Annually
+2001,Major non-OPEC Producers : UK,2.53,2001-01-01,Annually
+2001,Total World,76.78,2001-01-01,Annually
+2001,OECD,21.81,2001-01-01,Annually
+2001,Major non-OPEC Producers : Mexico,3.56,2001-01-01,Annually
+2001,Major non-OPEC Producers : Canada,2.73,2001-01-01,Annually
+2001,Major non-OPEC Producers : Norway,3.41,2001-01-01,Annually
+2000,Major non-OPEC Producers : U.S.A.,8.11,2000-01-01,Annually
+2000,Major non-OPEC Producers : UK,2.71,2000-01-01,Annually
+2000,Major non-OPEC Producers : Norway,3.32,2000-01-01,Annually
+2000,Total Non  - OPEC,46.07,2000-01-01,Annually
+2000,Major non-OPEC Producers : Mexico,3.45,2000-01-01,Annually
+2000,Major non-OPEC Producers : Canada,2.74,2000-01-01,Annually
+2000,Total World,76.87,2000-01-01,Annually
+2000,OPEC,30.8,2000-01-01,Annually
+2000,OECD,21.93,2000-01-01,Annually
+2000,Major non-OPEC Producers : FSU,7.92,2000-01-01,Annually
+2000,Major non-OPEC Producers : China,3.23,2000-01-01,Annually
+1999,OECD,21.43,1999-01-01,Annually
+1999,Major non-OPEC Producers : U.S.A.,8.1,1999-01-01,Annually
+1999,Total Non  - OPEC,44.69,1999-01-01,Annually
+1999,Major non-OPEC Producers : FSU,7.49,1999-01-01,Annually
+1999,Major non-OPEC Producers : Mexico,3.35,1999-01-01,Annually
+1999,Major non-OPEC Producers : Canada,2.56,1999-01-01,Annually
+1999,OPEC,29.43,1999-01-01,Annually
+1999,Major non-OPEC Producers : UK,2.93,1999-01-01,Annually
+1999,Major non-OPEC Producers : China,3.19,1999-01-01,Annually
+1999,Major non-OPEC Producers : Norway,3.14,1999-01-01,Annually
+1999,Total World,74.12,1999-01-01,Annually
+1998,Major non-OPEC Producers : Mexico,3.5,1998-01-01,Annually
+1998,Major non-OPEC Producers : UK,2.84,1998-01-01,Annually
+1998,Major non-OPEC Producers : Norway,3.14,1998-01-01,Annually
+1998,OECD,21.88,1998-01-01,Annually
+1998,Total World,75.47,1998-01-01,Annually
+1998,OPEC,30.79,1998-01-01,Annually
+1998,Major non-OPEC Producers : U.S.A.,8.37,1998-01-01,Annually
+1998,Major non-OPEC Producers : FSU,7.3,1998-01-01,Annually
+1998,Major non-OPEC Producers : China,3.19,1998-01-01,Annually
+1998,Major non-OPEC Producers : Canada,2.67,1998-01-01,Annually
+1998,Total Non  - OPEC,44.68,1998-01-01,Annually
+1997,Major non-OPEC Producers : Canada,2.57,1997-01-01,Annually
+1997,Total World,74.35,1997-01-01,Annually
+1997,Major non-OPEC Producers : Mexico,3.41,1997-01-01,Annually
+1997,Major non-OPEC Producers : China,3.19,1997-01-01,Annually
+1997,Major non-OPEC Producers : Norway,3.28,1997-01-01,Annually
+1997,OPEC,29.9,1997-01-01,Annually
+1997,Major non-OPEC Producers : UK,2.74,1997-01-01,Annually
+1997,Major non-OPEC Producers : FSU,7.23,1997-01-01,Annually
+1997,Major non-OPEC Producers : U.S.A.,8.65,1997-01-01,Annually
+1997,OECD,22.07,1997-01-01,Annually
+1997,Total Non  - OPEC,44.45,1997-01-01,Annually
+1996,OECD,21.72,1996-01-01,Annually
+1996,Major non-OPEC Producers : Canada,2.46,1996-01-01,Annually
+1996,Major non-OPEC Producers : FSU,7.09,1996-01-01,Annually
+1996,Major non-OPEC Producers : China,3.12,1996-01-01,Annually
+1996,Total Non  - OPEC,43.63,1996-01-01,Annually
+1996,Total World,72.04,1996-01-01,Annually
+1996,Major non-OPEC Producers : Mexico,3.28,1996-01-01,Annually
+1996,OPEC,28.41,1996-01-01,Annually
+1996,Major non-OPEC Producers : U.S.A.,8.59,1996-01-01,Annually
+1996,Major non-OPEC Producers : Norway,3.23,1996-01-01,Annually
+1996,Major non-OPEC Producers : UK,2.81,1996-01-01,Annually
+1995,Major non-OPEC Producers : Canada,2.4,1995-01-01,Annually
+1995,OPEC,27.65,1995-01-01,Annually
+1995,Major non-OPEC Producers : China,2.99,1995-01-01,Annually
+1995,Total World,70.18,1995-01-01,Annually
+1995,Major non-OPEC Producers : FSU,7.14,1995-01-01,Annually
+1995,Major non-OPEC Producers : UK,2.79,1995-01-01,Annually
+1995,Total Non  - OPEC,42.53,1995-01-01,Annually
+1995,Major non-OPEC Producers : Mexico,3.07,1995-01-01,Annually
+1995,OECD,21.1,1995-01-01,Annually
+1995,Major non-OPEC Producers : U.S.A.,8.61,1995-01-01,Annually
+1995,Major non-OPEC Producers : Norway,2.91,1995-01-01,Annually
+1994,Major non-OPEC Producers : Mexico,3.14,1994-01-01,Annually
+1994,Major non-OPEC Producers : Canada,2.27,1994-01-01,Annually
+1994,OECD,20.84,1994-01-01,Annually
+1994,Major non-OPEC Producers : UK,2.7,1994-01-01,Annually
+1994,Total World,68.63,1994-01-01,Annually
+1994,Major non-OPEC Producers : U.S.A.,8.64,1994-01-01,Annually
+1994,OPEC,27.36,1994-01-01,Annually
+1994,Major non-OPEC Producers : FSU,7.25,1994-01-01,Annually
+1994,Major non-OPEC Producers : China,2.84,1994-01-01,Annually
+1994,Major non-OPEC Producers : Norway,2.69,1994-01-01,Annually
+1994,Total Non  - OPEC,41.27,1994-01-01,Annually
+1993,Major non-OPEC Producers : U.S.A.,8.82,1993-01-01,Annually
+1993,Major non-OPEC Producers : UK,2.14,1993-01-01,Annually
+1993,OPEC,26.95,1993-01-01,Annually
+1993,Major non-OPEC Producers : China,2.91,1993-01-01,Annually
+1993,Major non-OPEC Producers : Norway,2.38,1993-01-01,Annually
+1993,Total Non  - OPEC,40.51,1993-01-01,Annually
+1993,Major non-OPEC Producers : Canada,2.18,1993-01-01,Annually
+1993,OECD,19.95,1993-01-01,Annually
+1993,Major non-OPEC Producers : FSU,7.95,1993-01-01,Annually
+1993,Major non-OPEC Producers : Mexico,3.14,1993-01-01,Annually
+1993,Total World,67.45,1993-01-01,Annually
+1992,Major non-OPEC Producers : Norway,2.22,1992-01-01,Annually
+1992,Major non-OPEC Producers : U.S.A.,9.0,1992-01-01,Annually
+1992,Total World,67.24,1992-01-01,Annually
+1992,Major non-OPEC Producers : Mexico,3.12,1992-01-01,Annually
+1992,OPEC,26.48,1992-01-01,Annually
+1992,Major non-OPEC Producers : China,2.84,1992-01-01,Annually
+1992,Major non-OPEC Producers : Canada,2.07,1992-01-01,Annually
+1992,Major non-OPEC Producers : UK,2.0,1992-01-01,Annually
+1992,Total Non  - OPEC,40.76,1992-01-01,Annually
+1992,OECD,19.76,1992-01-01,Annually
+1992,Major non-OPEC Producers : FSU,8.93,1992-01-01,Annually
+1991,OPEC,25.33,1991-01-01,Annually
+1991,OECD,19.53,1991-01-01,Annually
+1991,Total Non  - OPEC,41.46,1991-01-01,Annually
+1991,Major non-OPEC Producers : U.S.A.,9.16,1991-01-01,Annually
+1991,Major non-OPEC Producers : Mexico,3.13,1991-01-01,Annually
+1991,Major non-OPEC Producers : Canada,1.98,1991-01-01,Annually
+1991,Major non-OPEC Producers : FSU,10.37,1991-01-01,Annually
+1991,Major non-OPEC Producers : China,2.8,1991-01-01,Annually
+1991,Major non-OPEC Producers : UK,1.94,1991-01-01,Annually
+1991,Major non-OPEC Producers : Norway,1.96,1991-01-01,Annually
+1991,Total World,66.79,1991-01-01,Annually
+1990,Major non-OPEC Producers : Mexico,2.98,1990-01-01,Annually
+1990,Major non-OPEC Producers : Canada,1.97,1990-01-01,Annually
+1990,Major non-OPEC Producers : Norway,1.72,1990-01-01,Annually
+1990,Total Non  - OPEC,41.86,1990-01-01,Annually
+1990,Total World,66.92,1990-01-01,Annually
+1990,Major non-OPEC Producers : FSU,11.48,1990-01-01,Annually
+1990,Major non-OPEC Producers : UK,1.94,1990-01-01,Annually
+1990,OECD,18.97,1990-01-01,Annually
+1990,OPEC,25.06,1990-01-01,Annually
+1990,Major non-OPEC Producers : U.S.A.,8.99,1990-01-01,Annually
+1990,Major non-OPEC Producers : China,2.77,1990-01-01,Annually
+1989,OPEC,23.79,1989-01-01,Annually
+1989,Total World,66.06,1989-01-01,Annually
+1989,Major non-OPEC Producers : U.S.A.,9.22,1989-01-01,Annually
+1989,Major non-OPEC Producers : Mexico,2.9,1989-01-01,Annually
+1989,Major non-OPEC Producers : China,2.76,1989-01-01,Annually
+1989,Major non-OPEC Producers : Canada,1.96,1989-01-01,Annually
+1989,Major non-OPEC Producers : UK,1.95,1989-01-01,Annually
+1989,Major non-OPEC Producers : Norway,1.57,1989-01-01,Annually
+1989,Major non-OPEC Producers : FSU,12.2,1989-01-01,Annually
+1989,OECD,18.89,1989-01-01,Annually
+1989,Total Non  - OPEC,42.27,1989-01-01,Annually
+1988,Major non-OPEC Producers : FSU,12.51,1988-01-01,Annually
+1988,Major non-OPEC Producers : China,2.74,1988-01-01,Annually
+1988,OPEC,21.81,1988-01-01,Annually
+1988,OECD,19.63,1988-01-01,Annually
+1988,Major non-OPEC Producers : Mexico,2.88,1988-01-01,Annually
+1988,Major non-OPEC Producers : Canada,2.0,1988-01-01,Annually
+1988,Major non-OPEC Producers : Norway,1.2,1988-01-01,Annually
+1988,Major non-OPEC Producers : U.S.A.,9.82,1988-01-01,Annually
+1988,Major non-OPEC Producers : UK,2.42,1988-01-01,Annually
+1988,Total Non  - OPEC,42.94,1988-01-01,Annually
+1988,Total World,64.76,1988-01-01,Annually
+1987,OECD,19.78,1987-01-01,Annually
+1987,Major non-OPEC Producers : Mexico,2.88,1987-01-01,Annually
+1987,Total World,62.42,1987-01-01,Annually
+1987,OPEC,19.69,1987-01-01,Annually
+1987,Major non-OPEC Producers : China,2.69,1987-01-01,Annually
+1987,Total Non  - OPEC,42.72,1987-01-01,Annually
+1987,Major non-OPEC Producers : U.S.A.,10.01,1987-01-01,Annually
+1987,Major non-OPEC Producers : UK,2.62,1987-01-01,Annually
+1987,Major non-OPEC Producers : FSU,12.54,1987-01-01,Annually
+1987,Major non-OPEC Producers : Canada,1.91,1987-01-01,Annually
+1987,Major non-OPEC Producers : Norway,1.05,1987-01-01,Annually
+1986,Major non-OPEC Producers : U.S.A.,10.29,1986-01-01,Annually
+1986,Major non-OPEC Producers : Norway,0.9,1986-01-01,Annually
+1986,Total Non  - OPEC,42.06,1986-01-01,Annually
+1986,OPEC,19.89,1986-01-01,Annually
+1986,OECD,16.87,1986-01-01,Annually
+1986,Major non-OPEC Producers : China,2.62,1986-01-01,Annually
+1986,Major non-OPEC Producers : Canada,1.82,1986-01-01,Annually
+1986,Major non-OPEC Producers : UK,2.68,1986-01-01,Annually
+1986,Total World,61.96,1986-01-01,Annually
+1986,Major non-OPEC Producers : FSU,12.35,1986-01-01,Annually
+1986,Major non-OPEC Producers : Mexico,2.75,1986-01-01,Annually
+1985,OPEC,17.57,1985-01-01,Annually
+1985,Major non-OPEC Producers : FSU,11.95,1985-01-01,Annually
+1985,Major non-OPEC Producers : Mexico,2.91,1985-01-01,Annually
+1985,Major non-OPEC Producers : Canada,1.84,1985-01-01,Annually
+1985,Major non-OPEC Producers : UK,2.66,1985-01-01,Annually
+1985,Total Non  - OPEC,41.65,1985-01-01,Annually
+1985,OECD,17.13,1985-01-01,Annually
+1985,Major non-OPEC Producers : U.S.A.,10.64,1985-01-01,Annually
+1985,Major non-OPEC Producers : China,2.51,1985-01-01,Annually
+1985,Major non-OPEC Producers : Norway,0.85,1985-01-01,Annually
+1985,Total World,59.22,1985-01-01,Annually
+1984,OPEC,18.79,1984-01-01,Annually
+1984,Major non-OPEC Producers : Mexico,2.94,1984-01-01,Annually
+1984,Major non-OPEC Producers : Canada,1.78,1984-01-01,Annually
+1984,Major non-OPEC Producers : FSU,12.26,1984-01-01,Annually
+1984,Major non-OPEC Producers : U.S.A.,10.55,1984-01-01,Annually
+1984,Major non-OPEC Producers : China,2.29,1984-01-01,Annually
+1984,Major non-OPEC Producers : UK,2.61,1984-01-01,Annually
+1984,OECD,16.74,1984-01-01,Annually
+1984,Major non-OPEC Producers : Norway,0.74,1984-01-01,Annually
+1984,Total Non  - OPEC,40.91,1984-01-01,Annually
+1984,Total World,59.7,1984-01-01,Annually
+1983,Major non-OPEC Producers : Canada,1.7,1983-01-01,Annually
+1983,Major non-OPEC Producers : U.S.A.,10.3,1983-01-01,Annually
+1983,Major non-OPEC Producers : Norway,0.66,1983-01-01,Annually
+1983,Total World,58.09,1983-01-01,Annually
+1983,OPEC,18.6,1983-01-01,Annually
+1983,OECD,16.01,1983-01-01,Annually
+1983,Major non-OPEC Producers : FSU,12.36,1983-01-01,Annually
+1983,Major non-OPEC Producers : Mexico,2.93,1983-01-01,Annually
+1983,Major non-OPEC Producers : China,2.13,1983-01-01,Annually
+1983,Major non-OPEC Producers : UK,2.4,1983-01-01,Annually
+1983,Total Non  - OPEC,39.49,1983-01-01,Annually
