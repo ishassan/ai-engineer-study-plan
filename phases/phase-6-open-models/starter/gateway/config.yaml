@@ -1,0 +1,23 @@
+# The configuration of the LiteLLM gateway (Phase 6). Compose mounts this file on
+# /app/config.yaml of the service `gateway`. After a change: docker compose restart gateway
+#
+# Reference of each setting: https://docs.litellm.ai/docs/proxy/configs
+# A value "os.environ/NAME" reads the environment variable NAME of the gateway container.
+# Compose gives it ANTHROPIC_API_KEY, OPENAI_API_KEY, VLLM_API_BASE and VLLM_API_KEY from .env.
+# Do not set api_base for Claude and OpenAI: the gateway uses the address of each provider.
+
+# Week 21, step 2: one route for each model that the assistant calls. The assistant sends the
+# name of the route as its model (CLAUDE_MODEL, OPENAI_MODEL). Give each route its price
+# (input_cost_per_token, output_cost_per_token), so the gateway can count the spend of a user.
+# Weeks 22, 23 and 25: the routes of the open, the quantized and the fine-tuned model.
+model_list: []
+
+# Week 21, step 3: the fallback from Claude to OpenAI.
+router_settings: {}
+
+# Week 21, step 3: the budget for each user.
+litellm_settings: {}
+
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY
+  database_url: os.environ/DATABASE_URL

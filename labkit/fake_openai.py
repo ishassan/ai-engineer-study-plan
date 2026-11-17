@@ -22,10 +22,15 @@ It does not run a model. A check tells the server which replies to give with
 `fake.script(...)`, in the same way as `labkit.fake_claude`. When the script is empty,
 the server sends a short text. Token counts are estimates: one token for each four
 characters.
+
+Phase 6: the server also stands in for vLLM on a rented GPU. `fake.delay` makes each reply
+wait that many seconds before it starts, and `fake.max_in_flight` is the largest number of
+requests that waited at the same time, so a check can see the load of a load test.
 """
 
 from __future__ import annotations
 
+import asyncio
 import json
 import socket
 import threading
@@ -126,6 +131,9 @@ class FakeOpenAI:
     _default: Callable[[dict[str, Any]], Reply] | None = None
     _lock: threading.Lock = field(default_factory=threading.Lock)
     url: str = ""
+    delay: float = 0.0
+    in_flight: int = 0
+    max_in_flight: int = 0
 
     # ---- what a check calls -------------------------------------------------
 
@@ -137,6 +145,9 @@ class FakeOpenAI:
             self.headers.clear()
             self._script.clear()
             self._default = None
+            self.delay = 0.0
+            self.in_flight = 0
+            self.max_in_flight = 0
 
     def script(self, *replies: Reply | Callable[[dict[str, Any]], Reply]) -> None:
         """Queue replies. Each request takes the next one."""
@@ -182,10 +193,24 @@ class FakeOpenAI:
             return None, _error(reply.status, reply.error["type"], reply.error["message"])
         return (body, reply), None
 
+    async def _wait(self) -> None:
+        """Wait `delay` seconds, and count the requests that wait at the same time."""
+        if not self.delay:
+            return
+        with self._lock:
+            self.in_flight += 1
+            self.max_in_flight = max(self.max_in_flight, self.in_flight)
+        try:
+            await asyncio.sleep(self.delay)
+        finally:
+            with self._lock:
+                self.in_flight -= 1
+
     async def _chat(self, request: Request) -> JSONResponse | StreamingResponse:
         received, failure = await self._receive(request, validate_chat_request)
         if failure is not None:
             return failure
+        await self._wait()
         body, reply = received
         completion = _chat_completion(body, reply)
         if body.get("stream"):
@@ -197,6 +222,7 @@ class FakeOpenAI:
         received, failure = await self._receive(request, validate_responses_request)
         if failure is not None:
             return failure
+        await self._wait()
         body, reply = received
         response = _response(body, reply)
         if body.get("stream"):

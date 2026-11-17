@@ -9,3 +9,6 @@ evals/results/
 .ipynb_checkpoints/
 .DS_Store
 data/documents/
+# Phase 6: the adapters of the LoRA fine-tune (the smoke run and the copy from the pod).
+train/smoke-adapter/
+train/adapter/

@@ -11,7 +11,7 @@ SET ?= quick
 
 .PHONY: help start up down reset logs check check-live ask eval documents ingest embed recall notebook \
 	testset failures-dataset evals snapshot restore compare lines agent-eval \
-	poison unpoison attacks attack-report token
+	poison unpoison attacks attack-report token model-testset loadtest train-smoke
 
 help:
 	@echo "make start PHASE=1      copy the starter files of a phase into the project"
@@ -41,6 +41,9 @@ help:
 	@echo "make attacks LABEL=week18   Phase 5: run the attack suite (MODEL=obedient for the offline model)"
 	@echo "make attack-report      Phase 5: print the two result files and compare each kind of attack"
 	@echo "make token AS=viewer    Phase 5: print an access token of a test user (viewer, analyst, auditor)"
+	@echo "make model-testset ROUTE=qwen3-8b   Phase 6: run the test set on one model of the gateway"
+	@echo "make loadtest ROUTE=qwen3-8b        Phase 6: send 1, 8 and 32 requests at the same time to one model"
+	@echo "make train-smoke        Phase 6: train the LoRA script for a few steps on a tiny model, on your CPU"
 
 start:
 	@uv run python scripts/lab.py start $(PHASE)
@@ -151,3 +154,22 @@ AS := viewer
 endif
 token:
 	@$(UV) python scripts/get_token.py $(AS) $(ARGS)
+
+# Phase 6
+# The hand-written loop sends CLAUDE_MODEL as its model name. Through the gateway, it can be the
+# name of any route, also an open model on vLLM. Each run sends each request again (--no-cache).
+# ROUTE, not MODEL: MODEL is the model of the attack suite (Phase 5).
+model-testset:
+	@test -n "$(ROUTE)" || (echo "Give the name of a route of the gateway: make model-testset ROUTE=qwen3-8b" && exit 1)
+	@CLAUDE_MODEL=$(ROUTE) $(UV) python -m evals.run_testset --no-cache --out evals/results/models/$(ROUTE).jsonl $(ARGS)
+
+loadtest:
+	@test -n "$(ROUTE)" || (echo "Give the name of a route of the gateway: make loadtest ROUTE=qwen3-8b" && exit 1)
+	@$(UV) python scripts/loadtest.py --model $(ROUTE) $(ARGS)
+
+# The training script needs PyTorch, TRL and PEFT. They are not packages of the project: uv installs
+# the versions of train/requirements.txt (and PyTorch for your CPU) in a cache for this command.
+TORCH_VERSION ?= 2.9.1
+train-smoke:
+	@uv run --no-project --python 3.12 --with-requirements train/requirements.txt --with "torch==$(TORCH_VERSION)" \
+		python train/train_lora.py --smoke $(ARGS)

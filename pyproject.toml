@@ -44,7 +44,10 @@ phase5 = [
     # Week 19: the API and the MCP servers check the signature of each access token (RS256).
     "pyjwt[crypto]>=2.15,<3",
 ]
-phase6 = []
+phase6 = [
+    # Week 21: the checks read gateway/config.yaml.
+    "pyyaml>=6.0,<7",
+]
 phase7 = []
 
 [tool.uv]

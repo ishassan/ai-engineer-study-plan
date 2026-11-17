@@ -36,6 +36,8 @@ services:
       # tokens stays http://localhost:8180/realms/lab), and the guardrails server.
       AUTH_METADATA_URL: http://keycloak:8080/realms/lab/.well-known/openid-configuration
       GUARDRAILS_URL: http://guardrails:8000
+      # Phase 6: the model gateway inside the Docker network.
+      GATEWAY_URL: http://gateway:4000
     ports:
       - "127.0.0.1:8000:8000"
     volumes:
@@ -357,6 +359,66 @@ services:
       retries: 3
       start_period: 30m
       start_interval: 5s
+
+  # Phase 6, week 21: the LiteLLM proxy, the model gateway. Each model call of the assistant goes
+  # to it, and it sends the call to the provider of the model: Claude, OpenAI, or vLLM on your
+  # rented GPU. Your routes, fallbacks and budgets are in gateway/config.yaml (`make start
+  # PHASE=6` copies it). The provider keys come from .env. The api service reads the same file,
+  # so it has the keys too: the calls go through the gateway only because your code sends them there.
+  # The gateway keeps its virtual keys, budgets and spend in the database `litellm` of the
+  # Postgres service. Prisma does not create a database, so `gateway-db` creates it first.
+  # The admin UI is on http://localhost:4000/ui (user admin, password LITELLM_MASTER_KEY).
+  gateway-db:
+    profiles: ["phase6"]
+    image: pgvector/pgvector:0.8.7-pg17
+    environment:
+      PGPASSWORD: assistant
+    depends_on:
+      db:
+        condition: service_healthy
+    command:
+      - sh
+      - -c
+      - >-
+        psql -h db -U assistant -d assistant -tAc "SELECT 1 FROM pg_database WHERE datname = 'litellm'" | grep -q 1
+        || psql -h db -U assistant -d assistant -c "CREATE DATABASE litellm"
+
+  gateway:
+    profiles: ["phase6"]
+    image: ghcr.io/berriai/litellm:v1.109.1
+    command: ["--config", "/app/config.yaml", "--port", "4000"]
+    environment:
+      DATABASE_URL: postgresql://assistant:assistant@db:5432/litellm
+      # The key of the admin API and of the admin UI. The assistant uses a virtual key (GATEWAY_KEY).
+      LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY:-sk-lab-gateway-master}
+      LITELLM_SALT_KEY: ${LITELLM_SALT_KEY:-sk-lab-gateway-salt}
+      # The prices of the models are in gateway/config.yaml. This setting stops the download of
+      # the price list of LiteLLM at each start.
+      LITELLM_LOCAL_MODEL_COST_MAP: "True"
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      # Weeks 22 to 25: the address of vLLM on your pod (https://<pod id>-8000.proxy.runpod.net/v1)
+      # and the key that you gave vLLM with --api-key.
+      VLLM_API_BASE: ${VLLM_API_BASE:-}
+      VLLM_API_KEY: ${VLLM_API_KEY:-}
+    ports:
+      - "127.0.0.1:${GATEWAY_PORT:-4000}:4000"
+    volumes:
+      - ./gateway/config.yaml:/app/config.yaml:ro
+    # Week 23, optional step: llama.cpp runs on your Mac, outside Docker. The gateway reaches it
+    # at http://host.docker.internal:<port>. This line gives the same name on Linux.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      gateway-db:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:4000/health/readiness')"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 3m
+      start_interval: 3s
 
 volumes:
   db-data:

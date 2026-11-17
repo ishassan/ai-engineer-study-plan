@@ -10,6 +10,12 @@ From Phase 5 it also starts a fake authorization server (labkit/auth.py) and poi
 AUTH_* settings at it, when the packages of the sign-in (PyJWT and cryptography) are
 installed. The `client` fixture then sends a token with each request.
 
+From Phase 6 the checks run without your model gateway: the plugin clears GATEWAY_URL and
+GATEWAY_KEY. The fixture `gateway` starts a gateway with your configuration and the fake APIs as
+its providers (labkit/gateway.py) and points these settings at it. `pytest --gateway` does the
+same for all offline checks of the run, so you can see that the checks of Phases 1 to 5 still
+pass when each model call goes through your gateway.
+
 Live checks (`--live`): the plugin changes nothing. The checks in files named
 `*_live.py` call the real API with the key from your `.env` file.
 """
@@ -39,6 +45,13 @@ def pytest_addoption(parser: pytest.Parser) -> None:
         default=False,
         help="Run the live checks, which call the real Claude API and cost money.",
     )
+    parser.addoption(
+        "--gateway",
+        action="store_true",
+        default=False,
+        help="Phase 6: send the model calls of all offline checks through a gateway with your "
+        "gateway/config.yaml and the fake APIs as providers.",
+    )
 
 
 def pytest_configure(config: pytest.Config) -> None:
@@ -56,6 +69,15 @@ def pytest_configure(config: pytest.Config) -> None:
     # suite turn it on again with guardrails_url().
     _state["guardrails_url"] = os.environ.get("GUARDRAILS_URL", "")
     os.environ["GUARDRAILS_URL"] = ""
+    # Phase 6: the checks call the fake APIs directly. The fixture `gateway` (and the option
+    # --gateway) put a gateway with your configuration in between.
+    os.environ["GATEWAY_URL"] = ""
+    os.environ["GATEWAY_KEY"] = ""
+    if config.getoption("--gateway"):
+        gateway = _check_gateway()
+        if gateway.error:
+            raise pytest.UsageError(f"--gateway: {gateway.error}")
+        os.environ.update(GATEWAY_URL=gateway.url, GATEWAY_KEY=gateway_key())
     os.environ.update(
         ANTHROPIC_BASE_URL=fake.url,
         ANTHROPIC_API_KEY="offline-check-key",
@@ -85,7 +107,27 @@ def _start_fake_auth(work: Path) -> None:
     )
 
 
+def _check_gateway() -> Any:
+    """The gateway of this run of the checks. It starts at the first call."""
+    if "gateway" not in _state:
+        from labkit.gateway import CheckGateway
+
+        gateway = CheckGateway(_state["fake"], _state["fake_openai"])
+        _state["gateway"] = gateway
+        gateway.start()
+    return _state["gateway"]
+
+
+def gateway_key() -> str:
+    from labkit.gateway import MASTER_KEY
+
+    return MASTER_KEY
+
+
 def pytest_unconfigure(config: pytest.Config) -> None:
+    gateway = _state.pop("gateway", None)
+    if gateway is not None:
+        gateway.stop()
     auth_server = _state.pop("auth_server", None)
     if auth_server is not None:
         auth_server.stop()
@@ -132,6 +174,24 @@ def fake_openai() -> FakeOpenAI:
     if "fake_openai" not in _state:
         pytest.skip("The fake OpenAI API does not run in a live check.")
     return _state["fake_openai"]
+
+
+@pytest.fixture
+def gateway(monkeypatch: pytest.MonkeyPatch) -> Any:
+    """Phase 6: a gateway with your gateway/config.yaml, and the fake APIs as its providers.
+
+    The fixture points GATEWAY_URL and GATEWAY_KEY at it and turns the response cache off, so
+    each model call of the test goes through the gateway.
+    """
+    if "fake" not in _state:
+        pytest.skip("The check gateway does not run in a live check.")
+    check_gateway = _check_gateway()
+    if check_gateway.error:
+        pytest.fail(check_gateway.error, pytrace=False)
+    monkeypatch.setenv("GATEWAY_URL", check_gateway.url)
+    monkeypatch.setenv("GATEWAY_KEY", gateway_key())
+    monkeypatch.setenv("RESPONSE_CACHE", "off")
+    return check_gateway
 
 
 @pytest.fixture
