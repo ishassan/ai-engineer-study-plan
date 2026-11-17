@@ -259,12 +259,21 @@ def approve(client: Any, conversation_id: str, approved: bool, *, user: str | No
 # ---- MCP clients ------------------------------------------------------------------------------
 
 
+def _sign_in() -> dict[str, str]:
+    """From Phase 5 the MCP servers need a token: a token of a user of the checks (labkit/auth.py)."""
+    try:
+        from labkit.auth import check_headers
+    except ImportError:  # PyJWT is not installed: no sign-in before Phase 5.
+        return {}
+    return check_headers()
+
+
 @contextlib.asynccontextmanager
 async def _session(url: str, timeout: float):
     from mcp import ClientSession
     from mcp.client.streamable_http import streamable_http_client
 
-    async with httpx.AsyncClient(timeout=timeout) as http:
+    async with httpx.AsyncClient(timeout=timeout, headers=_sign_in()) as http:
         async with streamable_http_client(url, http_client=http) as (read, write, _):
             async with ClientSession(read, write) as session:
                 await session.initialize()

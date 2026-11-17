@@ -66,9 +66,7 @@ def final_answer(body: dict[str, Any]):
 @pytest.fixture(scope="module")
 def traced(langfuse, services) -> dict[str, Any]:
     """Send one question through /ask, and read its observations back from Langfuse."""
-    from starlette.testclient import TestClient
-
-    from labkit.plugin import _state
+    from labkit.plugin import _state, make_client
 
     fake = _state["fake"]
     fake.reset()
@@ -78,7 +76,7 @@ def traced(langfuse, services) -> dict[str, Any]:
     question = f"Which datasets are about crude oil, and how is a road defined? (check {token})"
     fake.script(tool_reply(*TOOL_CALLS, usage=USAGE[0]), final_answer)
     since = datetime.now(timezone.utc) - timedelta(seconds=2)
-    result = ask(TestClient(app), question)
+    result = ask(make_client(app), question)
     requests = list(fake.requests)
 
     def ready(observations: list[dict[str, Any]]) -> bool:

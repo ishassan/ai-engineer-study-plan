@@ -245,6 +245,9 @@ phase4 = [
     { name = "mcp" },
     { name = "psycopg-pool" },
 ]
+phase5 = [
+    { name = "pyjwt", extra = ["crypto"] },
+]
 
 [package.metadata]
 requires-dist = [
@@ -276,7 +279,7 @@ phase4 = [
     { name = "mcp", specifier = ">=1.30,<2" },
     { name = "psycopg-pool", specifier = ">=3.3,<4" },
 ]
-phase5 = []
+phase5 = [{ name = "pyjwt", extras = ["crypto"], specifier = ">=2.15,<3" }]
 phase6 = []
 phase7 = []
 

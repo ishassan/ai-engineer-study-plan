@@ -1,0 +1,23 @@
+# The guardrails of the assistant (Phase 5, week 20). The API sends each question to the input
+# rails and each answer to the output rails, with POST /v1/checks. No rail calls a model service:
+# the configuration has no `models` section and needs no key.
+rails:
+  config:
+    # The thresholds of the documentation (page "Use Jailbreak Detection Heuristics").
+    jailbreak_detection:
+      length_per_perplexity_threshold: 89.79
+      prefix_suffix_perplexity_threshold: 1845.65
+    # Presidio. The input check blocks a question with one of these entities. The output check
+    # masks them in the answer, and also each link and IP address.
+    sensitive_data_detection:
+      input:
+        entities: [EMAIL_ADDRESS, PHONE_NUMBER, CREDIT_CARD, IBAN_CODE]
+      output:
+        entities: [EMAIL_ADDRESS, PHONE_NUMBER, CREDIT_CARD, IBAN_CODE, URL, IP_ADDRESS]
+  input:
+    flows:
+      - jailbreak detection heuristics
+      - detect sensitive data on input
+  output:
+    flows:
+      - mask sensitive data on output

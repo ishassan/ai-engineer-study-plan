@@ -27,6 +27,11 @@ import psycopg
 import pytest
 from psycopg.rows import dict_row
 
+try:
+    from labkit.auth import SignedInClient
+except ImportError:  # PyJWT is not installed: no sign-in before Phase 5.
+    SignedInClient = httpx.Client  # type: ignore[assignment,misc]
+
 DEFAULT_DATABASE_URL = "postgresql://assistant:assistant@localhost:5432/assistant"
 REPO = Path(__file__).resolve().parents[3]
 
@@ -195,7 +200,8 @@ class Service:
         if not _wait_for_port(self.process, port, 90):
             self.kill()
             pytest.fail(f"The API did not start with uvicorn.\n{log.read_text(errors='replace')[-3000:]}", pytrace=False)
-        self.client = httpx.Client(base_url=f"http://127.0.0.1:{port}", timeout=180)
+        # From Phase 5 the API needs a token: the client signs in each request (labkit/auth.py).
+        self.client = SignedInClient(base_url=f"http://127.0.0.1:{port}", timeout=180)
 
     def kill(self) -> None:
         """Stop the process at once (SIGKILL), as a crash does: no code of the service runs."""

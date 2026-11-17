@@ -10,7 +10,8 @@ COMPOSE := docker compose $(foreach p,$(PHASES),--profile phase$(p))
 SET ?= quick
 
 .PHONY: help start up down reset logs check check-live ask eval documents ingest embed recall notebook \
-	testset failures-dataset evals snapshot restore compare lines agent-eval
+	testset failures-dataset evals snapshot restore compare lines agent-eval \
+	poison unpoison attacks attack-report token
 
 help:
 	@echo "make start PHASE=1      copy the starter files of a phase into the project"
@@ -20,7 +21,7 @@ help:
 	@echo "make logs               follow the log of the API service"
 	@echo "make check WEEK=1       run the free offline checks of a week (or PHASE=1 for a phase)"
 	@echo "make check-live WEEK=1  run the checks that call the real Claude API"
-	@echo "make ask Q='...'        send one question to the running API"
+	@echo "make ask Q='...'        send one question to the running API (from week 19 add AS=viewer)"
 	@echo "make eval SET=quick     run the test questions (SET=all ARGS=--no-cache for the full run)"
 	@echo "make documents          Phase 2: download the documents of data/documents.csv"
 	@echo "make ingest             Phase 2: parse, chunk and store the documents"
@@ -35,6 +36,11 @@ help:
 	@echo "make compare IMPL=langgraph PROVIDER=openai   Phase 4: run the test set on one loop and provider"
 	@echo "make lines              Phase 4: count the lines of code of the hand-written loop and the graph"
 	@echo "make agent-eval         Phase 4: score the agent on evals/agent_tasks.jsonl (result and path)"
+	@echo "make poison             Phase 5: load data/poisoned/ into the documents and the catalogue"
+	@echo "make unpoison           Phase 5: remove the poisoned documents and datasets again"
+	@echo "make attacks LABEL=week18   Phase 5: run the attack suite (MODEL=obedient for the offline model)"
+	@echo "make attack-report      Phase 5: print the two result files and compare each kind of attack"
+	@echo "make token AS=viewer    Phase 5: print an access token of a test user (viewer, analyst, auditor)"
 
 start:
 	@uv run python scripts/lab.py start $(PHASE)
@@ -63,7 +69,7 @@ check-live:
 	@$(UV) python scripts/lab.py check --live $(if $(WEEK),--week $(WEEK)) $(if $(PHASE),--phase $(PHASE))
 
 ask:
-	@$(UV) python scripts/ask.py "$(Q)"
+	@$(UV) python scripts/ask.py "$(Q)" "$(if $(filter command line environment,$(origin AS)),$(AS))"
 
 eval:
 	@$(UV) python -m evals.run --set $(SET) $(ARGS)
@@ -120,3 +126,28 @@ lines:
 
 agent-eval:
 	@$(UV) python -m evals.agent_eval $(ARGS)
+
+# Phase 5
+poison:
+	@$(UV) python scripts/poisoned.py load
+
+unpoison:
+	@$(UV) python scripts/poisoned.py remove
+
+# MODEL=claude (the default) calls the real Claude API, so the fake API of the lab checks is
+# turned off. MODEL=obedient uses the obedient model of labkit on the fake API: free and offline.
+MODEL ?= claude
+LABEL ?= run
+attacks:
+	@$(UV) python -m pytest tests/attacks $(if $(filter claude,$(MODEL)),-p no:labkit.plugin) \
+		--attack-model $(MODEL) --attack-label $(LABEL) --attack-results evals/results/attacks-$(LABEL).json $(ARGS)
+
+attack-report:
+	@$(UV) python -m evals.attacks $(ARGS)
+
+# make has a built-in AS (the assembler), so ?= does not set it. Use viewer when AS is not given.
+ifeq ($(origin AS),default)
+AS := viewer
+endif
+token:
+	@$(UV) python scripts/get_token.py $(AS) $(ARGS)

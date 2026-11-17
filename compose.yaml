@@ -32,6 +32,10 @@ services:
       LANGFUSE_BASE_URL: http://langfuse-web:3000
       MCP_SQL_URL: http://mcp-sql:8091/mcp
       MCP_CATALOGUE_URL: http://mcp-catalogue:8092/mcp
+      # Phase 5: the signing keys of Keycloak inside the Docker network (the issuer of the
+      # tokens stays http://localhost:8180/realms/lab), and the guardrails server.
+      AUTH_METADATA_URL: http://keycloak:8080/realms/lab/.well-known/openid-configuration
+      GUARDRAILS_URL: http://guardrails:8000
     ports:
       - "127.0.0.1:8000:8000"
     volumes:
@@ -264,6 +268,8 @@ services:
       MCP_PORT: "8091"
       # The read-only role of your migration. SQL_ROW_LIMIT and SQL_TIMEOUT_SECONDS can go here.
       SQL_DATABASE_URL: postgresql://assistant_reader:assistant_reader@db:5432/assistant
+      # Phase 5, week 19: the signing keys of Keycloak inside the Docker network.
+      AUTH_METADATA_URL: http://keycloak:8080/realms/lab/.well-known/openid-configuration
     ports:
       - "127.0.0.1:8091:8091"
     volumes:
@@ -283,6 +289,8 @@ services:
       MCP_HOST: 0.0.0.0
       MCP_PORT: "8092"
       DATABASE_URL: postgresql://assistant:assistant@db:5432/assistant
+      # Phase 5, week 19: the signing keys of Keycloak inside the Docker network.
+      AUTH_METADATA_URL: http://keycloak:8080/realms/lab/.well-known/openid-configuration
     ports:
       - "127.0.0.1:8092:8092"
     volumes:
@@ -291,6 +299,64 @@ services:
       db:
         condition: service_healthy
     command: python -m assistant.servers.catalogue_server
+
+  # Phase 5, week 19: Keycloak, the authorization server. At each start it imports the realm
+  # `lab` of keycloak/realm-lab.json (a realm that exists is kept), so no click in the console
+  # is necessary. The realm has the clients `assistant-cli` (the lab scripts, password grant)
+  # and `assistant-service` (the evaluation jobs, client credentials grant), the scope
+  # `mcp:tools`, and three test users: viewer, analyst (group analysts) and auditor (group
+  # auditors). The token of a user holds the audiences assistant-api, mcp-sql and mcp-catalogue
+  # and the claim `groups`.
+  # Dev mode keeps the data in the container only. The passwords are for a service that only
+  # your machine can reach.
+  keycloak:
+    profiles: ["phase5"]
+    image: quay.io/keycloak/keycloak:26.8.2
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin-password
+      # The issuer of each token is http://localhost:8180/realms/lab, also for a request that
+      # comes from another container (http://keycloak:8080). The servers in Docker read the
+      # signing keys through that address.
+      KC_HOSTNAME: http://localhost:${KEYCLOAK_PORT:-8180}
+      KC_HOSTNAME_BACKCHANNEL_DYNAMIC: "true"
+      KC_HEALTH_ENABLED: "true"
+    ports:
+      - "127.0.0.1:${KEYCLOAK_PORT:-8180}:8080"
+    volumes:
+      - ./keycloak:/opt/keycloak/data/import:ro
+    healthcheck:
+      # The image has no curl: bash opens the connection to the management port itself.
+      test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/9000 && printf 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && grep -q UP <&3"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 3m
+      start_interval: 3s
+
+  # Phase 5, week 20: the NeMo Guardrails server, with the configuration of guardrails/config/.
+  # NVIDIA publishes no image of the server, so Compose builds one from guardrails/Dockerfile
+  # (the pinned package of PyPI; it builds on Apple Silicon and on Intel or AMD). The API calls
+  # POST /v1/checks before and after the agent. The first start downloads the model of the
+  # jailbreak heuristics (gpt2-large, about 3.2 GB) into the volume. All rails run on the CPU
+  # and call no model service. GUARDRAILS_MODEL_VOLUME can name a folder in place of the volume.
+  guardrails:
+    profiles: ["phase5"]
+    build: ./guardrails
+    image: assistant-guardrails:0.24.1
+    ports:
+      - "127.0.0.1:${GUARDRAILS_PORT:-8100}:8000"
+    volumes:
+      - ./guardrails/config:/config:ro
+      - ${GUARDRAILS_MODEL_VOLUME:-guardrails-models}:/models
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/v1/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30m
+      start_interval: 5s
 
 volumes:
   db-data:
@@ -301,3 +367,4 @@ volumes:
   langfuse-clickhouse-logs:
   langfuse-minio-data:
   langfuse-redis-data:
+  guardrails-models:

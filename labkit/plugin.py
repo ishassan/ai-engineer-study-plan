@@ -6,6 +6,10 @@ it also starts the fake OpenAI API and points the `openai` SDK at it with
 OPENAI_BASE_URL. The response cache and the request log go to a temporary folder, so
 a check never touches your own cache or logs.
 
+From Phase 5 it also starts a fake authorization server (labkit/auth.py) and points the
+AUTH_* settings at it, when the packages of the sign-in (PyJWT and cryptography) are
+installed. The `client` fixture then sends a token with each request.
+
 Live checks (`--live`): the plugin changes nothing. The checks in files named
 `*_live.py` call the real API with the key from your `.env` file.
 """
@@ -46,6 +50,12 @@ def pytest_configure(config: pytest.Config) -> None:
     fake_openai = openai_server.start()
     work = Path(tempfile.mkdtemp(prefix="lab-checks-"))
     _state.update(server=server, fake=fake, openai_server=openai_server, fake_openai=fake_openai, work=work)
+    _start_fake_auth(work)
+    # Phase 5, week 20: the checks of the earlier weeks run without the guardrails server, so a
+    # GUARDRAILS_URL in your .env does not change them. The checks of week 20 and the attack
+    # suite turn it on again with guardrails_url().
+    _state["guardrails_url"] = os.environ.get("GUARDRAILS_URL", "")
+    os.environ["GUARDRAILS_URL"] = ""
     os.environ.update(
         ANTHROPIC_BASE_URL=fake.url,
         ANTHROPIC_API_KEY="offline-check-key",
@@ -57,7 +67,28 @@ def pytest_configure(config: pytest.Config) -> None:
     )
 
 
+def _start_fake_auth(work: Path) -> None:
+    try:
+        from labkit import auth
+    except ImportError:  # Phases 1 to 3 do not install PyJWT: no sign-in before Phase 5.
+        return
+    auth_server = auth.FakeAuthServer(work)
+    auth.FAKE = auth_server.start()
+    _state["auth_server"] = auth_server
+    issuer = auth.FAKE.issuer
+    os.environ.update(
+        AUTH_ISSUER=issuer,
+        AUTH_METADATA_URL=f"{issuer}/.well-known/openid-configuration",
+        AUTH_TOKEN_URL=f"{issuer}/protocol/openid-connect/token",
+        AUTH_CLIENT_ID=auth.SERVICE_CLIENT_ID,
+        AUTH_CLIENT_SECRET=auth.SERVICE_CLIENT_SECRET,
+    )
+
+
 def pytest_unconfigure(config: pytest.Config) -> None:
+    auth_server = _state.pop("auth_server", None)
+    if auth_server is not None:
+        auth_server.stop()
     server = _state.pop("server", None)
     if server is not None:
         server.stop()
@@ -121,9 +152,11 @@ def live(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
 
 @pytest.fixture
 def client() -> Any:
-    """An HTTP client for your FastAPI app, in this process."""
-    from starlette.testclient import TestClient
+    """An HTTP client for your FastAPI app, in this process.
 
+    While the fake authorization server runs, each request without an Authorization header
+    gets a token for the user of its X-User header (or `anonymous`).
+    """
     try:
         from assistant.api import app
     except ModuleNotFoundError as error:
@@ -133,7 +166,27 @@ def client() -> Any:
             "The package `assistant` does not exist. Run `make start PHASE=1` first.",
             pytrace=False,
         )
-    return TestClient(app)
+    return make_client(app)
+
+
+def guardrails_url() -> str:
+    """The address of the guardrails server: GUARDRAILS_URL of your .env, or the default of Compose."""
+    return _state.get("guardrails_url") or "http://localhost:8100"
+
+
+def make_client(app: Any) -> Any:
+    """A TestClient for the app. While the fake authorization server runs, it signs in each request."""
+    from starlette.testclient import TestClient
+
+    try:
+        from labkit.auth import SignedIn
+    except ImportError:  # PyJWT is not installed: no sign-in before Phase 5.
+        return TestClient(app)
+
+    class SignedInTestClient(SignedIn, TestClient):
+        pass
+
+    return SignedInTestClient(app)
 
 
 @pytest.fixture

@@ -40,7 +40,10 @@ phase4 = [
     "langchain-mcp-adapters>=0.3.2,<0.4",
     "mcp>=1.30,<2",
 ]
-phase5 = []
+phase5 = [
+    # Week 19: the API and the MCP servers check the signature of each access token (RS256).
+    "pyjwt[crypto]>=2.15,<3",
+]
 phase6 = []
 phase7 = []
 

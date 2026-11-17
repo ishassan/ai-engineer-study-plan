@@ -28,6 +28,9 @@ from labkit.fake_claude import first_user_text, json_reply, tool_reply
 REPO = Path(__file__).resolve().parents[3]
 WORKFLOW = REPO / ".github" / "workflows" / "evals.yml"
 SNAPSHOT = REPO / "data" / "snapshot" / "chunks.sql.gz"
+# Phase 5 marks its poisoned documents with this prefix (`make poison`). They are not part of the
+# corpus, so this check leaves them out on both sides.
+POISONED = "poisoned-"
 SUITE = REPO / "tests" / "evals"
 MAX_CASES = 15
 INVENTED_CHUNK = "gastat-no-such-document-en:p1:c1"
@@ -168,10 +171,12 @@ def test_the_snapshot_holds_each_chunk_with_its_vector(sql):
                     break
                 values = line.rstrip("\n").split("\t")
                 row = dict(zip(columns, values))
+                if row["id"].startswith(POISONED):
+                    continue
                 ids.add(row["id"])
                 if not any(len(value) > 1000 and value.startswith("[") for value in values):
                     without_vector.append(row["id"])
-    stored = {row["id"] for row in sql("SELECT id FROM chunks")}
+    stored = {row["id"] for row in sql("SELECT id FROM chunks WHERE id NOT LIKE %s", (POISONED + "%",))}
     assert ids, "The snapshot has no chunks. Run `make snapshot` when the chunks are in Postgres."
     assert ids == stored, (
         f"The snapshot has {len(ids)} chunks and Postgres has {len(stored)}. Run `make snapshot` again "

@@ -1,6 +1,7 @@
 """Send one question to the running API and print the stream.
 
     make ask Q="Which datasets are about crude oil?"
+    make ask AS=viewer Q="..."    from Phase 5, week 19: ask with the token of a test user
 
 The script prints the text as it arrives, then each other event on its own line.
 """
@@ -9,19 +10,34 @@ from __future__ import annotations
 
 import json
 import sys
+from pathlib import Path
 
 import httpx
 
 URL = "http://localhost:8000/ask"
 
 
+def token_headers(user: str) -> dict[str, str]:
+    """Get a token for a test user from the authorization server (Phase 5)."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # for the package labkit
+    from labkit.auth import password_token
+
+    try:
+        return {"Authorization": f"Bearer {password_token(user)}"}
+    except Exception as error:  # noqa: BLE001 (show the reason, not a traceback)
+        sys.exit(f"No token for {user}: {error}\nIs Keycloak running (make up)?")
+
+
 def main() -> None:
     if len(sys.argv) < 2 or not sys.argv[1].strip():
         sys.exit('Give a question: make ask Q="Which datasets are about crude oil?"')
+    headers = token_headers(sys.argv[2]) if len(sys.argv) > 2 and sys.argv[2] else {}
     event = "message"
     in_text = False
     try:
-        with httpx.stream("POST", URL, json={"question": sys.argv[1]}, timeout=120) as response:
+        with httpx.stream("POST", URL, json={"question": sys.argv[1]}, headers=headers, timeout=120) as response:
+            if response.status_code == 401:
+                sys.exit('The API asks for an access token (HTTP 401). Give a test user: make ask AS=viewer Q="..."')
             response.raise_for_status()
             for line in response.iter_lines():
                 if line.startswith("event:"):
