@@ -11,7 +11,8 @@ SET ?= quick
 
 .PHONY: help start up down reset logs check check-live ask eval documents ingest embed recall notebook \
 	testset failures-dataset evals snapshot restore compare lines agent-eval \
-	poison unpoison attacks attack-report token model-testset loadtest train-smoke
+	poison unpoison attacks attack-report token model-testset loadtest train-smoke \
+	numbers exit-test dashboard
 
 help:
 	@echo "make start PHASE=1      copy the starter files of a phase into the project"
@@ -44,6 +45,9 @@ help:
 	@echo "make model-testset ROUTE=qwen3-8b   Phase 6: run the test set on one model of the gateway"
 	@echo "make loadtest ROUTE=qwen3-8b        Phase 6: send 1, 8 and 32 requests at the same time to one model"
 	@echo "make train-smoke        Phase 6: train the LoRA script for a few steps on a tiny model, on your CPU"
+	@echo "make numbers            Phase 7: print each number of the capstone list with its result file"
+	@echo "make dashboard          Phase 7: open the dashboard of latency, cost and the evaluation scores"
+	@echo "make exit-test          Phase 7: go through the exit test of the plan (ARGS=--run also runs the checks)"
 
 start:
 	@uv run python scripts/lab.py start $(PHASE)
@@ -173,3 +177,14 @@ TORCH_VERSION ?= 2.9.1
 train-smoke:
 	@uv run --no-project --python 3.12 --with-requirements train/requirements.txt --with "torch==$(TORCH_VERSION)" \
 		python train/train_lora.py --smoke $(ARGS)
+
+# Phase 7
+numbers:
+	@$(UV) python scripts/capstone_numbers.py $(ARGS)
+
+exit-test:
+	@$(UV) python scripts/exit_test.py $(ARGS)
+
+# The dashboard notebook draws charts, so this command also installs matplotlib in the cache of uv.
+dashboard:
+	@$(UV) --with jupyterlab --with pandas --with matplotlib jupyter lab phases/phase-7-packaging/notebooks/dashboard.ipynb

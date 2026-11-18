@@ -4,6 +4,10 @@
     make ask AS=viewer Q="..."    from Phase 5, week 19: ask with the token of a test user
 
 The script prints the text as it arrives, then each other event on its own line.
+
+From Phase 7, week 26: when the `done` event has a `trace_id` and the script runs in a terminal,
+it asks whether the answer was good or bad, and sends the rating with an optional comment to
+POST /feedback.
 """
 
 from __future__ import annotations
@@ -15,6 +19,7 @@ from pathlib import Path
 import httpx
 
 URL = "http://localhost:8000/ask"
+FEEDBACK_URL = "http://localhost:8000/feedback"
 
 
 def token_headers(user: str) -> dict[str, str]:
@@ -34,6 +39,7 @@ def main() -> None:
     headers = token_headers(sys.argv[2]) if len(sys.argv) > 2 and sys.argv[2] else {}
     event = "message"
     in_text = False
+    trace_id = None
     try:
         with httpx.stream("POST", URL, json={"question": sys.argv[1]}, headers=headers, timeout=120) as response:
             if response.status_code == 401:
@@ -52,8 +58,28 @@ def main() -> None:
                         print()
                         in_text = False
                     print(f"[{event}] {json.dumps(data, ensure_ascii=False)}")
+                    if event == "done":
+                        trace_id = data.get("trace_id")
     except httpx.ConnectError:
         sys.exit("The API does not answer on localhost:8000. Run `make up` first.")
+    if trace_id and sys.stdin.isatty():
+        ask_feedback(trace_id, headers)
+
+
+def ask_feedback(trace_id: str, headers: dict[str, str]) -> None:
+    """Week 26: the feedback control of the answer. Enter skips it."""
+    rating = input("Was the answer good? [g]ood, [b]ad, Enter to skip: ").strip().lower()
+    if rating not in {"g", "b", "good", "bad"}:
+        return
+    comment = input("Comment (Enter for none): ").strip()
+    body = {"trace_id": trace_id, "rating": "good" if rating.startswith("g") else "bad"}
+    if comment:
+        body["comment"] = comment
+    response = httpx.post(FEEDBACK_URL, json=body, headers=headers, timeout=30)
+    if response.is_success:
+        print("Feedback stored.")
+    else:
+        print(f"The API refused the feedback: HTTP {response.status_code} {response.text}")
 
 
 if __name__ == "__main__":
