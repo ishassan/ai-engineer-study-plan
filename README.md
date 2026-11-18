@@ -6,6 +6,7 @@ A 28-week plan, at about 4 hours a week, that prepares a software engineer to wo
 
 - [About the plan](#about-the-plan)
 - [Roadmap](#roadmap)
+- [Labs](#labs)
 - [Phase-by-phase plan](#phase-by-phase-plan)
   - [Phase 1: The Claude API and a hand-written agent loop (weeks 1 to 3)](#phase-1-the-claude-api-and-a-hand-written-agent-loop-weeks-1-to-3)
   - [Phase 2: Retrieval (weeks 4 to 7)](#phase-2-retrieval-weeks-4-to-7)
@@ -43,11 +44,40 @@ After week 28, the checklist in the [week 28 exit test](#week-28-system-design-p
 
 Evaluation sits third, so the agent, guardrail and deployment phases are all built against a test score.
 
+## Labs
+
+Each phase has a lab in the folder `phases/`. The lab gives you the parts that teach nothing new (Docker Compose, the database schema, the data and the HTTP layer), and you write the parts that the phase teaches. Your code goes in the packages `assistant/` and `evals/` at the root of the repository, and it grows in every phase.
+
+| Phase | Lab |
+| --- | --- |
+| 1. Claude API | [phases/phase-1-claude-api](phases/phase-1-claude-api/README.md) |
+| 2. Retrieval | [phases/phase-2-retrieval](phases/phase-2-retrieval/README.md) |
+| 3. Evaluation | [phases/phase-3-evaluation](phases/phase-3-evaluation/README.md) |
+| 4. Agents | [phases/phase-4-agents](phases/phase-4-agents/README.md) |
+| 5. Guardrails | [phases/phase-5-guardrails](phases/phase-5-guardrails/README.md) |
+| 6. Open models | [phases/phase-6-open-models](phases/phase-6-open-models/README.md) |
+| 7. Packaging | [phases/phase-7-packaging](phases/phase-7-packaging/README.md) |
+
+Each lab folder holds a guide (`README.md`) with one section for each week and one step for each step of the plan, a table for your numbers (`RESULTS.md`), the starter files, and the checks. Hints are in collapsed blocks, and the labs have no solutions. You need Docker Desktop, [uv](https://docs.astral.sh/uv/getting-started/installation/) and `make`. Run the commands from the root of the repository:
+
+```bash
+make start PHASE=1
+cp .env.example .env
+make up
+make check WEEK=1
+```
+
+- `make start PHASE=n` copies the starter files of a phase. It never changes a file that exists.
+- `make check WEEK=n` runs the offline checks of a week. They use a local stand-in for the model API, so they cost nothing and take seconds to minutes. `make check PHASE=n` runs all the weeks of a phase.
+- `make check-live WEEK=n` runs the check of the plan against the real API, with your key. The guide of each phase gives the estimated cost of each live check.
+
 ## Phase-by-phase plan
 
 Each phase is a list of weeks, and each week is a list of steps: read, build, then check. Do the steps in order. In a normal week the reading takes about 1 hour and the building about 3 hours. When a check passes, write its numbers in the repository. If a check fails, fix it before you start the next week. Each phase ends with its exit test.
 
 ### Phase 1: The Claude API and a hand-written agent loop (weeks 1 to 3)
+
+**Lab:** [phases/phase-1-claude-api](phases/phase-1-claude-api/README.md)
 
 **Goal:** a small API service that answers questions about a dataset catalogue, with a model loop that you wrote yourself.
 
@@ -79,6 +109,8 @@ Each phase is a list of weeks, and each week is a list of steps: read, build, th
 **Exit test:** the 30 questions run from one command with the response cache off, every request logs tokens, cost and latency, and the logs show cache reads from prompt caching.
 
 ### Phase 2: Retrieval (weeks 4 to 7)
+
+**Lab:** [phases/phase-2-retrieval](phases/phase-2-retrieval/README.md)
 
 **Goal:** a retrieval tool over documents in English and Arabic, with recall that you measured.
 
@@ -115,6 +147,8 @@ Each phase is a list of weeks, and each week is a list of steps: read, build, th
 
 ### Phase 3: Evaluation and tracing (weeks 8 to 11)
 
+**Lab:** [phases/phase-3-evaluation](phases/phase-3-evaluation/README.md)
+
 **Goal:** every step is traced, the test set has more than 100 cases, the grader agrees with your labels, and CI blocks a worse change.
 
 #### Week 8: Tracing
@@ -150,6 +184,8 @@ Each phase is a list of weeks, and each week is a list of steps: read, build, th
 **Exit test:** a deliberately bad prompt change is blocked by CI, and you can state the grader's agreement rate with your labels.
 
 ### Phase 4: Agents with LangChain, LangGraph and MCP (weeks 12 to 17)
+
+**Lab:** [phases/phase-4-agents](phases/phase-4-agents/README.md)
 
 **Goal:** the agent runs on LangGraph on two providers, with memory, a planner, approval for write actions and MCP tool servers.
 
@@ -201,6 +237,8 @@ Each phase is a list of weeks, and each week is a list of steps: read, build, th
 
 ### Phase 5: Guardrails and governance (weeks 18 to 20)
 
+**Lab:** [phases/phase-5-guardrails](phases/phase-5-guardrails/README.md)
+
 **Goal:** an attack suite that runs in CI, and defences in the design of the agent that raise its pass rate.
 
 #### Week 18: The attack suite
@@ -229,6 +267,8 @@ Each phase is a list of weeks, and each week is a list of steps: read, build, th
 **Exit test:** the attack pass rate is reported and runs in CI, and for each kind of attack it is higher than in week 18.
 
 ### Phase 6: The model gateway and self-hosted models (weeks 21 to 25)
+
+**Lab:** [phases/phase-6-open-models](phases/phase-6-open-models/README.md)
 
 **Goal:** every model call goes through a gateway, and an open model runs on a rented GPU, also quantized and fine-tuned, measured against the hosted model on the same test set. Rent the GPU by the hour on RunPod. A RunPod pod runs any Docker image that you name, so vLLM runs there in the same image as on your machine. A 48 GB GPU, such as an A40 or an RTX A6000, has enough memory to serve an 8B model, for example Qwen3-8B, and to train a LoRA adapter for it. On the RunPod price page in November 2026, these two GPUs cost $0.59 and $0.69 an hour. Stop the pod at the end of each session, so you pay only for the hours you use. The gateway and the rest of the system stay on your Mac.
 
@@ -271,6 +311,8 @@ Each phase is a list of weeks, and each week is a list of steps: read, build, th
 **Exit test:** one table compares the hosted, open, quantized and fine-tuned models on the same test set, for quality, latency and cost per 1,000 requests. For the open models, calculate the cost from the GPU's hourly price and the requests per hour that you measured.
 
 ### Phase 7: Packaging (weeks 26 to 28)
+
+**Lab:** [phases/phase-7-packaging](phases/phase-7-packaging/README.md)
 
 **Goal:** the work is written up, public and ready for interviews.
 
