@@ -1,5 +1,6 @@
 """Reference solution: the hand-written loop with memory and a planner, and the
-user on each model call for the budgets of the gateway (Phase 6, week 21)."""
+user on each model call for the budgets of the gateway (Phase 6, week 21), and the trace ID in the
+`done` event (Phase 7, week 26)."""
 
 from __future__ import annotations
 
@@ -234,4 +235,8 @@ def answer_events(
             requests += 1
             _add(totals, summary_result)
             conversations.start_new_context(conversation_id, new_context)
-    yield "done", {"model": model, **totals, "requests": requests, "stop": stop}
+    done = {"model": model, **totals, "requests": requests, "stop": stop}
+    trace_id = get_client().get_current_trace_id()
+    if trace_id:  # None when tracing is off
+        done["trace_id"] = trace_id
+    yield "done", done

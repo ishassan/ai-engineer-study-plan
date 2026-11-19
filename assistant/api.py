@@ -1,5 +1,5 @@
-"""Reference solution: the HTTP service with sign-in (week 19) and the
-input and output checks of NeMo Guardrails (week 20).
+"""Reference solution: the HTTP service with sign-in (week 19), the
+input and output checks of NeMo Guardrails (week 20), and the feedback of the user (Phase 7, week 26).
 
 The Phase 4 copy. current_user() reads the access token, and the graph gets the identity.
 
@@ -35,11 +35,12 @@ from __future__ import annotations
 import json
 import logging
 import uuid
-from typing import Any, Callable, Iterator
+from typing import Any, Callable, Iterator, Literal
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel
+from langfuse import get_client
+from pydantic import BaseModel, Field
 
 from assistant.auth import Identity, verify
 from assistant.config import get_settings
@@ -59,6 +60,12 @@ class AskRequest(BaseModel):
 class ApproveRequest(BaseModel):
     conversation_id: str
     approved: bool
+
+
+class FeedbackRequest(BaseModel):
+    trace_id: str = Field(pattern=r"^[0-9a-f]{32}$")
+    rating: Literal["good", "bad"]
+    comment: str | None = Field(default=None, max_length=2000)
 
 
 def current_user(request: Request) -> Identity:
@@ -177,3 +184,17 @@ def approve(body: ApproveRequest, request: Request) -> StreamingResponse:
     return streaming(event_stream(
         lambda: guarded(None, lambda: resume(body.conversation_id, body.approved, approver)), body.conversation_id
     ))
+
+
+@app.post("/feedback", status_code=204)
+def feedback(body: FeedbackRequest, request: Request) -> None:
+    """Week 26: store the rating of one answer as a score on the trace of its request."""
+    identity = current_user(request)
+    get_client().create_score(
+        name="user-feedback",
+        value=1 if body.rating == "good" else 0,
+        data_type="BOOLEAN",
+        trace_id=body.trace_id,
+        comment=body.comment or None,
+        metadata={"user": identity.user},
+    )

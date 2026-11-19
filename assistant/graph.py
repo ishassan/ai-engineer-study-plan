@@ -405,7 +405,13 @@ def _run(graph: Any, value: Any, config: dict[str, Any]) -> Iterator[tuple[str, 
               ("input_tokens", "output_tokens", "cache_creation_input_tokens", "cache_read_input_tokens", "cost_usd")}
     model = next((u["model"] for u in reversed(usage) if u["model"]), settings.model)
     latency = round((time.perf_counter() - started) * 1000, 1)
-    yield "done", {"model": model, **totals, "latency_ms": latency, "requests": len(usage), "stop": stop}
+    done = {"model": model, **totals, "latency_ms": latency, "requests": len(usage), "stop": stop}
+    # _run() runs inside answer_events() or resume_events(), so the current trace is the trace of
+    # the request. The client sends this ID with its feedback (Phase 7, week 26).
+    trace_id = get_client().get_current_trace_id()
+    if trace_id:
+        done["trace_id"] = trace_id
+    yield "done", done
 
 
 @observe(name="ask", as_type="agent")
