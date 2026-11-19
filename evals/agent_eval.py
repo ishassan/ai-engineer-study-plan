@@ -29,6 +29,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 import uuid
 from datetime import datetime, timezone
@@ -52,7 +53,24 @@ def result_score(expected: dict[str, Any], answer: dict[str, Any] | None) -> flo
     A result that meets each expectation scores 1.0. Choose how strictly you compare the
     texts (letter case, spaces, the commas in a number), and say why in your notes.
     """
-    raise NotImplementedError("Week 17, step 3")
+    if answer is None:
+        return 0.0
+    checks = [dataset_id in answer.get("dataset_ids", []) for dataset_id in expected.get("dataset_ids", [])]
+    text = _plain(answer.get("answer", ""))
+    checks += [_plain(part) in text for part in expected.get("contains", [])]
+    return sum(checks) / len(checks) if checks else 1.0
+
+
+def _plain(text: str) -> str:
+    # Letter case, spaces and the commas in numbers do not count: "50,752" is "50752".
+    return re.sub(r"(?<=\d),(?=\d{3})", "", " ".join(str(text).lower().split()))
+
+
+def _matches(expected: dict[str, Any], actual: dict[str, Any]) -> bool:
+    args = actual.get("args") or {}
+    return expected["name"] == actual["name"] and all(
+        key in args and args[key] == value for key, value in (expected.get("args") or {}).items()
+    )
 
 
 def path_score(expected: list[dict[str, Any]], actual: list[dict[str, Any]]) -> float:
@@ -70,7 +88,17 @@ def path_score(expected: list[dict[str, Any]], actual: list[dict[str, Any]]) -> 
 
     Each call is a dict with `name` and, optionally, `args`.
     """
-    raise NotImplementedError("Week 17, step 3")
+    if not expected:
+        return 1.0
+    # longest[i][j]: the longest common subsequence of expected[i:] and actual[j:].
+    longest = [[0] * (len(actual) + 1) for _ in range(len(expected) + 1)]
+    for i in range(len(expected) - 1, -1, -1):
+        for j in range(len(actual) - 1, -1, -1):
+            if _matches(expected[i], actual[j]):
+                longest[i][j] = longest[i + 1][j + 1] + 1
+            else:
+                longest[i][j] = max(longest[i + 1][j], longest[i][j + 1])
+    return longest[0][0] / len(expected)
 
 
 def load_tasks(path: Path = TASKS) -> list[dict[str, Any]]:
