@@ -1,4 +1,4 @@
-"""Reference solution."""
+"""Reference solution: the tools of Phase 2 and save_memory."""
 
 from __future__ import annotations
 
@@ -86,6 +86,23 @@ TOOLS: list[dict[str, Any]] = [
             "required": ["query"],
         },
     },
+    {
+        "name": "save_memory",
+        "description": (
+            "Save one fact about the user in the long-term memory, so that you know it in later "
+            "conversations. Use it when the user tells you something about themselves or their "
+            "work that will help later answers: their team, their task, the datasets that they "
+            "use, how they want the answers. Write the fact as one full sentence about the user. "
+            "Do not save facts about the catalogue: the tools give those."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "fact": {"type": "string", "description": "One sentence, for example 'The user works on water statistics.'"},
+            },
+            "required": ["fact"],
+        },
+    },
 ]
 
 SEARCH_SQL = """
@@ -157,7 +174,14 @@ def search_documents(query_text: str, limit: int = 5) -> list[dict[str, Any]]:
     ]
 
 
-def run_tool(name: str, tool_input: dict[str, Any]) -> str:
+def run_tool(
+    name: str, tool_input: dict[str, Any], user: str = "anonymous", conversation_id: str | None = None
+) -> str:
+    if name == "save_memory":
+        from assistant.memory import save_fact
+
+        fact_id = save_fact(user, tool_input["fact"], conversation_id)
+        return json.dumps({"saved": True, "id": fact_id})
     if name == "search_datasets":
         result: Any = search_datasets(tool_input["query"], tool_input.get("limit", 5))
     elif name == "get_dataset_schema":
