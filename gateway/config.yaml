@@ -1,4 +1,4 @@
-# Reference solution: the gateway at the end of week 22.
+# Reference solution: the gateway at the end of week 23.
 model_list:
   - model_name: claude-haiku-5-5
     litellm_params:
@@ -21,6 +21,14 @@ model_list:
   - model_name: qwen3-8b
     litellm_params:
       model: hosted_vllm/Qwen/Qwen3-8B
+      api_base: os.environ/VLLM_API_BASE
+      api_key: os.environ/VLLM_API_KEY
+      input_cost_per_token: 0
+      output_cost_per_token: 0
+  # Week 23: the 4-bit AWQ version of the same model, on the same pod.
+  - model_name: qwen3-8b-awq
+    litellm_params:
+      model: hosted_vllm/Qwen/Qwen3-8B-AWQ
       api_base: os.environ/VLLM_API_BASE
       api_key: os.environ/VLLM_API_KEY
       input_cost_per_token: 0
