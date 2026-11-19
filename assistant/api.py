@@ -1,4 +1,5 @@
-"""Reference solution: the HTTP service with sign-in (week 19).
+"""Reference solution: the HTTP service with sign-in (week 19) and the
+input and output checks of NeMo Guardrails (week 20).
 
 The Phase 4 copy. current_user() reads the access token, and the graph gets the identity.
 
@@ -42,6 +43,7 @@ from pydantic import BaseModel
 
 from assistant.auth import Identity, verify
 from assistant.config import get_settings
+from assistant.guardrails import check_input, check_output
 
 logger = logging.getLogger("assistant.api")
 app = FastAPI(title="Data platform assistant")
@@ -79,6 +81,36 @@ def run_agent(question: str, conversation_id: str, identity: Identity) -> Iterat
 
         return answer_events(question, conversation_id=conversation_id, user=identity.user, identity=identity)
     return agent()(question, conversation_id=conversation_id, user=identity.user)
+
+
+def guarded(question: str | None, events: Callable[[], Iterator[tuple[str, dict[str, Any]]]]) -> Iterator[tuple[str, dict[str, Any]]]:
+    """Week 20: check the question before the agent runs, and the answer before the user sees it.
+
+    A blocked question gets the refusal of the rails as its answer, and the agent does not run.
+    The answer goes out after the output rails (they mask links, e-mail addresses, phone and card
+    numbers). The text events of the hand-written loop are kept back and sent as one checked
+    text, because a rail cannot check half a sentence. After an approval (question None) there is
+    no new question, but the answer still goes through the output rails.
+    """
+    if not get_settings().guardrails_url:
+        yield from events()
+        return
+    check = check_input(question) if question is not None else None
+    if check is not None and check.blocked:
+        yield "answer", {"answer": check.content, "dataset_ids": [], "tools_called": [], "citations": []}
+        yield "done", {"stop": "blocked", "rail": check.rail}
+        return
+    text: list[str] = []
+    for event, data in events():
+        if event == "text":
+            text.append(data.get("text", ""))
+            continue
+        if event in {"answer", "done"} and text:
+            yield "text", {"text": check_output(question or "", "".join(text)).content}
+            text = []
+        if event == "answer":
+            data = {**data, "answer": check_output(question or "", str(data.get("answer", ""))).content}
+        yield event, data
 
 
 def agent() -> AnswerEvents:
@@ -126,7 +158,9 @@ def streaming(events: Iterator[str]) -> StreamingResponse:
 def ask(body: AskRequest, request: Request) -> StreamingResponse:
     conversation_id = body.conversation_id or str(uuid.uuid4())
     identity = current_user(request)
-    return streaming(event_stream(lambda: run_agent(body.question, conversation_id, identity), conversation_id))
+    return streaming(event_stream(
+        lambda: guarded(body.question, lambda: run_agent(body.question, conversation_id, identity)), conversation_id
+    ))
 
 
 def resume(conversation_id: str, approved: bool, approver: Identity) -> Iterator[tuple[str, dict[str, Any]]]:
@@ -141,5 +175,5 @@ def resume(conversation_id: str, approved: bool, approver: Identity) -> Iterator
 def approve(body: ApproveRequest, request: Request) -> StreamingResponse:
     approver = current_user(request)
     return streaming(event_stream(
-        lambda: resume(body.conversation_id, body.approved, approver), body.conversation_id
+        lambda: guarded(None, lambda: resume(body.conversation_id, body.approved, approver)), body.conversation_id
     ))

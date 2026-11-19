@@ -9,6 +9,8 @@
 # - Run `make snapshot` and commit data/snapshot/chunks.sql.gz.
 # - Add the secret ANTHROPIC_API_KEY in the settings of the repository on GitHub
 #   (Settings, Secrets and variables, Actions).
+# - Week 20: commit the first result of the attack suite, so that CI can compare with it:
+#   git add -f evals/results/attacks-week18.json
 name: Evals
 
 on:
@@ -25,17 +27,20 @@ concurrency:
 jobs:
   evals:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
     env:
       # The runners of GitHub are x86 machines.
       TEI_TAG: cpu-1.9.4
       # The model files go to folders, so that actions/cache can keep them between runs.
       EMBEDDINGS_MODEL_VOLUME: ./.cache/models/embeddings
       RERANKER_MODEL_VOLUME: ./.cache/models/reranker
+      # Week 20: the model of the jailbreak heuristics (gpt2-large) goes to the same cache.
+      GUARDRAILS_MODEL_VOLUME: ./.cache/models/guardrails
       # A replay from the response cache is an old answer. CI measures new answers.
       RESPONSE_CACHE: "off"
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-      # Week 17: the image of the MCP servers needs the packages of phase 4.
+      # Week 17: the image of the MCP servers needs the packages of phase 4 (and of phase 5 for
+      # the sign-in of week 19).
       UV_GROUPS: --group phase1 --group phase2 --group phase3 --group phase4 --group phase5
     steps:
       - uses: actions/checkout@v6
@@ -43,7 +48,7 @@ jobs:
       - name: Turn on the packages and services of phases 1 to 5
         run: printf '1\n2\n3\n4\n5\n' > .lab-phases
 
-      # The first run downloads the two models (4.6 GB) and saves them in the cache. A cache
+      # The first run downloads the models (about 8 GB) and saves them in the cache. A cache
       # that a pull request saves is only for that pull request. To fill the cache for all pull
       # requests, run the workflow one time on the default branch (Actions, Evals, Run workflow).
       - name: Restore the model files
@@ -53,8 +58,11 @@ jobs:
           path: .cache/models
           key: tei-models-${{ hashFiles('compose.yaml') }}
 
-      - name: Start Postgres, the two model services and the two MCP servers
-        run: docker compose --profile phase2 --profile phase4 up -d --build --wait db embeddings reranker mcp-sql mcp-catalogue
+      # Week 19: Keycloak gives the tokens of the MCP servers. Week 20: the guardrails server.
+      - name: Start Postgres, the model services, Keycloak, the guardrails server and the MCP servers
+        run: >-
+          docker compose --profile phase2 --profile phase4 --profile phase5 up -d --build --wait
+          db embeddings reranker keycloak guardrails mcp-sql mcp-catalogue
 
       # Save the models now, so that a run whose suite fails still fills the cache.
       - name: Save the model files
@@ -93,6 +101,8 @@ jobs:
 
       - name: Run the attack suite
         if: ${{ !cancelled() }}
+        env:
+          GUARDRAILS_URL: http://localhost:8100
         run: make attacks MODEL=obedient LABEL=ci ARGS="-rf"
 
       - name: Keep the result file of the attack suite
@@ -101,3 +111,8 @@ jobs:
         with:
           name: attack-results
           path: evals/results/attacks-ci.json
+
+      # Week 20: print both tables, and fail when a kind of attack is not better than in week 18.
+      - name: Compare the pass rates with week 18
+        if: ${{ !cancelled() }}
+        run: make attack-report ARGS="--before week18 --after ci"

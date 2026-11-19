@@ -1,4 +1,4 @@
-"""Input and output checks with the NeMo Guardrails server. Phase 5, week 20.
+"""Reference solution. Input and output checks with the NeMo Guardrails server. Phase 5, week 20.
 
 The server runs in Docker (`make up` with phase 5, service `guardrails`) with the configuration
 guardrails/config/assistant/config.yml: the jailbreak heuristics and the Presidio check on the
@@ -22,6 +22,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+import httpx
+
+from assistant.config import get_settings
+
 
 @dataclass(frozen=True)
 class Check:
@@ -36,11 +40,21 @@ class Check:
         return self.status == "blocked"
 
 
+def _check(messages: list[dict[str, str]], rail_type: str) -> Check:
+    settings = get_settings()
+    body = {"model": "none", "messages": messages,
+            "guardrails": {"config_ids": [settings.guardrails_config_id], "rail_types": [rail_type]}}
+    response = httpx.post(f"{settings.guardrails_url}/v1/checks", json=body, timeout=60)
+    response.raise_for_status()
+    data = response.json()
+    return Check(status=data["status"], content=data.get("content", ""), rail=data.get("rail"))
+
+
 def check_input(question: str) -> Check:
     """Run the input rails on a question."""
-    raise NotImplementedError("Week 20, step 3")
+    return _check([{"role": "user", "content": question}], "input")
 
 
 def check_output(question: str, answer: str) -> Check:
     """Run the output rails on an answer to a question."""
-    raise NotImplementedError("Week 20, step 3")
+    return _check([{"role": "user", "content": question}, {"role": "assistant", "content": answer}], "output")

@@ -1,4 +1,5 @@
-"""Reference solution: the graph of Phase 4 with the token of the user (week 19)."""
+"""Reference solution: the graph of Phase 4 with the token of the user (week 19)
+and the design pattern of week 20 (approval of the risky tools after untrusted content)."""
 
 from __future__ import annotations
 
@@ -31,6 +32,12 @@ from assistant.models import chat_model, system_message, usage_of
 from assistant.persistence import checkpointer
 from assistant.planner import Plan
 from assistant.tools import NEEDS_APPROVAL, TOOLS, run_tool
+
+# Week 20, the design pattern: after the agent reads untrusted content, the tools that write or
+# can send data out need the approval of a person, and the approval shows the reason. Each tool
+# result that holds text of other people is untrusted: documents, catalogue entries, table rows.
+UNTRUSTED_SOURCES = {"search_documents", "search_datasets", "get_dataset_schema", "get_dataset_stats", "run_sql"}
+RISKY_TOOLS = {"save_memory", "register_dataset"}
 
 REFUSED = (
     "A person refused this action, so {name} did not run and nothing changed. Tell the user that "
@@ -69,6 +76,9 @@ class State(TypedDict, total=False):
     turns: int
     retried: bool
     approvals: dict[str, dict[str, Any]]
+    # Week 20: the tools whose results the agent read in this conversation (not reset per question,
+    # because the messages still hold the content).
+    untrusted: list[str]
     answer: dict[str, Any] | None
     error: str | None
     stop: str | None
@@ -166,6 +176,17 @@ def audit(state: State, call: dict[str, Any], result: str, approval: str, approv
         )
 
 
+def approval_reason(call: dict[str, Any], state: State) -> str | None:
+    """Why a call needs the approval of a person, or None when it does not."""
+    read = sorted(set(state.get("untrusted") or []))
+    if call["name"] in RISKY_TOOLS and read:
+        return (f"The agent read untrusted content ({', '.join(read)}) before it asked for {call['name']}. "
+                "That content can hold instructions of an attacker.")
+    if call["name"] in NEEDS_APPROVAL:
+        return f"{call['name']} changes the catalogue."
+    return None
+
+
 # ---- nodes ------------------------------------------------------------------------------------
 
 
@@ -212,8 +233,9 @@ def approve(state: State) -> dict[str, Any]:
     When the run continues, LangGraph runs the node again from its start, so no code that
     changes something may come before interrupt().
     """
-    calls = [call for call in state["messages"][-1].tool_calls if call["name"] in NEEDS_APPROVAL]
-    decision = interrupt([{"id": call["id"], "name": call["name"], "input": call["args"]} for call in calls])
+    calls = [call for call in state["messages"][-1].tool_calls if approval_reason(call, state)]
+    decision = interrupt([{"id": call["id"], "name": call["name"], "input": call["args"],
+                           "reason": approval_reason(call, state)} for call in calls])
     return {"approvals": {call["id"]: {"approved": bool(decision.get("approved")), "approver": decision.get("approver")}
                           for call in calls}}
 
@@ -223,9 +245,10 @@ def run_tools(state: State, config: RunnableConfig) -> dict[str, Any]:
     identity = config["configurable"]["identity"]
     reply = state["messages"][-1]
     results, chunks, failed = [], dict(state.get("chunks") or {}), None
+    untrusted = list(state.get("untrusted") or [])
     for call in reply.tool_calls:
         approval, approver = "not_needed", None
-        if call["name"] in NEEDS_APPROVAL:
+        if approval_reason(call, state):
             decision = (state.get("approvals") or {}).get(call["id"]) or {}
             approval = "approved" if decision.get("approved") else "refused"
             approver = decision.get("approver") or "unknown"
@@ -242,12 +265,15 @@ def run_tools(state: State, config: RunnableConfig) -> dict[str, Any]:
                     span.update(output=output, level="ERROR", status_message=output)
                     failed = failed or {"name": call["name"], "input": call["args"], "error": output}
         audit(state, call, output, approval, approver)
+        if call["name"] in UNTRUSTED_SOURCES and not is_error:
+            untrusted.append(call["name"])
         if call["name"] == "search_documents" and not is_error:
             for row in json.loads(output):
                 chunks[row["chunk_id"]] = {"document_title": row["title"], "page": row["page"]}
         results.append(ToolMessage(content=output, tool_call_id=call["id"], status="error" if is_error else "success"))
         writer(("tool", {"name": call["name"], "input": call["args"], "is_error": is_error}))
-    return {"messages": results, "chunks": chunks, "failed": failed if state.get("plan") else None}
+    return {"messages": results, "chunks": chunks, "failed": failed if state.get("plan") else None,
+            "untrusted": untrusted}
 
 
 def finish(state: State) -> dict[str, Any]:
@@ -320,7 +346,7 @@ def after_model(state: State) -> str:
         return "save"
     if not calls:
         return "finish"
-    return "approve" if any(call["name"] in NEEDS_APPROVAL for call in calls) else "run_tools"
+    return "approve" if any(approval_reason(call, state) for call in calls) else "run_tools"
 
 
 def after_tools(state: State) -> str:
@@ -365,7 +391,7 @@ def _run(graph: Any, value: Any, config: dict[str, Any]) -> Iterator[tuple[str, 
     if snapshot.interrupts:
         for pending in snapshot.interrupts:
             for call in pending.value:
-                yield "approval", {"name": call["name"], "input": call["input"]}
+                yield "approval", {"name": call["name"], "input": call["input"], "reason": call.get("reason")}
         stop = "approval"
     else:
         if state.get("error"):
