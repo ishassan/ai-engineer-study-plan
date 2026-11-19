@@ -1,0 +1,46 @@
+{
+  "model": "qwen3-8b",
+  "gpu": "A40",
+  "gpu_price_per_hour": 0.59,
+  "gpu_memory_gib": 20.0,
+  "max_tokens": 256,
+  "created_at": "2026-11-17T07:06:57.398544+00:00",
+  "loads": [
+    {
+      "concurrency": 1,
+      "requests": 4,
+      "ok": 4,
+      "errors": 0,
+      "seconds": 0.932,
+      "output_tokens": 720,
+      "tokens_per_second": 772.7632525155109,
+      "requests_per_hour": 15455.26505031022,
+      "latency_ms_p50": 225.39102699920477,
+      "latency_ms_p95": 252.71837800028152
+    },
+    {
+      "concurrency": 8,
+      "requests": 32,
+      "ok": 32,
+      "errors": 0,
+      "seconds": 1.249,
+      "output_tokens": 5760,
+      "tokens_per_second": 4611.056189598059,
+      "requests_per_hour": 92221.12379196117,
+      "latency_ms_p50": 301.6053289993579,
+      "latency_ms_p95": 338.2343699995545
+    },
+    {
+      "concurrency": 32,
+      "requests": 128,
+      "ok": 128,
+      "errors": 0,
+      "seconds": 2.673,
+      "output_tokens": 23040,
+      "tokens_per_second": 8619.758263689815,
+      "requests_per_hour": 172395.1652737963,
+      "latency_ms_p50": 635.684468999898,
+      "latency_ms_p95": 880.5744989986124
+    }
+  ]
+}

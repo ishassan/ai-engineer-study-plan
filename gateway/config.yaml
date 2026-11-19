@@ -1,4 +1,4 @@
-# Reference solution: the gateway at the end of week 21.
+# Reference solution: the gateway at the end of week 22.
 model_list:
   - model_name: claude-haiku-5-5
     litellm_params:
@@ -16,6 +16,15 @@ model_list:
       input_cost_per_token: 0.0000001
       output_cost_per_token: 0.0000005
       cache_read_input_token_cost: 0.00000001
+  # Week 22: Qwen3-8B on vLLM on the pod. vLLM serves the model under the name of its repository.
+  # The price is 0: the cost of the GPU is per hour, not per token.
+  - model_name: qwen3-8b
+    litellm_params:
+      model: hosted_vllm/Qwen/Qwen3-8B
+      api_base: os.environ/VLLM_API_BASE
+      api_key: os.environ/VLLM_API_KEY
+      input_cost_per_token: 0
+      output_cost_per_token: 0
 
 router_settings:
   fallbacks: [{"claude-haiku-5-5": ["gpt-6-luna"]}]

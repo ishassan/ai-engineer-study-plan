@@ -46,7 +46,11 @@ def user_header(user: str | None) -> dict[str, str]:
 
 
 def cost_usd(model: str, usage: Usage) -> float:
-    price = PRICES_PER_MTOK[model]
+    # Phase 6: an open model on your GPU has no token price. Its cost comes from the price of
+    # the GPU for each hour (notebooks/model_comparison.ipynb).
+    price = PRICES_PER_MTOK.get(model)
+    if price is None:
+        return 0.0
     return (
         usage.input_tokens * price["input"]
         + usage.output_tokens * price["output"]

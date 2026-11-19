@@ -1,4 +1,6 @@
-"""Send requests at the same time to one model of the gateway, and measure its speed. Week 22.
+"""Reference solution.
+
+Send requests at the same time to one model of the gateway, and measure its speed. Week 22.
 
     make loadtest ROUTE=qwen3-8b ARGS="--gpu A40 --gpu-price 0.59 --gpu-memory-gib <GiB>"
     make loadtest ROUTE=qwen3-8b ARGS="--loads 1,8"          only two loads
@@ -65,27 +67,47 @@ def gateway_client() -> anthropic.AsyncAnthropic:
 
 
 async def one_request(client: anthropic.AsyncAnthropic, model: str, question: str, max_tokens: int) -> dict[str, Any]:
-    """Send one question to the model through the gateway, and measure it.
-
-    Return {"ok": True, "latency_ms": ..., "output_tokens": ...} for an answer, and
-    {"ok": False, "latency_ms": ..., "output_tokens": 0, "error": "<type>: <message>"} when the
-    request fails. Do not raise: one failed request must not stop the load. The latency is the
-    time from the start of the request to the end of the answer. The output tokens come from
-    the usage of the answer.
-    """
-    raise NotImplementedError("Week 22, step 3")
+    """Reference solution."""
+    started = time.perf_counter()
+    try:
+        message = await client.messages.create(
+            model=model, max_tokens=max_tokens, system=SYSTEM, messages=[{"role": "user", "content": question}]
+        )
+    except anthropic.APIError as error:
+        latency = (time.perf_counter() - started) * 1000
+        return {"ok": False, "latency_ms": latency, "output_tokens": 0, "error": f"{type(error).__name__}: {error}"}
+    latency = (time.perf_counter() - started) * 1000
+    return {"ok": True, "latency_ms": latency, "output_tokens": message.usage.output_tokens}
 
 
 async def run_load(
     client: anthropic.AsyncAnthropic, model: str, questions: list[str], concurrency: int, total: int, max_tokens: int
 ) -> dict[str, Any]:
-    """Send `total` requests with at most `concurrency` of them at the same time.
+    """Reference solution."""
+    slots = asyncio.Semaphore(concurrency)
 
-    Take the questions in turn (question i % len(questions) for request i). Return one item of
-    `loads` in the result file (see the docstring of the module), with the latencies of the
-    requests that succeeded.
-    """
-    raise NotImplementedError("Week 22, step 3")
+    async def limited(index: int) -> dict[str, Any]:
+        async with slots:
+            return await one_request(client, model, questions[index % len(questions)], max_tokens)
+
+    started = time.perf_counter()
+    results = await asyncio.gather(*(limited(index) for index in range(total)))
+    seconds = time.perf_counter() - started
+    ok = [result for result in results if result["ok"]]
+    latencies = [result["latency_ms"] for result in ok]
+    output_tokens = sum(result["output_tokens"] for result in ok)
+    return {
+        "concurrency": concurrency,
+        "requests": total,
+        "ok": len(ok),
+        "errors": total - len(ok),
+        "seconds": round(seconds, 3),
+        "output_tokens": output_tokens,
+        "tokens_per_second": output_tokens / seconds,
+        "requests_per_hour": len(ok) / seconds * 3600,
+        "latency_ms_p50": percentile(latencies, 0.5),
+        "latency_ms_p95": percentile(latencies, 0.95),
+    }
 
 
 async def run(args: argparse.Namespace) -> dict[str, Any]:
