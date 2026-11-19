@@ -10,9 +10,11 @@ from __future__ import annotations
 import json
 import os
 import time
+import uuid
+from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any, Callable, Iterator
 
 import httpx
 import psycopg
@@ -61,20 +63,63 @@ def services() -> None:
             )
 
 
+# The metadata key of the mark that LangfuseAPI.mark() puts on each span.
+MARK_KEY = "lab_check"
+
+
 class LangfuseAPI:
     """A small client of the Langfuse public API, for the checks."""
 
     def __init__(self) -> None:
         self.base_url = os.environ.get("LANGFUSE_BASE_URL", "http://localhost:3000").rstrip("/")
         self.auth = (os.environ.get("LANGFUSE_PUBLIC_KEY", ""), os.environ.get("LANGFUSE_SECRET_KEY", ""))
+        self._marker: Any = None
+
+    @contextmanager
+    def mark(self) -> Iterator[str]:
+        """Mark each span that starts in this process in the block, and give the mark.
+
+        The mark is a metadata value of each observation. A step that lost the current span
+        starts a new trace, but it has the mark too. A trace of a different process (an
+        earlier check run, your API, a notebook) does not have the mark, also when it starts
+        at the same time.
+        """
+        from langfuse import get_client
+        from opentelemetry import trace
+        from opentelemetry.sdk.trace import SpanProcessor
+
+        if self._marker is None:
+
+            class Marker(SpanProcessor):
+                value: str | None = None
+
+                def on_start(self, span: Any, parent_context: Any = None) -> None:
+                    if self.value:
+                        span.set_attribute(f"langfuse.observation.metadata.{MARK_KEY}", self.value)
+
+            get_client()  # Langfuse registers its tracer provider for this process.
+            self._marker = Marker()
+            trace.get_tracer_provider().add_span_processor(self._marker)
+        self._marker.value = uuid.uuid4().hex
+        try:
+            yield self._marker.value
+        finally:
+            self._marker.value = None
 
     def get(self, path: str, **params: Any) -> Any:
         response = httpx.get(f"{self.base_url}{path}", params=params, auth=self.auth, timeout=10)
         response.raise_for_status()
         return response.json()
 
-    def observations(self, since: datetime, **params: Any) -> list[dict[str, Any]]:
-        """All observations that started after `since`, with their I/O, model and usage."""
+    def observations(self, since: datetime, mark: str | None = None, **params: Any) -> list[dict[str, Any]]:
+        """All observations that started after `since`, with their I/O, model and usage.
+
+        With `mark`, only the observations that have the mark of mark().
+        """
+        if mark:
+            params["filter"] = json.dumps(
+                [{"type": "stringObject", "column": "metadata", "key": MARK_KEY, "operator": "=", "value": mark}]
+            )
         found, cursor = [], None
         while True:
             page = self.get(
@@ -92,7 +137,11 @@ class LangfuseAPI:
                 return found
 
     def wait_for(
-        self, since: datetime, ready: Callable[[list[dict[str, Any]]], bool], timeout: float = 60
+        self,
+        since: datetime,
+        ready: Callable[[list[dict[str, Any]]], bool],
+        timeout: float = 60,
+        mark: str | None = None,
     ) -> list[dict[str, Any]]:
         """Flush the traces of this process, then poll until `ready` is true or the time is over.
 
@@ -102,12 +151,12 @@ class LangfuseAPI:
 
         get_client().flush()
         deadline = time.monotonic() + timeout
-        observations = self.observations(since)
+        observations = self.observations(since, mark)
         while not ready(observations) and time.monotonic() < deadline:
             time.sleep(1)
-            observations = self.observations(since)
+            observations = self.observations(since, mark)
         time.sleep(2)  # Late observations of the same request.
-        return self.observations(since)
+        return self.observations(since, mark)
 
 
 @pytest.fixture(scope="session")

@@ -185,9 +185,9 @@ The types that this step uses are `agent`, `generation`, `tool`, `retriever` and
 5. Tracing must not break the service. Make no request to Langfuse yourself in the path of a request. The SDK sends its data in the background.
 
 <details>
-<summary>Hint: the request makes more than one trace</summary>
+<summary>Hint: the request makes more than one trace, or the trace has more than one root</summary>
 
-`answer_events()` is a generator, and Starlette runs each step of a streaming response in a worker thread with a copy of the context. A `with` block around the loop does not stay the current observation after the first `yield`, so each later step starts a new trace. The decorator `@observe()` on the generator keeps the trace across the yields. This behaviour was shown by a test in the build of this lab. It was not found as a sentence in the Langfuse docs.
+`answer_events()` is a generator, and Starlette runs each step of a streaming response in a worker thread with a copy of the context. A `with` block around the loop does not stay the current observation after the first `yield`, so each later step starts a new trace. When a tracer provider is already set at the start of the request (as in the checks), FastAPI makes a span for the request, and each later step becomes one more root of the same trace. The decorator `@observe()` on the generator keeps the trace across the yields. This behaviour was shown by a test in the build of this lab. It was not found as a sentence in the Langfuse docs.
 </details>
 
 <details>

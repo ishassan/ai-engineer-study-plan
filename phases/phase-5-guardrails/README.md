@@ -103,9 +103,9 @@ Before your work, 4 checks fail and 5 pass. The 5 that pass test what the lab gi
 | `evals/guardrails_arabic.jsonl`: `id`, `rail` (`input` or `output`), `text`, `should` (`block`, `mask` or `pass`), `result` (`blocked`, `modified` or `passed`, as the server said), `note` | your test | Week 20 checks |
 | `evals/attack_notes.jsonl`: `{"id": ..., "why": ...}` for each case that still fails in week 20, with `why` of 40 characters or more | your notes | Week 20 checks |
 
-### Checks that can fail on correct code
+### Trace checks of earlier phases
 
-Two checks of earlier phases can fail one time on correct code: the trace check of Phase 3 week 8 ("3 traces") and one check of Phase 4 week 14, each in about one run of five. When one of them fails, run it again one time before you debug.
+The trace checks of Phase 3 week 8 and Phase 4 weeks 14 and 16 read only the observations of their own request. Traces of other runs, of your API or of a notebook do not change them.
 
 ### Changes to files from earlier phases
 

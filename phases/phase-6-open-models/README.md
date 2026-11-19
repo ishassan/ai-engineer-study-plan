@@ -111,9 +111,9 @@ Before your work, 9 checks fail and 1 passes: the gateway starts with the given 
 
 The Make targets of this phase take `ROUTE=`, not `MODEL=`, because `MODEL` is the model of the attack suite of Phase 5.
 
-### Checks that can fail on correct code
+### Trace checks of earlier phases
 
-Two checks of earlier phases can fail one time on correct code: the trace check of Phase 3 week 8 and a trace check of Phase 4 week 16. In the build of this lab each failed once in some full runs and passed when it ran again. When one of them fails, run it again one time before you debug.
+The trace checks of Phase 3 week 8 and Phase 4 weeks 14 and 16 read only the observations of their own request. Traces of other runs, of your API or of a notebook do not change them.
 
 ### Changes to files from earlier phases
 

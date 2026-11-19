@@ -31,6 +31,12 @@ TOOL_CALLS = [
     ("search_documents", {"query": "definition of a road in the land transport statistics"}),
 ]
 USAGE = [{"input_tokens": 1500, "output_tokens": 120}, {"input_tokens": 2600, "output_tokens": 210}]
+LOST_SPAN = (
+    "A step that starts after a `yield` of answer_events() lost the current span. Starlette runs each step of a "
+    "streaming response in a worker thread with a copy of the context, so a `with` block around the loop does "
+    "not stay current. Use the @observe() decorator on answer_events(): it runs each step of the generator in "
+    "the context of the trace."
+)
 
 
 def returned_chunk_ids(body: dict[str, Any]) -> list[str]:
@@ -76,22 +82,27 @@ def traced(langfuse, services) -> dict[str, Any]:
     question = f"Which datasets are about crude oil, and how is a road defined? (check {token})"
     fake.script(tool_reply(*TOOL_CALLS, usage=USAGE[0]), final_answer)
     since = datetime.now(timezone.utc) - timedelta(seconds=2)
-    result = ask(make_client(app), question)
-    requests = list(fake.requests)
+    # Each span that starts in this process while the request runs gets the mark: also a step
+    # that lost the current span and started a new trace. The traces of a different process
+    # (an earlier check run, your API) do not have it, also when they start at the same time.
+    with langfuse.mark() as mark:
+        result = ask(make_client(app), question)
+        requests = list(fake.requests)
 
-    def ready(observations: list[dict[str, Any]]) -> bool:
-        kinds = [o["type"] for o in observations]
-        return kinds.count("GENERATION") >= len(requests) and kinds.count("TOOL") >= len(TOOL_CALLS)
+        def ready(observations: list[dict[str, Any]]) -> bool:
+            kinds = [o["type"] for o in observations]
+            return kinds.count("GENERATION") >= len(requests) and kinds.count("TOOL") >= len(TOOL_CALLS)
 
-    observations = langfuse.wait_for(since, ready, timeout=30)
-    roots = [o for o in observations if token in (o.get("input") or "")]
+        marked = langfuse.wait_for(since, ready, timeout=30, mark=mark)
+    roots = [o for o in marked if token in (o.get("input") or "")]
+    trace_id = roots[0]["traceId"] if roots else None
     return {
         "result": result,
         "requests": requests,
-        "observations": observations,
+        "observations": langfuse.observations(since, traceId=trace_id) if trace_id else [],
         "token": token,
-        "trace_ids": {o["traceId"] for o in observations},
-        "trace_id": roots[0]["traceId"] if roots else None,
+        "trace_ids": {o["traceId"] for o in marked},
+        "trace_id": trace_id,
     }
 
 
@@ -121,31 +132,32 @@ def test_the_request_works(traced):
 def test_one_request_is_one_trace(traced):
     of_trace(traced)
     others = traced["trace_ids"] - {traced["trace_id"]}
-    assert not others, (
-        f"The request made {len(traced['trace_ids'])} traces, and not one. A step that starts "
-        "after a `yield` of answer_events() lost the current span. Starlette runs each step of a "
-        "streaming response in a worker thread with a copy of the context, so a `with` block "
-        "around the loop does not stay current. Use the @observe() decorator on answer_events(): "
-        "it runs each step of the generator in the context of the trace."
+    assert not others, f"The request made {len(traced['trace_ids'])} traces, and not one. {LOST_SPAN}"
+    # Langfuse marks the root of a trace (isRootObservation). The root can have a parent that Langfuse
+    # does not keep: the span of the request that FastAPI makes when a tracer provider is set. A step
+    # that lost the current span can get that span as its parent: then it is a second root.
+    roots = [o for o in of_trace(traced) if o.get("isRootObservation")]
+    assert len(roots) == 1, f"The trace must have one root observation, not {len(roots)}." + (
+        f" {LOST_SPAN}" if len(roots) > 1 else ""
     )
-    roots = [o for o in of_trace(traced) if not o["parentObservationId"]]
-    assert len(roots) == 1, f"The trace must have one root observation, not {len(roots)}."
     assert traced["token"] in (roots[0].get("input") or ""), "The input of the root observation is the question."
 
 
 def test_each_step_is_inside_the_root_observation(traced):
     observations = of_trace(traced)
     by_id = {o["id"]: o for o in observations}
-    root = next(o for o in observations if not o["parentObservationId"])
+    root = next((o for o in observations if o.get("isRootObservation")), None)
+    assert root is not None, "The trace has no root observation."
     for observation in observations:
         assert observation.get("endTime"), f"The observation {observation['name']} has no end time. End each span."
         assert observation["startTime"] >= root["startTime"] and observation["endTime"] <= root["endTime"], (
             f"The observation {observation['name']} is outside the time of the root observation."
         )
-        parent = observation["parentObservationId"]
-        while parent:
+        current = observation
+        while not current.get("isRootObservation"):
+            parent = current["parentObservationId"]
             assert parent in by_id, f"The parent of {observation['name']} is not in the trace."
-            parent = by_id[parent]["parentObservationId"]
+            current = by_id[parent]
 
 
 def test_each_model_call_is_one_generation_with_model_and_tokens(traced):

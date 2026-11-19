@@ -11,7 +11,6 @@ import json
 import os
 import subprocess
 import sys
-import time
 from pathlib import Path
 from typing import Any
 
@@ -237,12 +236,6 @@ def test_the_trace_checks_of_week_8_pass_on_the_graph():
     for name in ("ANTHROPIC_BASE_URL", "OPENAI_BASE_URL", "ANTHROPIC_API_KEY", "OPENAI_API_KEY"):
         env.pop(name, None)  # The new process starts its own fake APIs.
     check = REPO / "phases" / "phase-3-evaluation" / "checks" / "test_week8.py"
-    # The week 8 checks read each observation of the last seconds. Send the traces of the
-    # earlier checks of this process first, and wait, so that they are not in that window.
-    from langfuse import get_client
-
-    get_client().flush()
-    time.sleep(5)
     process = subprocess.run(
         [sys.executable, "-m", "pytest", str(check), "-q", "-p", "no:cacheprovider"],
         cwd=REPO, env=env, capture_output=True, text=True, timeout=600,

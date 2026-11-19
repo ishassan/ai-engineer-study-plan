@@ -126,14 +126,9 @@ These contracts are also fixed:
 - **An approval.** When the graph pauses, the stream of `/ask` sends one `approval` event for each call that needs an approval, as `{"name": "register_dataset", "input": {...}}` (the same keys as the `tool` event), and ends with `done`. The approver is the header `X-User` of `POST /approve`. A refusal goes back to the model as the tool result of the call, and the result and the audit row hold one of the words "refus", "reject", "denied", "declin" or "not approved" (any case).
 - **A task** is one JSON line with `id`, `task`, `expected_result` (`dataset_ids`, `contains`) and `expected_tools` (each `{"name"}` or `{"name", "args"}`).
 
-### Checks that can fail on correct code
+### Trace checks and other runs
 
-Two checks can fail one time on correct code:
-
-- **The trace check of week 8** ("The request made 3 traces", or more traces than 1). The week 8 checks read each observation of the last seconds, and traces of earlier checks can still be in that window. The week 14 and week 16 checks run the week 8 checks in a new process, so the same can happen there.
-- **A week 14 check.** In the review of the finished code, a week 14 check failed in one run of five, and the next four runs passed.
-
-When one of these checks fails, run it again one time before you debug. If it fails again, read its message.
+The trace checks of week 8 put a mark on each span that starts in the check process while the request runs. They find the traces of the request by this mark. So traces of earlier checks, of your API or of a notebook do not change the result, also when they start at the same time. The week 14 and week 16 checks run the week 8 checks in a new process, and the mark works the same way there.
 
 ### Changes to files from earlier phases
 
