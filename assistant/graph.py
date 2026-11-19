@@ -1,15 +1,19 @@
-"""Reference solution: the graph with a checkpointer, approval and an audit log."""
+"""Reference solution: the graph with a checkpointer, approval, an audit log and MCP tools."""
 
 from __future__ import annotations
 
+import asyncio
 import json
 import time
 import uuid
+from functools import lru_cache
 from typing import Annotated, Any, Iterator, TypedDict
 
+from langchain_core.tools import BaseTool, ToolException
 from langchain_core.messages import AIMessage, AnyMessage, HumanMessage, RemoveMessage, ToolMessage
 from langfuse import get_client, observe
 from langfuse.langchain import CallbackHandler
+from langchain_mcp_adapters.client import MultiServerMCPClient
 from langgraph.config import get_stream_writer
 from langgraph.graph import END, START, StateGraph
 from langgraph.graph.message import REMOVE_ALL_MESSAGES, add_messages
@@ -18,7 +22,6 @@ from psycopg.types.json import Jsonb
 from pydantic import BaseModel, Field, ValidationError
 
 from assistant import conversations, memory, planner
-from assistant import tools as local_tools
 from assistant.agent import SYSTEM_PROMPT
 from assistant.config import get_settings
 from assistant.db import connect
@@ -85,15 +88,47 @@ def _system(state: State):
 # ---- the tools --------------------------------------------------------------------------------
 
 
+# The tools of the two MCP servers. The graph runs synchronously and the adapter tools are
+# async only, so each call runs in its own event loop (asyncio.run). The client opens a new
+# MCP session for each call.
+LOCAL_TOOLS = {"search_documents", "save_memory"}
+
+
+@lru_cache
+def _mcp_tools(sql_url: str, catalogue_url: str) -> dict[str, BaseTool]:
+    client = MultiServerMCPClient({
+        "sql": {"url": sql_url, "transport": "streamable_http"},
+        "catalogue": {"url": catalogue_url, "transport": "streamable_http"},
+    })
+    return {tool.name: tool for tool in asyncio.run(client.get_tools())}
+
+
+def mcp_tools() -> dict[str, BaseTool]:
+    settings = get_settings()
+    return _mcp_tools(settings.mcp_sql_url, settings.mcp_catalogue_url)
+
+
 def tool_definitions() -> list[Any]:
-    return [*TOOLS, local_tools.REGISTER_DATASET]
+    return [*(tool for tool in TOOLS if tool["name"] in LOCAL_TOOLS), *mcp_tools().values()]
 
 
 def call_tool(call: dict[str, Any], state: State) -> str:
     """Run one tool call and return the text for the model. Raise an exception for an error."""
-    if call["name"] == "register_dataset":
-        return json.dumps(local_tools.register_dataset(**call["args"]))
-    return run_tool(call["name"], call["args"], state["user"], state.get("conversation_id"))
+    if call["name"] in LOCAL_TOOLS:
+        return run_tool(call["name"], call["args"], state["user"], state.get("conversation_id"))
+    tool = mcp_tools().get(call["name"])
+    if tool is None:
+        raise ValueError(f"Unknown tool: {call['name']}")
+    # An adapter tool is a LangChain tool: with the callbacks of the run it makes its own tool
+    # observation in Langfuse, next to the one of run_tools. No callbacks here.
+    tool_call = {"name": call["name"], "args": call["args"], "id": call["id"], "type": "tool_call"}
+    message = asyncio.run(tool.ainvoke(tool_call, config={"callbacks": []}))
+    text = message.content if isinstance(message.content, str) else "".join(
+        block.get("text", "") for block in message.content if isinstance(block, dict)
+    )
+    if message.status == "error":
+        raise ToolException(text)
+    return text
 
 
 def audit(state: State, call: dict[str, Any], result: str, approval: str, approver: str | None) -> None:
