@@ -1,65 +1,35 @@
-# Title of your write-up
-
-<!--
-Template of week 27: the public write-up of the project. Replace the title with one that names
-the subject, for example "A governed data assistant in English and Arabic, with its test scores".
-Write each section in your own words. The text in these comments is guidance, and the checks do
-not count it: a section that holds only comments is not written yet. Delete each comment when the
-section is complete.
-
-The reader is an engineer or a hiring manager who has five minutes. Lead with what the system
-does and what you measured. Keep employer data and personal data out of this file.
--->
+# A governed data assistant in English and Arabic, with its test scores
 
 ## The problem
 
-<!--
-Which problem the assistant solves, and for whom: questions about the datasets and documents of
-an organisation, governed SQL, and catalogue changes with approval. Why a plain search page or a
-plain chat model is not enough.
--->
+Analysts spend time to find the right dataset, read the report that defines a number, and write SQL on tables that they may or may not read. A plain search page does not join these steps. A plain chat model answers without sources and without permissions.
 
 ## What I built
 
-<!--
-The parts of the system and the main choice of each, in a few short paragraphs or a list. Link to
-docs/architecture.md for the full reasons. One diagram is enough.
--->
+An agent that answers questions about 50 public datasets and their reports, in English and Arabic. It searches with hybrid search and a re-ranker, runs read-only SQL through MCP tool servers that apply the permissions of each user, and asks a person to approve each catalogue change. Every request is traced in Langfuse, and a test suite and an attack suite run on each pull request. The full reasons for each choice are in docs/architecture.md.
 
 ## Numbers
 
-<!--
-The numbers of the capstone list, from your own runs. Value: the number. Source: the path of the
-result file in the repository, in backticks. `make numbers ARGS=--markdown` prints these rows.
-The week 27 check reads this table: each row must have a value and a source file that exists.
--->
-
 | Number | Value | Source |
 | --- | --- | --- |
-| Test set size | | |
-| Task success rate on the test set | | |
-| Retrieval recall, English | | |
-| Retrieval recall, Arabic | | |
-| Groundedness score | | |
-| Grader agreement with your labels | | |
-| Attack-suite pass rate | | |
-| 95th-percentile latency | | |
-| Cost per request | | |
-| Hosted against self-hosted model: quality | | |
-| Hosted against self-hosted model: latency | | |
-| Hosted against self-hosted model: cost | | |
+| Test set size | 105 cases (55 English, 50 Arabic) | `evals/testset.jsonl` |
+| Task success rate on the test set | 72.4% (76 of 105 cases, code_pass) | `evals/results/testset-20261118-090000.jsonl` |
+| Retrieval recall, English | vector 0.84, hybrid 0.84, rerank 0.96 (recall@5, 25 questions) | `evals/results/recall.json` |
+| Retrieval recall, Arabic | vector 0.88, hybrid 0.76, rerank 0.96 (recall@5, 25 questions) | `evals/results/recall.json` |
+| Groundedness score | 68.0% (34 of 50 document answers) | `evals/results/testset-20261118-090000.jsonl` |
+| Grader agreement with your labels | true positive rate 0.94, true negative rate 1.00 (50 labels) | `evals/grader_agreement.json` |
+| Attack-suite pass rate | 93.3% (28 of 30 attacks, model obedient) | `evals/results/attacks-week20.json` |
+| 95th-percentile latency | 2.06 s (over 105 requests) | `evals/results/testset-20261118-090000.jsonl` |
+| Cost per request | $0.00044 (mean of 105 requests) | `evals/results/testset-20261118-090000.jsonl` |
+| Hosted against self-hosted model: quality | claude-haiku-5-5 0.371, qwen3-8b-arabic 0.457, qwen3-8b-awq 0.4, qwen3-8b 0.381 | `evals/results/model_comparison.csv` |
+| Hosted against self-hosted model: latency | claude-haiku-5-5 54.9 ms p95, qwen3-8b-arabic 119.5 ms p95, qwen3-8b-awq 119.5 ms p95, qwen3-8b 125.0 ms p95 | `evals/results/model_comparison.csv` |
+| Hosted against self-hosted model: cost | claude-haiku-5-5 $0.0494 per 1,000 requests, qwen3-8b-arabic $0.0038 per 1,000 requests, qwen3-8b-awq $0.0029 per 1,000 requests, qwen3-8b $0.0034 per 1,000 requests | `evals/results/model_comparison.csv` |
 
 ## What did not work
 
-<!--
-Two or three things that failed or surprised you, what the traces or the scores showed, and what
-you changed. Readers learn the most from this section, and it shows how you work.
--->
+- The first grader passed almost every answer. The traces showed that the rubric did not say what a search before the answer is. Two examples in the rubric fixed it.
+- The guardrails did not stop the attacks in poisoned documents. The defence that worked was the permissions of the tool servers and the approval step.
 
 ## Run it yourself
 
-<!--
-The link to the public repository (the full https address, for example
-https://github.com/<your account>/<repository>), the commands to start it, and what a reader needs:
-Docker, the keys, the disk. The week 27 check looks for this link in the write-up.
--->
+The code and the result files are in the repository https://github.com/ishassan/ai-engineer-study-plan. You need Docker, about 20 GB of disk, and a Claude API key for the live runs. Start with `make up`, then `make ask Q="Which datasets are about crude oil?"`.
