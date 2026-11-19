@@ -1,0 +1,30 @@
+{"id": "q01", "question": "Which dataset has the crude oil production of Saudi Arabia?", "expected_dataset_ids": ["saudi-crude-oil-production-from-sama-annual-statistics-2015-dec"], "quick": true}
+{"id": "q02", "question": "I want to compare the value and the weight of imports by the nature of the items. Which datasets do I need?", "expected_dataset_ids": ["imports-value-by-nature-of-items", "imports-weight-by-nature-of-items"]}
+{"id": "q03", "question": "How many records does the dataset about freight among railway stations have, and when was it last updated?", "expected_dataset_ids": ["freight-among-railway-stations-2004-2008-ad"], "quick": true}
+{"id": "q04", "question": "Which datasets tell me about the use of solar energy in homes in Saudi Arabia?", "expected_dataset_ids": ["percentage-of-households-who-are-willing-to-use-solar-energy-in-their-houses-by-", "percentage-of-housing-units-which-use-solar-energy-in-the-administrative-region"], "quick": true}
+{"id": "q05", "question": "Is there a dataset about cement?", "expected_dataset_ids": ["cement-production-and-sales"]}
+{"id": "q06", "question": "What columns does the dataset on electricity consumption by sectors have?", "expected_dataset_ids": ["electricity-consumption-by-sectors"], "quick": true}
+{"id": "q07", "question": "Which dataset has the number of earthquakes or seismic tremors?", "expected_dataset_ids": ["orcyinfnumber-of-seismic-tremors-observed-by-seismic-monitoring-devices-of-saudi"]}
+{"id": "q08", "question": "Where can I find how much water each person uses in each region?", "expected_dataset_ids": ["per_capita_average_water_use_in_saudi_regions"]}
+{"id": "q09", "question": "Which datasets cover water desalination?", "expected_dataset_ids": ["quantity-of-water-desalinated-by-desalination-plants-in-000m2-1999-2013", "desalinated-water-percentage-of-total-usable-freshwater"]}
+{"id": "q10", "question": "Which dataset gives the number of vehicles that arrive in Makkah for Hajj?", "expected_dataset_ids": ["number-of-arriving-vehicles-to-makkah-by-type-of-vehicle"]}
+{"id": "q11", "question": "Who owns the dataset on fuel prices paid by electricity producers?", "expected_dataset_ids": ["comparisons-of-fuel-prices-paid-by-the-electricity-producers-in-the-kingdom-with"]}
+{"id": "q12", "question": "Which datasets have the world production of oil and the world demand for oil?", "expected_dataset_ids": ["world-oil-production", "average-world-demand-for-oil-2005-2014"], "quick": true}
+{"id": "q13", "question": "Which dataset has passenger and cargo traffic at domestic airports?", "expected_dataset_ids": ["saudi-aircraft-traffic-passengercargo-by-domestic-airports-in-2008-and-2009"]}
+{"id": "q14", "question": "I need data on ships that arrive at Saudi ports. Which dataset has it, and what fields does it have?", "expected_dataset_ids": ["ships-arriving-at-saudi-ports-by-country-of-registration-and-port-2008-ad"]}
+{"id": "q15", "question": "Which dataset has household waste per person?", "expected_dataset_ids": ["waste_production_rate_per_individual_en_0"]}
+{"id": "q16", "question": "Which datasets are about protected areas or nature reserves?", "expected_dataset_ids": ["increase-percentage-of-the-surface-area-of-the-protected-areas", "total-nature-reserves-area-per-year-1986-2018"]}
+{"id": "q17", "question": "Is there data on real estate price indices by region?", "expected_dataset_ids": ["real-estate-indices-by-regions"]}
+{"id": "q18", "question": "Which dataset shows the population by gender, age group and nationality?", "expected_dataset_ids": ["population-by-gender-age-nationality-saudinon-saudi"]}
+{"id": "q19", "question": "Which dataset has the peak load and installed generation capacity by region?", "expected_dataset_ids": ["installed-generation-capacity-peak-load-in-mw-by-region-for-2014"]}
+{"id": "q20", "question": "Which dataset is the largest one about households, by number of records?", "expected_dataset_ids": ["household-environment-statistics"]}
+{"id": "q21", "question": "Which datasets cover the costs of solar photovoltaic systems?", "expected_dataset_ids": ["gcc-solar-photovoltaic-regional-costs-1983-2015", "solor-pv-dataset"]}
+{"id": "q22", "question": "Which dataset has the share of nuclear energy in total energy consumption?", "expected_dataset_ids": ["world-nuclear-energy-share-in-total-energy-consumption-2005-2014"]}
+{"id": "q23", "question": "What is the update frequency of the dataset on Saudi Aramco production of natural gas liquids?", "expected_dataset_ids": ["saudi-aramco-production-of-natural-gas-liquids"]}
+{"id": "q24", "question": "Which dataset has the length of roads that were constructed?", "expected_dataset_ids": ["lengths-of-roads-constructed-up-till-end-of-2007-2009-ad-in-kilometres"]}
+{"id": "q25", "question": "Which datasets describe operating industrial units: their number and their finance?", "expected_dataset_ids": ["number-of-operating-industrial-units", "total-finance-of-operating-industrial-units"]}
+{"id": "q26", "question": "Which dataset has the cargo unloaded in the main commercial ports?", "expected_dataset_ids": ["cargo-unloaded-in-the-main-commercial-ports-of-the-kingdom-1999-2008-ad-in-tons"]}
+{"id": "q27", "question": "Which dataset has the number of weather stations that reached 40 degrees or more?", "expected_dataset_ids": ["number-of-stations-that-equal-or-exceed-temperatures-of-40-degrees"]}
+{"id": "q28", "question": "Which dataset has natural gas sales by station?", "expected_dataset_ids": ["gas-sales-by-region-2001-2013"]}
+{"id": "q29", "question": "Which dataset has drinking water consumption by region, and how many columns does it have?", "expected_dataset_ids": ["the-amount-of-drinking-water-consumption-of-areas-from-all-sources-2014"]}
+{"id": "q30", "question": "Which dataset has the number of electricity subscribers by branch of the Saudi Electricity Company?", "expected_dataset_ids": ["number-of-subscribers-by-branches-of-the-saudi-electricity-company-and-type-of-c"]}
