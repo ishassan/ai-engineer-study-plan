@@ -1,22 +1,16 @@
-"""The grader model: a pass or fail judgement for one failure category. Week 10.
-
-The grader reads one output of the assistant (a row of the result file of `make testset`)
-and decides if it shows the failure of your largest category. Its rubric is the file
-evals/rubric.md.
-
-Run it on your 50 labelled outputs in the notebook
-phases/phase-3-evaluation/notebooks/grader_agreement.ipynb.
-"""
+"""Reference solution."""
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Any
 
+from anthropic import transform_schema
 from pydantic import BaseModel, Field
 
-from assistant.config import get_settings  # noqa: F401 (you will use it)
-from assistant.llm import call_claude  # noqa: F401 (you will use it)
+from assistant.config import get_settings
+from assistant.llm import call_claude
 
 ROOT = Path(__file__).resolve().parent.parent
 RUBRIC_PATH = ROOT / "evals" / "rubric.md"
@@ -30,35 +24,39 @@ class Verdict(BaseModel):
 
 
 def grade(example: dict[str, Any]) -> Verdict:
-    """Grade one output with Claude and return the verdict. Week 10, step 2.
-
-    `example` is one row of the result file of `make testset`, with the keys question,
-    answer, dataset_ids, citations, cited_passages and tools. Use the keys that your
-    rubric needs.
-
-    Send one request with call_claude():
-    - the rubric (the text of RUBRIC_PATH) in the system prompt,
-    - the parts of the example that the rubric needs in the user message,
-    - the JSON schema of Verdict in output_config, as the agent does with Answer.
-
-    Validate the text of the response with Verdict.model_validate_json().
-    """
-    raise NotImplementedError("Week 10, step 2")
+    settings = get_settings()
+    shown = {
+        "question": example.get("question"),
+        "tool_calls": [{"name": t.get("name"), "input": t.get("input")} for t in example.get("tools", [])],
+        "answer": example.get("answer"),
+        "dataset_ids": example.get("dataset_ids", []),
+        "citations": example.get("citations", []),
+    }
+    request = {
+        "model": settings.model,
+        "max_tokens": settings.max_tokens,
+        "system": [{"type": "text", "text": RUBRIC_PATH.read_text(encoding="utf-8")}],
+        "messages": [
+            {
+                "role": "user",
+                "content": "Grade this output of the assistant with the rubric.\n\n"
+                + json.dumps(shown, ensure_ascii=False, indent=1),
+            }
+        ],
+        "output_config": {"format": {"type": "json_schema", "schema": transform_schema(Verdict)}},
+    }
+    result = call_claude(request)
+    text = "".join(block.text for block in result.message.content if block.type == "text")
+    return Verdict.model_validate_json(text)
 
 
 def agreement_rates(labels: list[bool], verdicts: list[bool]) -> tuple[float, float]:
-    """Return (true positive rate, true negative rate) of the grader. Week 10, step 3.
-
-    Each item of `labels` is your label of one output, and the item at the same position of
-    `verdicts` is the decision of the grader. True means "passed", False means "failed".
-
-    A positive is a failure:
-    - true positive rate: of the outputs that you labelled as failed, the share that the
-      grader also failed,
-    - true negative rate: of the outputs that you labelled as passed, the share that the
-      grader also passed.
-
-    Raise ValueError when the two lists have different lengths, or when the labels have no
-    failure or no pass (then one of the rates has no meaning).
-    """
-    raise NotImplementedError("Week 10, step 3")
+    if len(labels) != len(verdicts):
+        raise ValueError(f"{len(labels)} labels and {len(verdicts)} verdicts")
+    failed = [verdict for label, verdict in zip(labels, verdicts) if not label]
+    passed = [verdict for label, verdict in zip(labels, verdicts) if label]
+    if not failed or not passed:
+        raise ValueError("The labels need at least one failure and one pass.")
+    true_positive_rate = sum(not verdict for verdict in failed) / len(failed)
+    true_negative_rate = sum(verdict for verdict in passed) / len(passed)
+    return true_positive_rate, true_negative_rate

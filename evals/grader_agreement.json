@@ -1,0 +1,307 @@
+{
+ "rubric": "# Rubric of the grader\n\n## The failure category\n\n\"no search before the answer\": the assistant answers a question about the catalogue from its own knowledge. It calls no tool, so the answer has no dataset ID, or an ID that no tool returned.\n\n## Pass\n\nThe output passes when all of these are true:\n\n- The tool calls hold at least one search (search_datasets or search_documents) before the answer.\n- Each dataset ID in dataset_ids comes from a search result that the answer is about.\n- When no dataset fits the question, the answer says so, after a search.\n\n## Fail\n\nThe output fails when one of these is true:\n\n- The tool calls are empty, and the answer names a dataset, a number or a definition.\n- The answer names a dataset ID, and no tool call could have returned it.\n\n## Examples\n\n1. Question: \"Which dataset has the crude oil production of Saudi Arabia?\" Tool calls: search_datasets with \"crude oil production\". Answer names \"saudi-crude-oil-production-from-sama-annual-statistics-2015-dec\". Decision: pass. Reason: the search came first, and the ID is a result of it.\n2. Question: \"Is there a dataset about cement?\" Tool calls: none. Answer: \"No, the catalogue has no dataset about cement.\" Decision: fail. Reason: the answer is about the catalogue, and the assistant did not search.\n3. Question: \"What columns does the dataset on electricity consumption by sectors have?\" Tool calls: search_datasets, then get_dataset_schema. Answer lists the columns. Decision: pass. Reason: both tools came before the answer.\n4. Question: \"Which datasets cover water desalination?\" Tool calls: none. Answer names two datasets with IDs. Decision: fail. Reason: the IDs come from no tool result.\n",
+ "true_positive_rate": 0.9411764705882353,
+ "true_negative_rate": 1.0,
+ "rows": [
+  {
+   "id": "t001",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t002",
+   "label": "fail",
+   "grader": "fail",
+   "reasoning": "No tool call before the answer."
+  },
+  {
+   "id": "t003",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t004",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t005",
+   "label": "fail",
+   "grader": "fail",
+   "reasoning": "No tool call before the answer."
+  },
+  {
+   "id": "t006",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t007",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t008",
+   "label": "fail",
+   "grader": "fail",
+   "reasoning": "No tool call before the answer."
+  },
+  {
+   "id": "t009",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t010",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t011",
+   "label": "fail",
+   "grader": "fail",
+   "reasoning": "No tool call before the answer."
+  },
+  {
+   "id": "t012",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t013",
+   "label": "fail",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t014",
+   "label": "fail",
+   "grader": "fail",
+   "reasoning": "No tool call before the answer."
+  },
+  {
+   "id": "t015",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t016",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t017",
+   "label": "fail",
+   "grader": "fail",
+   "reasoning": "No tool call before the answer."
+  },
+  {
+   "id": "t018",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t019",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t020",
+   "label": "fail",
+   "grader": "fail",
+   "reasoning": "No tool call before the answer."
+  },
+  {
+   "id": "t021",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t022",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t023",
+   "label": "fail",
+   "grader": "fail",
+   "reasoning": "No tool call before the answer."
+  },
+  {
+   "id": "t024",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t025",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t026",
+   "label": "fail",
+   "grader": "fail",
+   "reasoning": "No tool call before the answer."
+  },
+  {
+   "id": "t027",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t028",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t029",
+   "label": "fail",
+   "grader": "fail",
+   "reasoning": "No tool call before the answer."
+  },
+  {
+   "id": "t030",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t081",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t082",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t083",
+   "label": "fail",
+   "grader": "fail",
+   "reasoning": "No tool call before the answer."
+  },
+  {
+   "id": "t084",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t085",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t086",
+   "label": "fail",
+   "grader": "fail",
+   "reasoning": "No tool call before the answer."
+  },
+  {
+   "id": "t087",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t088",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t089",
+   "label": "fail",
+   "grader": "fail",
+   "reasoning": "No tool call before the answer."
+  },
+  {
+   "id": "t090",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t091",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t092",
+   "label": "fail",
+   "grader": "fail",
+   "reasoning": "No tool call before the answer."
+  },
+  {
+   "id": "t093",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t094",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t095",
+   "label": "fail",
+   "grader": "fail",
+   "reasoning": "No tool call before the answer."
+  },
+  {
+   "id": "t096",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t097",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t098",
+   "label": "fail",
+   "grader": "fail",
+   "reasoning": "No tool call before the answer."
+  },
+  {
+   "id": "t099",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  },
+  {
+   "id": "t100",
+   "label": "pass",
+   "grader": "pass",
+   "reasoning": "A search came first."
+  }
+ ]
+}
