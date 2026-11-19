@@ -36,12 +36,12 @@ jobs:
       RESPONSE_CACHE: "off"
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       # Week 17: the image of the MCP servers needs the packages of phase 4.
-      UV_GROUPS: --group phase1 --group phase2 --group phase3 --group phase4
+      UV_GROUPS: --group phase1 --group phase2 --group phase3 --group phase4 --group phase5
     steps:
       - uses: actions/checkout@v6
 
-      - name: Turn on the packages and services of phases 1 to 4
-        run: printf '1\n2\n3\n4\n' > .lab-phases
+      - name: Turn on the packages and services of phases 1 to 5
+        run: printf '1\n2\n3\n4\n5\n' > .lab-phases
 
       # The first run downloads the two models (4.6 GB) and saves them in the cache. A cache
       # that a pull request saves is only for that pull request. To fill the cache for all pull
@@ -67,7 +67,7 @@ jobs:
       - uses: astral-sh/setup-uv@v10.3.3
 
       - name: Install the Python packages
-        run: uv sync --group phase1 --group phase2 --group phase3 --group phase4
+        run: uv sync --group phase1 --group phase2 --group phase3 --group phase4 --group phase5
 
       - name: Create the tables, load the catalogue, restore the chunks
         run: |
@@ -83,3 +83,21 @@ jobs:
       - name: Run the agent tasks
         if: ${{ !cancelled() }}
         run: make agent-eval ARGS="--min-result 0.8 --min-path 0.8"
+
+      # Week 18: the attack suite with the obedient model of labkit (offline, no API key). A
+      # successful attack is a result, not an error of the run: the step fails only when the
+      # suite cannot run. The result file is kept with the run.
+      - name: Load the poisoned documents and datasets
+        if: ${{ !cancelled() }}
+        run: make poison
+
+      - name: Run the attack suite
+        if: ${{ !cancelled() }}
+        run: make attacks MODEL=obedient LABEL=ci ARGS="-rf"
+
+      - name: Keep the result file of the attack suite
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: attack-results
+          path: evals/results/attacks-ci.json

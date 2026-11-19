@@ -1,7 +1,7 @@
 """Settings of the service. Each setting comes from an environment variable.
 
-This is the Phase 4 copy of the file. It adds the settings of weeks 12 to 16 and the
-prices of the OpenAI model.
+This is the Phase 5 copy of the file. It adds the settings of weeks 19 and 20 (sign-in and
+the guardrails server) to the Phase 4 copy.
 
 Call get_settings() each time you need a value. Do not keep the result in a
 module-level constant: the checks change the environment between tests.
@@ -60,6 +60,17 @@ class Settings:
     sql_database_url: str
     sql_row_limit: int
     sql_timeout_seconds: float
+    # Phase 5
+    auth_issuer: str
+    auth_metadata_url: str
+    auth_client_id: str
+    auth_client_secret: str
+    auth_scope: str
+    api_audience: str
+    mcp_sql_audience: str
+    mcp_catalogue_audience: str
+    guardrails_url: str
+    guardrails_config_id: str
 
 
 def _choice(name: str, default: str, allowed: tuple[str, ...]) -> str:
@@ -71,6 +82,7 @@ def _choice(name: str, default: str, allowed: tuple[str, ...]) -> str:
 
 def get_settings() -> Settings:
     env = os.environ
+    issuer = env.get("AUTH_ISSUER", "http://localhost:8180/realms/lab").rstrip("/")
     return Settings(
         database_url=env.get(
             "DATABASE_URL", "postgresql://assistant:assistant@localhost:5432/assistant"
@@ -105,4 +117,21 @@ def get_settings() -> Settings:
         ),
         sql_row_limit=int(env.get("SQL_ROW_LIMIT", "200")),
         sql_timeout_seconds=float(env.get("SQL_TIMEOUT_SECONDS", "5")),
+        # Week 19: the authorization server (Keycloak, realm `lab`). AUTH_ISSUER is the exact
+        # `iss` of its tokens. AUTH_METADATA_URL is where a server reads the metadata (and from
+        # it the signing keys); inside Docker it can name another host than the issuer.
+        auth_issuer=issuer,
+        auth_metadata_url=env.get("AUTH_METADATA_URL", f"{issuer}/.well-known/openid-configuration"),
+        # Week 19: the client of the jobs that run without a person (make testset, make
+        # agent-eval). It gets a token with the client credentials grant.
+        auth_client_id=env.get("AUTH_CLIENT_ID", "assistant-service"),
+        auth_client_secret=env.get("AUTH_CLIENT_SECRET", "assistant-service-secret"),
+        # Week 19: the scope that each server requires, and the audience that each one accepts.
+        auth_scope=env.get("AUTH_SCOPE", "mcp:tools"),
+        api_audience=env.get("API_AUDIENCE", "assistant-api"),
+        mcp_sql_audience=env.get("MCP_SQL_AUDIENCE", "mcp-sql"),
+        mcp_catalogue_audience=env.get("MCP_CATALOGUE_AUDIENCE", "mcp-catalogue"),
+        # Week 20: the NeMo Guardrails server. Empty: the API makes no input and output checks.
+        guardrails_url=env.get("GUARDRAILS_URL", "").rstrip("/"),
+        guardrails_config_id=env.get("GUARDRAILS_CONFIG_ID", "assistant"),
     )
