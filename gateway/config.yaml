@@ -1,4 +1,4 @@
-# Reference solution: the gateway at the end of week 23.
+# Reference solution: the gateway at the end of week 25.
 model_list:
   - model_name: claude-haiku-5-5
     litellm_params:
@@ -29,6 +29,15 @@ model_list:
   - model_name: qwen3-8b-awq
     litellm_params:
       model: hosted_vllm/Qwen/Qwen3-8B-AWQ
+      api_base: os.environ/VLLM_API_BASE
+      api_key: os.environ/VLLM_API_KEY
+      input_cost_per_token: 0
+      output_cost_per_token: 0
+  # Week 25: the LoRA adapter beside the base model. vLLM serves it under the name of its
+  # --lora-modules flag.
+  - model_name: qwen3-8b-arabic
+    litellm_params:
+      model: hosted_vllm/arabic-catalogue
       api_base: os.environ/VLLM_API_BASE
       api_key: os.environ/VLLM_API_KEY
       input_cost_per_token: 0

@@ -1,4 +1,5 @@
 model,cases,quality,latency_ms_p50,latency_ms_p95,gpu_memory_gib,cost_per_1000_requests,cost_basis
-claude-haiku-5-5,105,0.371,37.8,54.9,,,evals/model_costs.py is not written yet
-qwen3-8b-awq,105,0.4,102.0,119.5,8.0,,evals/model_costs.py is not written yet
-qwen3-8b,105,0.381,103.0,125.0,20.0,,evals/model_costs.py is not written yet
+claude-haiku-5-5,105,0.371,37.8,54.9,,0.0494,tokens
+qwen3-8b-arabic,105,0.457,102.3,119.5,20.5,0.0038,GPU hour
+qwen3-8b-awq,105,0.4,102.0,119.5,8.0,0.0029,GPU hour
+qwen3-8b,105,0.381,103.0,125.0,20.0,0.0034,GPU hour

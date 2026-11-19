@@ -1,4 +1,6 @@
-"""Train a LoRA adapter of Qwen3-8B on data/train.jsonl with the SFT trainer of TRL. Week 25.
+"""Reference solution.
+
+Train a LoRA adapter of Qwen3-8B on data/train.jsonl with the SFT trainer of TRL. Week 25.
 
 On the pod (one 48 GB GPU, in the folder of the repository):
 
@@ -63,7 +65,15 @@ def lora_config():
     model (task_type). vLLM serves an adapter up to rank 16 by default (--max-lora-rank). The
     smoke model has the same module names as Qwen3-8B.
     """
-    raise NotImplementedError("Week 25, step 2")
+    from peft import LoraConfig
+
+    return LoraConfig(
+        r=16,
+        lora_alpha=32,
+        lora_dropout=0.05,
+        target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
+        task_type="CAUSAL_LM",
+    )
 
 
 def train(model: str, dataset, output: Path, smoke: bool) -> None:
@@ -73,7 +83,12 @@ def train(model: str, dataset, output: Path, smoke: bool) -> None:
     settings of training_config(). With LoRA settings, the trainer trains and saves only the adapter
     (trainer.save_model).
     """
-    raise NotImplementedError("Week 25, step 2")
+    from trl import SFTTrainer
+
+    trainer = SFTTrainer(model=model, train_dataset=dataset, peft_config=lora_config(),
+                         args=training_config(output, smoke))
+    trainer.train()
+    trainer.save_model(str(output))
 
 
 def main() -> None:
