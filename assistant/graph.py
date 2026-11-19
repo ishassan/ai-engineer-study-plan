@@ -1,4 +1,5 @@
 """Reference solution: the graph of Phase 4 with the token of the user (week 19)
+and the user on each model call for the budgets of the gateway (Phase 6, week 21)
 and the design pattern of week 20 (approval of the risky tools after untrusted content)."""
 
 from __future__ import annotations
@@ -195,7 +196,7 @@ def prepare(state: State) -> dict[str, Any]:
 
 
 def write_plan(state: State) -> dict[str, Any]:
-    model = chat_model().with_structured_output(Plan, include_raw=True)
+    model = chat_model(user=state["user"]).with_structured_output(Plan, include_raw=True)
     out = model.invoke([system_message([planner.PLANNER_PROMPT.format(tools=planner.tool_list())]),
                         HumanMessage(state["question"])])
     plan = out["parsed"]
@@ -213,7 +214,7 @@ def change_plan(state: State) -> dict[str, Any]:
         tool_input=failed["input"],
         error=failed["error"],
     )
-    model = chat_model().with_structured_output(Plan, include_raw=True)
+    model = chat_model(user=state["user"]).with_structured_output(Plan, include_raw=True)
     out = model.invoke([system_message([planner.PLANNER_PROMPT.format(tools=planner.tool_list())]), HumanMessage(text)])
     plan = out["parsed"]
     get_stream_writer()(("plan", {"steps": plan.steps}))
@@ -222,7 +223,7 @@ def change_plan(state: State) -> dict[str, Any]:
 
 
 def call_model(state: State) -> dict[str, Any]:
-    model = chat_model().bind_tools(tool_definitions(), response_format=GraphAnswer)
+    model = chat_model(user=state["user"]).bind_tools(tool_definitions(), response_format=GraphAnswer)
     reply = model.invoke([_system(state), *state["messages"]])
     return {"messages": [reply], "usage": [*state["usage"], usage_of(reply)], "turns": state["turns"] + 1}
 
@@ -322,7 +323,7 @@ def save(state: State) -> dict[str, Any]:
     size = sum(last.get(key, 0) for key in ("input_tokens", "output_tokens", "cache_creation_input_tokens", "cache_read_input_tokens"))
     if size < get_settings().compact_at_tokens:
         return {}
-    summary = chat_model().invoke([system_message([memory.SUMMARY_PROMPT]), HumanMessage(_transcript(state["messages"]))])
+    summary = chat_model(user=state["user"]).invoke([system_message([memory.SUMMARY_PROMPT]), HumanMessage(_transcript(state["messages"]))])
     return {
         "messages": [
             RemoveMessage(id=REMOVE_ALL_MESSAGES),

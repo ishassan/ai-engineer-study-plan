@@ -1,0 +1,29 @@
+# Reference solution: the gateway at the end of week 21.
+model_list:
+  - model_name: claude-haiku-5-5
+    litellm_params:
+      model: anthropic/claude-haiku-5-5
+      api_key: os.environ/ANTHROPIC_API_KEY
+      # US dollars for one token: the prices of config.py divided by one million.
+      input_cost_per_token: 0.0000001
+      output_cost_per_token: 0.0000005
+      cache_creation_input_token_cost: 0.000000125
+      cache_read_input_token_cost: 0.00000001
+  - model_name: gpt-6-luna
+    litellm_params:
+      model: openai/gpt-6-luna
+      api_key: os.environ/OPENAI_API_KEY
+      input_cost_per_token: 0.0000001
+      output_cost_per_token: 0.0000005
+      cache_read_input_token_cost: 0.00000001
+
+router_settings:
+  fallbacks: [{"claude-haiku-5-5": ["gpt-6-luna"]}]
+
+litellm_settings:
+  # Each user without a budget of their own gets the budget "per-user" (POST /budget/new).
+  max_end_user_budget_id: per-user
+
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY
+  database_url: os.environ/DATABASE_URL

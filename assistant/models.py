@@ -9,6 +9,7 @@ from langchain_core.language_models import BaseChatModel
 from langchain_core.messages import AIMessage, SystemMessage
 
 from assistant.config import PRICES_PER_MTOK, get_settings
+from assistant.llm import user_header
 
 # The anthropic SDK makes its own OpenTelemetry span for each call when a tracer is registered
 # (Langfuse registers one). The Langfuse callback of the graph already makes the generation, so
@@ -17,17 +18,29 @@ from assistant.config import PRICES_PER_MTOK, get_settings
 os.environ.setdefault("ANTHROPIC_OPEN_TELEMETRY", "false")
 
 
-def chat_model(provider: str | None = None) -> BaseChatModel:
+def chat_model(provider: str | None = None, user: str | None = None) -> BaseChatModel:
+    """The chat model of the provider. With a gateway (Phase 6), each call goes to the gateway.
+
+    `user` goes to the gateway in the header of the end user, so that the gateway counts the
+    spend of each user against the budget of the user.
+    """
     settings = get_settings()
     provider = provider or settings.provider
+    gateway: dict[str, Any] = {}
+    if settings.gateway_url:
+        gateway = {"api_key": settings.gateway_key, "default_headers": user_header(user)}
     if provider == "openai":
         from langchain_openai import ChatOpenAI
 
+        if gateway:
+            gateway["base_url"] = f"{settings.gateway_url}/v1"
         # stream_usage: LangChain turns the usage of a stream off when OPENAI_BASE_URL is set.
-        return ChatOpenAI(model=settings.openai_model, max_tokens=settings.max_tokens, stream_usage=True)
+        return ChatOpenAI(model=settings.openai_model, max_tokens=settings.max_tokens, stream_usage=True, **gateway)
     from langchain_anthropic import ChatAnthropic
 
-    return ChatAnthropic(model=settings.model, max_tokens=settings.max_tokens)
+    if gateway:
+        gateway["base_url"] = settings.gateway_url
+    return ChatAnthropic(model=settings.model, max_tokens=settings.max_tokens, **gateway)
 
 
 def system_message(texts: list[str], provider: str | None = None) -> SystemMessage:

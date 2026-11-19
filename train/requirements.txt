@@ -1,0 +1,8 @@
+# The packages of train/train_lora.py (week 25). On the pod: pip install -r train/requirements.txt
+# PyTorch is not in this list: the PyTorch template of RunPod has it, built for its CUDA version.
+# On your Mac, `make train-smoke` adds PyTorch for the CPU.
+trl==1.18.0
+peft==0.21.3
+transformers==5.23.0
+datasets==5.2.0
+accelerate==1.16.0

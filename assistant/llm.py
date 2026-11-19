@@ -25,11 +25,24 @@ class ClaudeResult:
     replayed: bool
 
 
-@lru_cache(maxsize=1)
-def client() -> anthropic.Anthropic:
+@lru_cache(maxsize=4)
+def _client(base_url: str | None, api_key: str | None) -> anthropic.Anthropic:
     # The SDK makes its own span for each API call when a tracer is registered. The generation
     # below replaces it, so it is off: two generations for one call count the cost twice.
-    return anthropic.Anthropic(open_telemetry=False)
+    return anthropic.Anthropic(base_url=base_url, api_key=api_key, open_telemetry=False)
+
+
+def client() -> anthropic.Anthropic:
+    """The client of the Messages API: the gateway when GATEWAY_URL is set (Phase 6), else Claude."""
+    settings = get_settings()
+    if settings.gateway_url:
+        return _client(settings.gateway_url, settings.gateway_key)
+    return _client(None, None)
+
+
+def user_header(user: str | None) -> dict[str, str]:
+    """The header that tells LiteLLM the end user of a request (Phase 6: its budget and its spend)."""
+    return {"x-litellm-end-user-id": user} if user else {}
 
 
 def cost_usd(model: str, usage: Usage) -> float:

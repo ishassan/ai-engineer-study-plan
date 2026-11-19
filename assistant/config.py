@@ -1,7 +1,7 @@
 """Settings of the service. Each setting comes from an environment variable.
 
-This is the Phase 5 copy of the file. It adds the settings of weeks 19 and 20 (sign-in and
-the guardrails server) to the Phase 4 copy.
+This is the Phase 6 copy of the file. It adds the settings of the model gateway (week 21) to
+the Phase 5 copy.
 
 Call get_settings() each time you need a value. Do not keep the result in a
 module-level constant: the checks change the environment between tests.
@@ -71,6 +71,9 @@ class Settings:
     mcp_catalogue_audience: str
     guardrails_url: str
     guardrails_config_id: str
+    # Phase 6
+    gateway_url: str
+    gateway_key: str
 
 
 def _choice(name: str, default: str, allowed: tuple[str, ...]) -> str:
@@ -134,4 +137,9 @@ def get_settings() -> Settings:
         # Week 20: the NeMo Guardrails server. Empty: the API makes no input and output checks.
         guardrails_url=env.get("GUARDRAILS_URL", "").rstrip("/"),
         guardrails_config_id=env.get("GUARDRAILS_CONFIG_ID", "assistant"),
+        # Week 21: the LiteLLM gateway and the virtual key of the assistant. Empty GATEWAY_URL:
+        # the model calls go directly to the providers, with ANTHROPIC_API_KEY and OPENAI_API_KEY.
+        # With a gateway, the model names (CLAUDE_MODEL, OPENAI_MODEL) are the names of its routes.
+        gateway_url=env.get("GATEWAY_URL", "").rstrip("/"),
+        gateway_key=env.get("GATEWAY_KEY", ""),
     )

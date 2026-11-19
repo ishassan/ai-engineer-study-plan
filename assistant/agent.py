@@ -1,4 +1,5 @@
-"""Reference solution: the hand-written loop with memory and a planner."""
+"""Reference solution: the hand-written loop with memory and a planner, and the
+user on each model call for the budgets of the gateway (Phase 6, week 21)."""
 
 from __future__ import annotations
 
@@ -12,7 +13,7 @@ from pydantic import ValidationError
 
 from assistant import conversations, memory, planner
 from assistant.config import get_settings
-from assistant.llm import stream_claude
+from assistant.llm import stream_claude, user_header
 from assistant.schemas import Answer
 from assistant.tools import TOOLS, run_tool
 
@@ -58,7 +59,9 @@ save it with save_memory.
 """
 
 
-def build_request(messages: list[dict[str, Any]], facts: list[dict[str, Any]] | None = None) -> dict[str, Any]:
+def build_request(
+    messages: list[dict[str, Any]], facts: list[dict[str, Any]] | None = None, user: str | None = None
+) -> dict[str, Any]:
     settings = get_settings()
     system: list[dict[str, Any]] = [
         {"type": "text", "text": SYSTEM_PROMPT, "cache_control": {"type": "ephemeral"}}
@@ -73,6 +76,8 @@ def build_request(messages: list[dict[str, Any]], facts: list[dict[str, Any]] | 
         "system": system,
         "output_config": {"format": {"type": "json_schema", "schema": transform_schema(Answer)}},
         "messages": messages,
+        # Phase 6: the gateway counts the spend of this user against the budget of the user.
+        "extra_headers": user_header(user),
     }
 
 
@@ -137,7 +142,7 @@ def answer_events(
     last_usage = None
     for _ in range(settings.max_turns):
         text = ""
-        for kind, value in stream_claude(build_request(history + turn, facts)):
+        for kind, value in stream_claude(build_request(history + turn, facts, user)):
             if kind == "text":
                 text += value
             else:
