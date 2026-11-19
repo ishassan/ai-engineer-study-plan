@@ -1,2 +1,50 @@
-{"id": "r01", "language": "en", "question": "How far is Miqat Yalamlam from Makkah?", "expected_chunk_ids": ["gastat-umrah-en:p7:c2"]}
-{"id": "r02", "language": "ar", "question": "ما هي سنة الأساس للرقم القياسي لأسعار العقارات؟", "expected_chunk_ids": ["gastat-real-estate-prices-ar:p7:c1"]}
+{"id": "r01", "language": "en", "question": "How many points of sale and price quotes are in the sample of the Average Prices of Goods and Services Survey?", "expected_chunk_ids": ["gastat-average-prices-en:p10:c1"]}
+{"id": "r02", "language": "en", "question": "Where does the data for the Hajj statistics come from?", "expected_chunk_ids": ["gastat-hajj-en:p6:c2"]}
+{"id": "r03", "language": "en", "question": "How is the average weekly working hours indicator calculated in the labor market statistics?", "expected_chunk_ids": ["gastat-labor-market-en:p9:c2"]}
+{"id": "r04", "language": "en", "question": "What are the business regions of the Saudi Electricity Company in the electrical energy statistics?", "expected_chunk_ids": ["gastat-electrical-energy-2024-en:p6:c2"]}
+{"id": "r05", "language": "en", "question": "Which fund gives data on loans for livestock activities to the livestock statistics?", "expected_chunk_ids": ["gastat-livestock-en:p11:c2"]}
+{"id": "r06", "language": "en", "question": "Which year do the food security statistics cover?", "expected_chunk_ids": ["gastat-food-security-en:p7:c1"]}
+{"id": "r07", "language": "en", "question": "How far is Miqat Yalamlam from Makkah?", "expected_chunk_ids": ["gastat-umrah-en:p7:c2"]}
+{"id": "r08", "language": "en", "question": "How is the value of agricultural imports defined?", "expected_chunk_ids": ["gastat-agriculture-en:p10:c2"]}
+{"id": "r09", "language": "en", "question": "What is the base year of the producer price index?", "expected_chunk_ids": ["gastat-producer-prices-en:p9:c1"]}
+{"id": "r10", "language": "en", "question": "What are the sections of the framework for the development of environment statistics (FDES 2013)?", "expected_chunk_ids": ["gastat-environment-en:p6:c1"]}
+{"id": "r11", "language": "en", "question": "What counts as plastic waste in the waste accounts?", "expected_chunk_ids": ["gastat-waste-accounts-en:p6:c1", "gastat-waste-accounts-en:p6:c2"]}
+{"id": "r12", "language": "en", "question": "What is the definition of reused water in the water accounts?", "expected_chunk_ids": ["gastat-water-accounts-en:p9:c1"]}
+{"id": "r13", "language": "en", "question": "Who is the head of the household in the household income and consumption expenditure survey, and what is the minimum age?", "expected_chunk_ids": ["gastat-household-income-en:p8:c1", "gastat-labor-market-en:p7:c2"]}
+{"id": "r14", "language": "en", "question": "Which organisations provide the administrative records for the warehousing and logistics statistics?", "expected_chunk_ids": ["gastat-warehousing-logistics-en:p9:c1"]}
+{"id": "r15", "language": "en", "question": "What is the base year of the Industrial Production Index?", "expected_chunk_ids": ["gastat-industrial-production-en:p11:c1"]}
+{"id": "r16", "language": "en", "question": "Which administrative sources do the short-term business statistics use for bankruptcy declarations and building permits?", "expected_chunk_ids": ["gastat-short-term-business-en:p11:c1", "gastat-short-term-business-en:p6:c2"]}
+{"id": "r17", "language": "en", "question": "What are water-saving devices in the household environment survey?", "expected_chunk_ids": ["gastat-household-environment-en:p11:c1"]}
+{"id": "r18", "language": "en", "question": "In which unit is the average per capita consumption of gasoline measured?", "expected_chunk_ids": ["gastat-energy-efficiency-en:p7:c1"]}
+{"id": "r19", "language": "en", "question": "Which sampling method is used for the small and medium establishments statistics?", "expected_chunk_ids": ["gastat-small-medium-enterprises-en:p10:c2"]}
+{"id": "r20", "language": "en", "question": "In which units are the results of the maritime transport statistics measured?", "expected_chunk_ids": ["gastat-maritime-transport-en:p11:c1"]}
+{"id": "r21", "language": "en", "question": "What is reverse investment in the foreign direct investment statistics?", "expected_chunk_ids": ["gastat-foreign-direct-investment-en:p7:c1"]}
+{"id": "r22", "language": "en", "question": "How often is data collected for the structural business statistics?", "expected_chunk_ids": ["gastat-structural-business-en:p14:c1"]}
+{"id": "r23", "language": "en", "question": "What does peak load mean in the electrical energy statistics?", "expected_chunk_ids": ["gastat-electrical-energy-2024-en:p6:c1", "gastat-electrical-energy-en:p6:c1"]}
+{"id": "r24", "language": "en", "question": "How is the data of the household energy survey collected?", "expected_chunk_ids": ["gastat-household-energy-en:p12:c1"]}
+{"id": "r25", "language": "en", "question": "Who provides the railway network and line length data for the railway transport statistics?", "expected_chunk_ids": ["gastat-railway-transport-en:p13:c2", "gastat-railway-transport-en:p13:c3"]}
+{"id": "r26", "language": "ar", "question": "ما هي الفترة المرجعية لإحصاءات الإسقاطات والتقديرات السكانية؟", "expected_chunk_ids": ["gastat-population-estimates-ar:p7:c1"]}
+{"id": "r27", "language": "ar", "question": "ما المقصود بتطبيقات التوصيل في إحصاءات التخزين والخدمات اللوجستية؟", "expected_chunk_ids": ["gastat-warehousing-logistics-ar:p7:c1"]}
+{"id": "r28", "language": "ar", "question": "كيف تعرف قيمة الواردات الزراعية؟", "expected_chunk_ids": ["gastat-agriculture-fisheries-accounts-ar:p7:c1"]}
+{"id": "r29", "language": "ar", "question": "من هم السكان المستهدفون في مسح القوى العاملة؟", "expected_chunk_ids": ["gastat-labor-market-ar:p12:c2"]}
+{"id": "r30", "language": "ar", "question": "ما هي سنة الأساس للرقم القياسي لأسعار العقارات؟", "expected_chunk_ids": ["gastat-real-estate-prices-ar:p7:c1"]}
+{"id": "r31", "language": "ar", "question": "كيف ترقم الطرق الفرعية التي تربط بين القرى والهجر والمزارع؟", "expected_chunk_ids": ["gastat-land-transport-ar:p7:c2", "gastat-land-transport-ar:p7:c3"]}
+{"id": "r32", "language": "ar", "question": "ما تعريف استخدام الأراضي في حسابات الأراضي؟", "expected_chunk_ids": ["gastat-land-accounts-ar:p7:c1"]}
+{"id": "r33", "language": "ar", "question": "ما هي التغطية الزمنية لإحصاءات النقل الجوي؟", "expected_chunk_ids": ["gastat-air-transport-ar:p9:c1"]}
+{"id": "r34", "language": "ar", "question": "لماذا اعتمدت الهيئة عدد العمال لقياس حجم المنشأة في مسح أسعار المنتجين؟", "expected_chunk_ids": ["gastat-producer-prices-ar:p12:c1", "gastat-producer-prices-ar:p12:c2"]}
+{"id": "r35", "language": "ar", "question": "كم يبلغ حجم العينة في مسح المساكن؟", "expected_chunk_ids": ["gastat-housing-ar:p9:c2"]}
+{"id": "r36", "language": "ar", "question": "ما هي أنواع الحسابات الرئيسة في حساب المياه وفق نظام المحاسبة البيئية والاقتصادية؟", "expected_chunk_ids": ["gastat-water-accounts-ar:p6:c1"]}
+{"id": "r37", "language": "ar", "question": "ما هي الوحدة الإحصائية في إحصاءات الحج؟", "expected_chunk_ids": ["gastat-hajj-ar:p7:c1"]}
+{"id": "r38", "language": "ar", "question": "من هو المعتمر حسب تعريف إحصاءات العمرة؟", "expected_chunk_ids": ["gastat-umrah-ar:p6:c1"]}
+{"id": "r39", "language": "ar", "question": "ما هو تعريف البئر المغطى في مسح البيئة المنزلي؟", "expected_chunk_ids": ["gastat-household-environment-ar:p7:c2"]}
+{"id": "r40", "language": "ar", "question": "من هو العامل الزراعي في التعداد الزراعي؟", "expected_chunk_ids": ["gastat-agriculture-census-ar:p7:c1"]}
+{"id": "r41", "language": "ar", "question": "ما المقصود بالشركات الزميلة في إحصاءات الاستثمار الأجنبي المباشر؟", "expected_chunk_ids": ["gastat-foreign-direct-investment-ar:p7:c2"]}
+{"id": "r42", "language": "ar", "question": "ما هو وسيط الإنفاق الاستهلاكي الشهري للفرد؟", "expected_chunk_ids": ["gastat-household-income-ar:p9:c2"]}
+{"id": "r43", "language": "ar", "question": "ما هي الوحدة الإحصائية في إحصاءات الطاقة المتجددة؟", "expected_chunk_ids": ["gastat-renewable-energy-ar:p7:c1"]}
+{"id": "r44", "language": "ar", "question": "ما السنة التي تغطيها إحصاءات الأمن الغذائي؟", "expected_chunk_ids": ["gastat-food-security-ar:p6:c1"]}
+{"id": "r45", "language": "ar", "question": "كم عدد المشتغلين في المنشآت الصغيرة حسب فئات حجم المنشأة؟", "expected_chunk_ids": ["gastat-structural-business-ar:p10:c2"]}
+{"id": "r46", "language": "ar", "question": "ما تعريف المبيعات الإلكترونية في إحصاءات تجارة الجملة والتجزئة؟", "expected_chunk_ids": ["gastat-wholesale-retail-trade-ar:p6:c2"]}
+{"id": "r47", "language": "ar", "question": "ما هو معدل دوران عمليات إرساء السفن؟", "expected_chunk_ids": ["gastat-maritime-transport-ar:p7:c2"]}
+{"id": "r48", "language": "ar", "question": "ما هو الإنفاق على الاستهلاك النهائي الحكومي في الحسابات القومية؟", "expected_chunk_ids": ["gastat-national-accounts-ar:p8:c3", "gastat-supply-use-tables-ar:p11:c1"]}
+{"id": "r49", "language": "ar", "question": "هل تطبق منهجية لتعديل الموسمية على بيانات إحصاءات الأعمال قصيرة المدى؟", "expected_chunk_ids": ["gastat-short-term-business-ar:p13:c2"]}
+{"id": "r50", "language": "ar", "question": "ما هي مادة الكيروسين وفيم تستخدم حسب إحصاءات الطاقة المنزلية؟", "expected_chunk_ids": ["gastat-household-energy-ar:p6:c1"]}
