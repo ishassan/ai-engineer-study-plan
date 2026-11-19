@@ -1,0 +1,30 @@
+{"case_id": "t001", "trace_id": "8d5fbd902e7586c2ca06b25ba15a8242", "passed": true, "note": "", "category": ""}
+{"case_id": "t002", "trace_id": "74cfe85e607494ff4e5e835afebd135b", "passed": false, "note": "answered without any search and named no dataset id", "category": "no search before the answer"}
+{"case_id": "t003", "trace_id": "e59f2a5b7768c85b5c577517acfb9c82", "passed": false, "note": "the search found the dataset but the answer names the cement dataset", "category": "wrong dataset chosen"}
+{"case_id": "t004", "trace_id": "7d2384eadedb5317a24ae7cf5d1990ee", "passed": true, "note": "", "category": ""}
+{"case_id": "t005", "trace_id": "ff2236f6f0ce772229a779617a206111", "passed": false, "note": "answered without any search and named no dataset id", "category": "no search before the answer"}
+{"case_id": "t006", "trace_id": "0ad3bc4faed1149057dedff7f078ee69", "passed": false, "note": "the search found the dataset but the answer names the cement dataset", "category": "wrong dataset chosen"}
+{"case_id": "t007", "trace_id": "4ef086bf25085908c6245da239fba5ce", "passed": true, "note": "", "category": ""}
+{"case_id": "t008", "trace_id": "c703ca080a5b4cc42e011da23c6c5069", "passed": false, "note": "answered without any search and named no dataset id", "category": "no search before the answer"}
+{"case_id": "t009", "trace_id": "75b9ce39dcc7128c3a3cab19d0eddcc2", "passed": false, "note": "names only one of the two datasets that the question needs", "category": "misses one of several datasets"}
+{"case_id": "t010", "trace_id": "05399e926a003e9fca846b469060e716", "passed": true, "note": "", "category": ""}
+{"case_id": "t011", "trace_id": "ad3de692b8543a7b45e8505052d37bc1", "passed": false, "note": "answered without any search and named no dataset id", "category": "no search before the answer"}
+{"case_id": "t012", "trace_id": "59c74daee34a8f8169af735b21db65ad", "passed": false, "note": "names only one of the two datasets that the question needs", "category": "misses one of several datasets"}
+{"case_id": "t013", "trace_id": "3542aff12c3f85a9589035fef778cdaa", "passed": true, "note": "", "category": ""}
+{"case_id": "t014", "trace_id": "82a2a2b41f67355222c193d84e7d32e0", "passed": false, "note": "answered without any search and named no dataset id", "category": "no search before the answer"}
+{"case_id": "t015", "trace_id": "eb6e9cf6b6f1fe33fdd5d56816e9fcc0", "passed": false, "note": "the search found the dataset but the answer names the cement dataset", "category": "wrong dataset chosen"}
+{"case_id": "t016", "trace_id": "5db2295e891149eb12b44a9547d446cb", "passed": true, "note": "", "category": ""}
+{"case_id": "t017", "trace_id": "5106557c2b6989eb768221e78d41ceaf", "passed": false, "note": "answered without any search and named no dataset id", "category": "no search before the answer"}
+{"case_id": "t018", "trace_id": "b519a5c1a58f151f95525ba19f5b2d11", "passed": false, "note": "the search found the dataset but the answer names the cement dataset", "category": "wrong dataset chosen"}
+{"case_id": "t019", "trace_id": "90f0ed8f0400931e1b18920586d84c81", "passed": true, "note": "", "category": ""}
+{"case_id": "t020", "trace_id": "9096f882ebc84066de44392534bbcda9", "passed": false, "note": "answered without any search and named no dataset id", "category": "no search before the answer"}
+{"case_id": "t021", "trace_id": "ffa43e04440aa6f12e28c58265df6c0a", "passed": false, "note": "names only one of the two datasets that the question needs", "category": "misses one of several datasets"}
+{"case_id": "t022", "trace_id": "9033ad1e028aa979861a9cd1a134c9ab", "passed": true, "note": "", "category": ""}
+{"case_id": "t023", "trace_id": "5febbd39f3afacff8dd5bc70918e3a3f", "passed": false, "note": "answered without any search and named no dataset id", "category": "no search before the answer"}
+{"case_id": "t024", "trace_id": "4a6a9cf8e0792c4cb43102c0848f7598", "passed": false, "note": "the search found the dataset but the answer names the cement dataset", "category": "wrong dataset chosen"}
+{"case_id": "t025", "trace_id": "c2d96d2449ee6b13a51597d4ef182e65", "passed": true, "note": "", "category": ""}
+{"case_id": "t026", "trace_id": "895c5dc7ac6e0a6dab93e5542d321ade", "passed": false, "note": "answered without any search and named no dataset id", "category": "no search before the answer"}
+{"case_id": "t027", "trace_id": "fa59d0a1db2a393692b3ca7da69125f1", "passed": false, "note": "the search found the dataset but the answer names the cement dataset", "category": "wrong dataset chosen"}
+{"case_id": "t028", "trace_id": "f6b8c1636772a9eb4f1e6431acb6b5e4", "passed": true, "note": "", "category": ""}
+{"case_id": "t029", "trace_id": "2e7b7a689e5217e5aa56f57a3ceec875", "passed": false, "note": "answered without any search and named no dataset id", "category": "no search before the answer"}
+{"case_id": "t030", "trace_id": "96e2a78e81628db991800e97adfb8375", "passed": false, "note": "the search found the dataset but the answer names the cement dataset", "category": "wrong dataset chosen"}

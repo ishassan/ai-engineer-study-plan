@@ -1,0 +1,4 @@
+category,count,description
+no search before the answer,10,"The model answered from its own knowledge, with no tool call, so it had no dataset ID."
+wrong dataset chosen,7,"The search returned the correct dataset, but the answer names another one."
+misses one of several datasets,3,"The question needs two datasets, and the answer names only one."
