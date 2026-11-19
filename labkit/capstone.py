@@ -339,8 +339,10 @@ def repository_problems(root: Path = REPO) -> list[str]:
     if not path.exists():
         return [f"{WRITEUP} does not exist. Run `make start PHASE=7`."]
     text = strip_comments(path.read_text(encoding="utf-8"))
+    # A period after the address ends the sentence: it is not part of the name of the repository.
     found = {
-        f"https://{host}/{owner}/{name.removesuffix('.git')}" for host, owner, name in REPOSITORY_URL.findall(text)
+        f"https://{host}/{owner}/{name.rstrip('.').removesuffix('.git')}"
+        for host, owner, name in REPOSITORY_URL.findall(text)
     }
     if not found:
         return [
