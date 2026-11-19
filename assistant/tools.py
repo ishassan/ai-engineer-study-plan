@@ -1,11 +1,11 @@
-"""Reference solution: the tools of Phase 2 and save_memory."""
+"""Reference solution: the tools of Phase 2, save_memory and register_dataset."""
 
 from __future__ import annotations
 
 import json
 from typing import Any
 
-from assistant.db import query
+from assistant.db import connect, query
 from assistant.retrieval import retrieve
 
 TOOLS: list[dict[str, Any]] = [
@@ -193,3 +193,42 @@ def run_tool(
     else:
         raise ValueError(f"Unknown tool: {name}")
     return json.dumps(result, ensure_ascii=False)
+
+
+# Week 15: the write action. It is not in TOOLS: the hand-written loop never gets it. The graph
+# adds it to its tools and asks a person before it runs.
+REGISTER_DATASET: dict[str, Any] = {
+    "name": "register_dataset",
+    "description": (
+        "Register a new dataset in the catalogue. Use it only when the user asks you to add a "
+        "dataset that the catalogue does not have. First search the catalogue to make sure that "
+        "the dataset is not there. A person must approve the action before it runs. If the person "
+        "refuses, tell the user that the dataset was not registered, and do not try again."
+    ),
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "dataset_id": {"type": "string", "description": "A new id: lower-case words joined by hyphens."},
+            "title": {"type": "string", "description": "The title of the dataset."},
+            "description": {"type": "string", "description": "Two or three sentences about the content."},
+            "owner": {"type": "string", "description": "The organisation that publishes the dataset."},
+            "source_url": {"type": "string", "description": "The address of the dataset, if the user gave one."},
+        },
+        "required": ["dataset_id", "title", "description", "owner"],
+    },
+}
+
+NEEDS_APPROVAL = {"register_dataset"}
+
+
+def register_dataset(dataset_id: str, title: str, description: str, owner: str, source_url: str = "") -> dict[str, Any]:
+    """Insert one dataset into the catalogue. Raise ValueError when the id exists."""
+    with connect() as connection:
+        row = connection.execute(
+            "INSERT INTO datasets (id, title, description, owner, updated_at, records_count, source_url) "
+            "VALUES (%s, %s, %s, %s, now(), 0, %s) ON CONFLICT (id) DO NOTHING RETURNING id",
+            (dataset_id, title, description, owner, source_url or ""),
+        ).fetchone()
+    if row is None:
+        raise ValueError(f"A dataset with the id {dataset_id!r} exists. Choose another id.")
+    return {"registered": True, "id": dataset_id}

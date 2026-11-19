@@ -1,15 +1,14 @@
-"""Reference solution: compaction and long-term memory."""
+"""Reference solution: compaction, and the long-term memory in the LangGraph store."""
 
 from __future__ import annotations
 
 import json
+import uuid
 from typing import Any
 
 from assistant.config import get_settings
-from assistant.db import connect, query
-from assistant.embeddings import embed
-from assistant.ingest import normalise_arabic, vector_literal
 from assistant.llm import call_claude
+from assistant.persistence import store
 
 SUMMARY_PROMPT = """\
 You write the summary of a conversation between a user and the assistant of a data \
@@ -76,32 +75,24 @@ def compact(messages: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], Any]:
             {"role": "assistant", "content": "I will use this summary in the rest of the conversation."}], result
 
 
-def save_fact(user: str, fact: str, conversation_id: str | None = None) -> int:
-    vector = embed([normalise_arabic(fact)])[0]
-    with connect() as connection:
-        row = connection.execute(
-            "INSERT INTO memories (user_id, text, embedding, conversation_id) "
-            "VALUES (%s, %s, %s::vector, %s) RETURNING id",
-            (user, fact, vector_literal(vector), conversation_id),
-        ).fetchone()
-    return row["id"]
+def _namespace(user: str) -> tuple[str, ...]:
+    # A label of a namespace cannot hold a period, and a user name can (an e-mail address).
+    return ("memories", user.replace("%", "%25").replace(".", "%2E"))
 
 
-def has_facts(user: str) -> bool:
-    return bool(query("SELECT 1 FROM memories WHERE user_id = %s LIMIT 1", (user,)))
+def save_fact(user: str, fact: str, conversation_id: str | None = None) -> str:
+    key = uuid.uuid4().hex
+    store().put(_namespace(user), key, {"text": fact, "conversation_id": conversation_id})
+    return key
 
 
 def search_facts(user: str, text: str, k: int | None = None) -> list[dict[str, Any]]:
     """The saved facts of the user that are closest to the text, best first."""
-    if not has_facts(user):
+    if not store().search(_namespace(user), limit=1):
         return []
     k = k or get_settings().memory_results
-    vector = vector_literal(embed([normalise_arabic(text)])[0])
-    return query(
-        "SELECT id, text, 1 - (embedding <=> %(v)s::vector) AS score FROM memories "
-        "WHERE user_id = %(user)s ORDER BY embedding <=> %(v)s::vector, id LIMIT %(k)s",
-        {"v": vector, "user": user, "k": k},
-    )
+    items = store().search(_namespace(user), query=text, limit=k)
+    return [{"id": item.key, "text": item.value["text"], "score": item.score} for item in items]
 
 
 def facts_block(facts: list[dict[str, Any]]) -> str:

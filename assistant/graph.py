@@ -1,27 +1,36 @@
-"""Reference solution: the agent as a LangGraph graph."""
+"""Reference solution: the graph with a checkpointer, approval and an audit log."""
 
 from __future__ import annotations
 
 import json
-import operator
 import time
+import uuid
 from typing import Annotated, Any, Iterator, TypedDict
 
-import psycopg
-from langchain_core.messages import AIMessage, AnyMessage, HumanMessage, ToolMessage
+from langchain_core.messages import AIMessage, AnyMessage, HumanMessage, RemoveMessage, ToolMessage
 from langfuse import get_client, observe
 from langfuse.langchain import CallbackHandler
 from langgraph.config import get_stream_writer
 from langgraph.graph import END, START, StateGraph
-from langgraph.graph.message import add_messages
+from langgraph.graph.message import REMOVE_ALL_MESSAGES, add_messages
+from langgraph.types import Command, interrupt
+from psycopg.types.json import Jsonb
 from pydantic import BaseModel, Field, ValidationError
 
 from assistant import conversations, memory, planner
+from assistant import tools as local_tools
 from assistant.agent import SYSTEM_PROMPT
 from assistant.config import get_settings
+from assistant.db import connect
 from assistant.models import chat_model, system_message, usage_of
+from assistant.persistence import checkpointer
 from assistant.planner import Plan
-from assistant.tools import TOOLS, run_tool
+from assistant.tools import NEEDS_APPROVAL, TOOLS, run_tool
+
+REFUSED = (
+    "A person refused this action, so {name} did not run and nothing changed. Tell the user that "
+    "the action was refused. Do not call {name} again for this request."
+)
 
 
 class ChunkRef(BaseModel):
@@ -40,34 +49,30 @@ class GraphAnswer(BaseModel):
 
 
 class State(TypedDict, total=False):
+    # The checkpointer keeps the state of each conversation (thread_id = conversation_id).
+    # `messages` grows over the questions of the conversation. The other keys belong to one
+    # question: answer_events() sets them again at the start of each question (RUN_START).
     question: str
     user: str
-    conversation_id: str | None
-    history: list[AnyMessage]
+    conversation_id: str
     facts: list[str]
     messages: Annotated[list[AnyMessage], add_messages]
     plan: list[str] | None
     failed: dict[str, Any] | None
-    chunks: Annotated[dict[str, dict[str, Any]], operator.or_]
-    usage: Annotated[list[dict[str, Any]], operator.add]
-    turns: Annotated[int, operator.add]
+    chunks: dict[str, dict[str, Any]]
+    usage: list[dict[str, Any]]
+    turns: int
     retried: bool
+    approvals: dict[str, dict[str, Any]]
     answer: dict[str, Any] | None
     error: str | None
-    stop: str
+    stop: str | None
 
 
-def _history(messages: list[dict[str, Any]]) -> list[AnyMessage]:
-    """Stored messages as LangChain messages: the text of each turn, without tool calls."""
-    found: list[AnyMessage] = []
-    for message in messages:
-        content = message["content"]
-        text = content if isinstance(content, str) else " ".join(
-            block.get("text", "") for block in content if block.get("type") == "text"
-        )
-        if text:
-            found.append(HumanMessage(text) if message["role"] == "user" else AIMessage(text))
-    return found
+RUN_START: dict[str, Any] = {
+    "plan": None, "failed": None, "chunks": {}, "usage": [], "turns": 0, "retried": False,
+    "approvals": {}, "answer": None, "error": None, "stop": None,
+}
 
 
 def _system(state: State):
@@ -77,22 +82,34 @@ def _system(state: State):
     return system_message(texts)
 
 
+# ---- the tools --------------------------------------------------------------------------------
+
+
+def tool_definitions() -> list[Any]:
+    return [*TOOLS, local_tools.REGISTER_DATASET]
+
+
+def call_tool(call: dict[str, Any], state: State) -> str:
+    """Run one tool call and return the text for the model. Raise an exception for an error."""
+    if call["name"] == "register_dataset":
+        return json.dumps(local_tools.register_dataset(**call["args"]))
+    return run_tool(call["name"], call["args"], state["user"], state.get("conversation_id"))
+
+
+def audit(state: State, call: dict[str, Any], result: str, approval: str, approver: str | None) -> None:
+    with connect() as connection:
+        connection.execute(
+            "INSERT INTO audit_log (user_id, conversation_id, tool, arguments, result, approval, approver) "
+            "VALUES (%s, %s, %s, %s, %s, %s, %s)",
+            (state["user"], state.get("conversation_id"), call["name"], Jsonb(call["args"]), result, approval, approver),
+        )
+
+
 # ---- nodes ------------------------------------------------------------------------------------
 
 
 def prepare(state: State) -> dict[str, Any]:
-    history: list[AnyMessage] = []
-    facts: list[str] = []
-    conversation_id = state.get("conversation_id")
-    try:
-        if conversation_id:
-            conversations.open_conversation(conversation_id, state["user"])
-            history = _history(conversations.load_context(conversation_id))
-        facts = [fact["text"] for fact in memory.search_facts(state["user"], state["question"])]
-    except psycopg.OperationalError:
-        conversation_id = None  # Without the database the graph still answers.
-    return {"history": history, "facts": facts, "messages": [HumanMessage(state["question"])], "chunks": {},
-            "conversation_id": conversation_id}
+    return {"facts": [fact["text"] for fact in memory.search_facts(state["user"], state["question"])]}
 
 
 def write_plan(state: State) -> dict[str, Any]:
@@ -102,7 +119,7 @@ def write_plan(state: State) -> dict[str, Any]:
     plan = out["parsed"]
     get_stream_writer()(("plan", {"steps": plan.steps}))
     note = HumanMessage(f"Follow this plan:\n{planner.numbered(plan)}")
-    return {"plan": plan.steps, "messages": [note], "usage": [usage_of(out["raw"])]}
+    return {"plan": plan.steps, "messages": [note], "usage": [*state["usage"], usage_of(out["raw"])]}
 
 
 def change_plan(state: State) -> dict[str, Any]:
@@ -119,29 +136,50 @@ def change_plan(state: State) -> dict[str, Any]:
     plan = out["parsed"]
     get_stream_writer()(("plan", {"steps": plan.steps}))
     note = HumanMessage(f"A step failed. Follow the new plan:\n{planner.numbered(plan)}")
-    return {"plan": plan.steps, "failed": None, "messages": [note], "usage": [usage_of(out["raw"])]}
+    return {"plan": plan.steps, "failed": None, "messages": [note], "usage": [*state["usage"], usage_of(out["raw"])]}
 
 
 def call_model(state: State) -> dict[str, Any]:
-    model = chat_model().bind_tools(TOOLS, response_format=GraphAnswer)
-    reply = model.invoke([_system(state), *state.get("history", []), *state["messages"]])
-    return {"messages": [reply], "usage": [usage_of(reply)], "turns": 1}
+    model = chat_model().bind_tools(tool_definitions(), response_format=GraphAnswer)
+    reply = model.invoke([_system(state), *state["messages"]])
+    return {"messages": [reply], "usage": [*state["usage"], usage_of(reply)], "turns": state["turns"] + 1}
+
+
+def approve(state: State) -> dict[str, Any]:
+    """Pause the graph until a person decides. Only the interrupt is in this node.
+
+    When the run continues, LangGraph runs the node again from its start, so no code that
+    changes something may come before interrupt().
+    """
+    calls = [call for call in state["messages"][-1].tool_calls if call["name"] in NEEDS_APPROVAL]
+    decision = interrupt([{"id": call["id"], "name": call["name"], "input": call["args"]} for call in calls])
+    return {"approvals": {call["id"]: {"approved": bool(decision.get("approved")), "approver": decision.get("approver")}
+                          for call in calls}}
 
 
 def run_tools(state: State) -> dict[str, Any]:
     writer = get_stream_writer()
     reply = state["messages"][-1]
-    results, chunks, failed = [], {}, None
+    results, chunks, failed = [], dict(state.get("chunks") or {}), None
     for call in reply.tool_calls:
+        approval, approver = "not_needed", None
+        if call["name"] in NEEDS_APPROVAL:
+            decision = (state.get("approvals") or {}).get(call["id"]) or {}
+            approval = "approved" if decision.get("approved") else "refused"
+            approver = decision.get("approver") or "unknown"
         with get_client().start_as_current_observation(as_type="tool", name=call["name"], input=call["args"]) as span:
-            try:
-                output = run_tool(call["name"], call["args"], state["user"], state.get("conversation_id"))
-                is_error = False
+            if approval == "refused":
+                output, is_error = REFUSED.format(name=call["name"]), True
                 span.update(output=output)
-            except Exception as error:
-                output, is_error = f"{type(error).__name__}: {error}", True
-                span.update(output=output, level="ERROR", status_message=output)
-                failed = failed or {"name": call["name"], "input": call["args"], "error": output}
+            else:
+                try:
+                    output, is_error = call_tool(call, state), False
+                    span.update(output=output)
+                except Exception as error:
+                    output, is_error = f"{type(error).__name__}: {error}", True
+                    span.update(output=output, level="ERROR", status_message=output)
+                    failed = failed or {"name": call["name"], "input": call["args"], "error": output}
+        audit(state, call, output, approval, approver)
         if call["name"] == "search_documents" and not is_error:
             for row in json.loads(output):
                 chunks[row["chunk_id"]] = {"document_title": row["title"], "page": row["page"]}
@@ -175,27 +213,36 @@ def finish(state: State) -> dict[str, Any]:
     return {"answer": value, "stop": "final"}
 
 
+def _transcript(messages: list[AnyMessage]) -> str:
+    lines = []
+    for message in messages:
+        if isinstance(message, ToolMessage):
+            lines.append(f"[tool result {message.text[:300]}]")
+            continue
+        role = "user" if isinstance(message, HumanMessage) else "assistant"
+        calls = " ".join(f"[tool call {c['name']} {json.dumps(c['args'], ensure_ascii=False)}]"
+                         for c in getattr(message, "tool_calls", []) or [])
+        text = " ".join(part for part in (message.text, calls) if part)
+        if text:
+            lines.append(f"{role}: {text}")
+    return "\n".join(lines)
+
+
 def save(state: State) -> dict[str, Any]:
-    settings = get_settings()
-    conversation_id = state.get("conversation_id")
-    if not conversation_id:
-        return {}
-    answer = state.get("answer")
-    reply = json.dumps(answer, ensure_ascii=False) if answer else "I could not finish the answer."
-    turn = [{"role": "user", "content": state["question"]}, {"role": "assistant", "content": reply}]
-    conversations.append_messages(conversation_id, turn)
+    """Compaction: when the context is near the limit, replace the messages with a summary."""
     last = (state.get("usage") or [{}])[-1]
     size = sum(last.get(key, 0) for key in ("input_tokens", "output_tokens", "cache_creation_input_tokens", "cache_read_input_tokens"))
-    if size < settings.compact_at_tokens:
+    if size < get_settings().compact_at_tokens:
         return {}
-    old = [{"role": "user" if isinstance(m, HumanMessage) else "assistant", "content": m.text}
-           for m in state.get("history", [])] + turn
-    summary = chat_model().invoke([system_message([memory.SUMMARY_PROMPT]), HumanMessage(memory.transcript(old))])
-    conversations.start_new_context(conversation_id, [
-        {"role": "user", "content": f"{memory.SUMMARY_PREFIX}\n{summary.text}"},
-        {"role": "assistant", "content": "I will use this summary in the rest of the conversation."},
-    ])
-    return {"usage": [usage_of(summary)]}
+    summary = chat_model().invoke([system_message([memory.SUMMARY_PROMPT]), HumanMessage(_transcript(state["messages"]))])
+    return {
+        "messages": [
+            RemoveMessage(id=REMOVE_ALL_MESSAGES),
+            HumanMessage(f"{memory.SUMMARY_PREFIX}\n{summary.text}"),
+            AIMessage("I will use this summary in the rest of the conversation."),
+        ],
+        "usage": [*state["usage"], usage_of(summary)],
+    }
 
 
 # ---- edges ------------------------------------------------------------------------------------
@@ -206,9 +253,12 @@ def after_prepare(state: State) -> str:
 
 
 def after_model(state: State) -> str:
-    if state["messages"][-1].tool_calls and state.get("turns", 0) >= get_settings().max_turns:
+    calls = state["messages"][-1].tool_calls
+    if calls and state.get("turns", 0) >= get_settings().max_turns:
         return "save"
-    return "run_tools" if state["messages"][-1].tool_calls else "finish"
+    if not calls:
+        return "finish"
+    return "approve" if any(call["name"] in NEEDS_APPROVAL for call in calls) else "run_tools"
 
 
 def after_tools(state: State) -> str:
@@ -221,41 +271,70 @@ def after_finish(state: State) -> str:
 
 def build_graph():
     graph = StateGraph(State)
-    for node in (prepare, write_plan, change_plan, call_model, run_tools, finish, save):
+    for node in (prepare, write_plan, change_plan, call_model, approve, run_tools, finish, save):
         graph.add_node(node.__name__, node)
     graph.add_edge(START, "prepare")
     graph.add_conditional_edges("prepare", after_prepare, ["write_plan", "call_model"])
     graph.add_edge("write_plan", "call_model")
-    graph.add_conditional_edges("call_model", after_model, ["run_tools", "finish", "save"])
+    graph.add_conditional_edges("call_model", after_model, ["approve", "run_tools", "finish", "save"])
+    graph.add_edge("approve", "run_tools")
     graph.add_conditional_edges("run_tools", after_tools, ["change_plan", "call_model"])
     graph.add_edge("change_plan", "call_model")
     graph.add_conditional_edges("finish", after_finish, ["save", "call_model"])
     graph.add_edge("save", END)
-    return graph.compile()
+    return graph.compile(checkpointer=checkpointer())
+
+
+def _config(conversation_id: str) -> dict[str, Any]:
+    return {"configurable": {"thread_id": conversation_id}, "callbacks": [CallbackHandler()],
+            "recursion_limit": 4 * get_settings().max_turns + 10}
+
+
+def _run(graph: Any, value: Any, config: dict[str, Any]) -> Iterator[tuple[str, dict[str, Any]]]:
+    settings = get_settings()
+    started = time.perf_counter()
+    # durability="sync": each step is in Postgres before the next step starts.
+    for chunk in graph.stream(value, config, stream_mode="custom", durability="sync"):
+        yield chunk
+    snapshot = graph.get_state(config)
+    state = snapshot.values
+    if snapshot.interrupts:
+        for pending in snapshot.interrupts:
+            for call in pending.value:
+                yield "approval", {"name": call["name"], "input": call["input"]}
+        stop = "approval"
+    else:
+        if state.get("error"):
+            yield "error", {"message": state["error"]}
+        stop = state.get("stop") or "max_turns"
+        if stop == "max_turns":
+            yield "error", {"message": f"No final answer after {settings.max_turns} turns."}
+    usage = state.get("usage") or []
+    totals = {key: sum(u[key] for u in usage) for key in
+              ("input_tokens", "output_tokens", "cache_creation_input_tokens", "cache_read_input_tokens", "cost_usd")}
+    model = next((u["model"] for u in reversed(usage) if u["model"]), settings.model)
+    latency = round((time.perf_counter() - started) * 1000, 1)
+    yield "done", {"model": model, **totals, "latency_ms": latency, "requests": len(usage), "stop": stop}
 
 
 @observe(name="ask", as_type="agent")
 def answer_events(
     question: str, conversation_id: str | None = None, user: str = "anonymous"
 ) -> Iterator[tuple[str, dict[str, Any]]]:
-    settings = get_settings()
-    started = time.perf_counter()
-    state: dict[str, Any] = {}
-    config = {"callbacks": [CallbackHandler()], "recursion_limit": 4 * settings.max_turns + 10}
-    start = {"question": question, "user": user, "conversation_id": conversation_id}
-    for mode, chunk in build_graph().stream(start, config, stream_mode=["custom", "values"]):
-        if mode == "custom":
-            yield chunk
-        else:
-            state = chunk
-    usage = state.get("usage") or []
-    if state.get("error"):
-        yield "error", {"message": state["error"]}
-    stop = state.get("stop") or "max_turns"
-    if stop == "max_turns":
-        yield "error", {"message": f"No final answer after {settings.max_turns} turns."}
-    totals = {key: sum(u[key] for u in usage) for key in
-              ("input_tokens", "output_tokens", "cache_creation_input_tokens", "cache_read_input_tokens", "cost_usd")}
-    model = next((u["model"] for u in reversed(usage) if u["model"]), settings.model)
-    latency = round((time.perf_counter() - started) * 1000, 1)
-    yield "done", {"model": model, **totals, "latency_ms": latency, "requests": len(usage), "stop": stop}
+    conversation_id = conversation_id or str(uuid.uuid4())
+    # The checkpointer has no owner for a thread: the table conversations has.
+    conversations.open_conversation(conversation_id, user)
+    graph, config = build_graph(), _config(conversation_id)
+    if graph.get_state(config).interrupts:
+        raise RuntimeError("This conversation waits for an approval. Send POST /approve first.")
+    start = {"question": question, "user": user, "conversation_id": conversation_id,
+             "messages": [HumanMessage(question)], **RUN_START}
+    yield from _run(graph, start, config)
+
+
+@observe(name="approve", as_type="agent")
+def resume_events(conversation_id: str, approved: bool, approver: str) -> Iterator[tuple[str, dict[str, Any]]]:
+    graph, config = build_graph(), _config(conversation_id)
+    if not graph.get_state(config).interrupts:
+        raise LookupError(f"Nothing in the conversation {conversation_id} waits for an approval.")
+    yield from _run(graph, Command(resume={"approved": approved, "approver": approver}), config)
