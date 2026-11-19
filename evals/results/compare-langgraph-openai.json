@@ -1,0 +1,826 @@
+{
+ "impl": "langgraph",
+ "provider": "openai",
+ "created": "2026-11-15T20:02:42+00:00",
+ "score": 1.0,
+ "cost_usd": 0.011473500000000001,
+ "rows": [
+  {
+   "id": "t001",
+   "language": "en",
+   "question": "Which dataset has the crude oil production of Saudi Arabia?",
+   "expected_dataset_ids": [
+    "saudi-crude-oil-production-from-sama-annual-statistics-2015-dec"
+   ],
+   "expected_chunk_ids": [],
+   "trace_id": "57a614e9127f5726b51a94b26bce7373",
+   "answer": "Oracle answer.",
+   "dataset_ids": [
+    "saudi-crude-oil-production-from-sama-annual-statistics-2015-dec"
+   ],
+   "citations": [],
+   "cited_passages": [],
+   "tools": [
+    {
+     "name": "search_datasets",
+     "input": {
+      "query": "Which dataset has the crude oil production of Saudi Arabia?"
+     },
+     "is_error": false
+    }
+   ],
+   "errors": [],
+   "model": "gpt-6-luna",
+   "requests": 2,
+   "input_tokens": 4041,
+   "output_tokens": 61,
+   "cost_usd": 0.00043459999999999994,
+   "latency_ms": 908.6,
+   "code_pass": true
+  },
+  {
+   "id": "t002",
+   "language": "en",
+   "question": "I want to compare the value and the weight of imports by the nature of the items. Which datasets do I need?",
+   "expected_dataset_ids": [
+    "imports-value-by-nature-of-items",
+    "imports-weight-by-nature-of-items"
+   ],
+   "expected_chunk_ids": [],
+   "trace_id": "14a22f31660727d41f97fd79b9c347e1",
+   "answer": "Oracle answer.",
+   "dataset_ids": [
+    "imports-value-by-nature-of-items",
+    "imports-weight-by-nature-of-items"
+   ],
+   "citations": [],
+   "cited_passages": [],
+   "tools": [
+    {
+     "name": "search_datasets",
+     "input": {
+      "query": "I want to compare the value and the weight of imports by the nature of the items. Which datasets do I need?"
+     },
+     "is_error": false
+    }
+   ],
+   "errors": [],
+   "model": "gpt-6-luna",
+   "requests": 2,
+   "input_tokens": 4051,
+   "output_tokens": 74,
+   "cost_usd": 0.00044210000000000007,
+   "latency_ms": 79.9,
+   "code_pass": true
+  },
+  {
+   "id": "t003",
+   "language": "en",
+   "question": "How many records does the dataset about freight among railway stations have, and when was it last updated?",
+   "expected_dataset_ids": [
+    "freight-among-railway-stations-2004-2008-ad"
+   ],
+   "expected_chunk_ids": [],
+   "trace_id": "ca5ec1ee11ccd9ee35746e1ff9e5b49b",
+   "answer": "Oracle answer.",
+   "dataset_ids": [
+    "freight-among-railway-stations-2004-2008-ad"
+   ],
+   "citations": [],
+   "cited_passages": [],
+   "tools": [
+    {
+     "name": "search_datasets",
+     "input": {
+      "query": "How many records does the dataset about freight among railway stations have, and when was it last updated?"
+     },
+     "is_error": false
+    }
+   ],
+   "errors": [],
+   "model": "gpt-6-luna",
+   "requests": 2,
+   "input_tokens": 4084,
+   "output_tokens": 68,
+   "cost_usd": 0.0004424,
+   "latency_ms": 98.4,
+   "code_pass": true
+  },
+  {
+   "id": "t004",
+   "language": "en",
+   "question": "Which datasets tell me about the use of solar energy in homes in Saudi Arabia?",
+   "expected_dataset_ids": [
+    "percentage-of-households-who-are-willing-to-use-solar-energy-in-their-houses-by-",
+    "percentage-of-housing-units-which-use-solar-energy-in-the-administrative-region"
+   ],
+   "expected_chunk_ids": [],
+   "trace_id": "29f0108db4d3d4854787356e6481d456",
+   "answer": "Oracle answer.",
+   "dataset_ids": [
+    "percentage-of-households-who-are-willing-to-use-solar-energy-in-their-houses-by-",
+    "percentage-of-housing-units-which-use-solar-energy-in-the-administrative-region"
+   ],
+   "citations": [],
+   "cited_passages": [],
+   "tools": [
+    {
+     "name": "search_datasets",
+     "input": {
+      "query": "Which datasets tell me about the use of solar energy in homes in Saudi Arabia?"
+     },
+     "is_error": false
+    }
+   ],
+   "errors": [],
+   "model": "gpt-6-luna",
+   "requests": 2,
+   "input_tokens": 4137,
+   "output_tokens": 91,
+   "cost_usd": 0.0004592,
+   "latency_ms": 98.9,
+   "code_pass": true
+  },
+  {
+   "id": "t005",
+   "language": "en",
+   "question": "Is there a dataset about cement?",
+   "expected_dataset_ids": [
+    "cement-production-and-sales"
+   ],
+   "expected_chunk_ids": [],
+   "trace_id": "71e6cea8eff43e3671929b7026fc9c03",
+   "answer": "Oracle answer.",
+   "dataset_ids": [
+    "cement-production-and-sales"
+   ],
+   "citations": [],
+   "cited_passages": [],
+   "tools": [
+    {
+     "name": "search_datasets",
+     "input": {
+      "query": "Is there a dataset about cement?"
+     },
+     "is_error": false
+    }
+   ],
+   "errors": [],
+   "model": "gpt-6-luna",
+   "requests": 2,
+   "input_tokens": 4056,
+   "output_tokens": 45,
+   "cost_usd": 0.0004281,
+   "latency_ms": 93.1,
+   "code_pass": true
+  },
+  {
+   "id": "t006",
+   "language": "en",
+   "question": "What columns does the dataset on electricity consumption by sectors have?",
+   "expected_dataset_ids": [
+    "electricity-consumption-by-sectors"
+   ],
+   "expected_chunk_ids": [],
+   "trace_id": "c47647f5034a909788695fef1da79816",
+   "answer": "Oracle answer.",
+   "dataset_ids": [
+    "electricity-consumption-by-sectors"
+   ],
+   "citations": [],
+   "cited_passages": [],
+   "tools": [
+    {
+     "name": "search_datasets",
+     "input": {
+      "query": "What columns does the dataset on electricity consumption by sectors have?"
+     },
+     "is_error": false
+    }
+   ],
+   "errors": [],
+   "model": "gpt-6-luna",
+   "requests": 2,
+   "input_tokens": 4094,
+   "output_tokens": 57,
+   "cost_usd": 0.0004379,
+   "latency_ms": 86.2,
+   "code_pass": true
+  },
+  {
+   "id": "t007",
+   "language": "en",
+   "question": "Which dataset has the number of earthquakes or seismic tremors?",
+   "expected_dataset_ids": [
+    "orcyinfnumber-of-seismic-tremors-observed-by-seismic-monitoring-devices-of-saudi"
+   ],
+   "expected_chunk_ids": [],
+   "trace_id": "e96cea97829b2461e61d22f76da225ee",
+   "answer": "Oracle answer.",
+   "dataset_ids": [
+    "orcyinfnumber-of-seismic-tremors-observed-by-seismic-monitoring-devices-of-saudi"
+   ],
+   "citations": [],
+   "cited_passages": [],
+   "tools": [
+    {
+     "name": "search_datasets",
+     "input": {
+      "query": "Which dataset has the number of earthquakes or seismic tremors?"
+     },
+     "is_error": false
+    }
+   ],
+   "errors": [],
+   "model": "gpt-6-luna",
+   "requests": 2,
+   "input_tokens": 4061,
+   "output_tokens": 66,
+   "cost_usd": 0.0004391,
+   "latency_ms": 94.8,
+   "code_pass": true
+  },
+  {
+   "id": "t008",
+   "language": "en",
+   "question": "Where can I find how much water each person uses in each region?",
+   "expected_dataset_ids": [
+    "per_capita_average_water_use_in_saudi_regions"
+   ],
+   "expected_chunk_ids": [],
+   "trace_id": "f366c8abdf52864d64b08b20692199da",
+   "answer": "Oracle answer.",
+   "dataset_ids": [
+    "per_capita_average_water_use_in_saudi_regions"
+   ],
+   "citations": [],
+   "cited_passages": [],
+   "tools": [
+    {
+     "name": "search_datasets",
+     "input": {
+      "query": "Where can I find how much water each person uses in each region?"
+     },
+     "is_error": false
+    }
+   ],
+   "errors": [],
+   "model": "gpt-6-luna",
+   "requests": 2,
+   "input_tokens": 4104,
+   "output_tokens": 57,
+   "cost_usd": 0.00043890000000000004,
+   "latency_ms": 109.0,
+   "code_pass": true
+  },
+  {
+   "id": "t009",
+   "language": "en",
+   "question": "Which datasets cover water desalination?",
+   "expected_dataset_ids": [
+    "quantity-of-water-desalinated-by-desalination-plants-in-000m2-1999-2013",
+    "desalinated-water-percentage-of-total-usable-freshwater"
+   ],
+   "expected_chunk_ids": [],
+   "trace_id": "0c4c8c93757f59234a66363e90367aec",
+   "answer": "Oracle answer.",
+   "dataset_ids": [
+    "quantity-of-water-desalinated-by-desalination-plants-in-000m2-1999-2013",
+    "desalinated-water-percentage-of-total-usable-freshwater"
+   ],
+   "citations": [],
+   "cited_passages": [],
+   "tools": [
+    {
+     "name": "search_datasets",
+     "input": {
+      "query": "Which datasets cover water desalination?"
+     },
+     "is_error": false
+    }
+   ],
+   "errors": [],
+   "model": "gpt-6-luna",
+   "requests": 2,
+   "input_tokens": 4032,
+   "output_tokens": 73,
+   "cost_usd": 0.0004397,
+   "latency_ms": 91.6,
+   "code_pass": true
+  },
+  {
+   "id": "t010",
+   "language": "en",
+   "question": "Which dataset gives the number of vehicles that arrive in Makkah for Hajj?",
+   "expected_dataset_ids": [
+    "number-of-arriving-vehicles-to-makkah-by-type-of-vehicle"
+   ],
+   "expected_chunk_ids": [],
+   "trace_id": "b29463bb3cd14d3ebcd29b532f7be517",
+   "answer": "Oracle answer.",
+   "dataset_ids": [
+    "number-of-arriving-vehicles-to-makkah-by-type-of-vehicle"
+   ],
+   "citations": [],
+   "cited_passages": [],
+   "tools": [
+    {
+     "name": "search_datasets",
+     "input": {
+      "query": "Which dataset gives the number of vehicles that arrive in Makkah for Hajj?"
+     },
+     "is_error": false
+    }
+   ],
+   "errors": [],
+   "model": "gpt-6-luna",
+   "requests": 2,
+   "input_tokens": 4066,
+   "output_tokens": 63,
+   "cost_usd": 0.00043809999999999997,
+   "latency_ms": 106.3,
+   "code_pass": true
+  },
+  {
+   "id": "t011",
+   "language": "en",
+   "question": "Who owns the dataset on fuel prices paid by electricity producers?",
+   "expected_dataset_ids": [
+    "comparisons-of-fuel-prices-paid-by-the-electricity-producers-in-the-kingdom-with"
+   ],
+   "expected_chunk_ids": [],
+   "trace_id": "6a7c4ad41ff3f3b1072f2151b42f0965",
+   "answer": "Oracle answer.",
+   "dataset_ids": [
+    "comparisons-of-fuel-prices-paid-by-the-electricity-producers-in-the-kingdom-with"
+   ],
+   "citations": [],
+   "cited_passages": [],
+   "tools": [
+    {
+     "name": "search_datasets",
+     "input": {
+      "query": "Who owns the dataset on fuel prices paid by electricity producers?"
+     },
+     "is_error": false
+    }
+   ],
+   "errors": [],
+   "model": "gpt-6-luna",
+   "requests": 2,
+   "input_tokens": 4090,
+   "output_tokens": 67,
+   "cost_usd": 0.0004425,
+   "latency_ms": 105.5,
+   "code_pass": true
+  },
+  {
+   "id": "t012",
+   "language": "en",
+   "question": "Which datasets have the world production of oil and the world demand for oil?",
+   "expected_dataset_ids": [
+    "world-oil-production",
+    "average-world-demand-for-oil-2005-2014"
+   ],
+   "expected_chunk_ids": [],
+   "trace_id": "588e0ee79c79a405dfbd842b1d2b22da",
+   "answer": "Oracle answer.",
+   "dataset_ids": [
+    "world-oil-production",
+    "average-world-demand-for-oil-2005-2014"
+   ],
+   "citations": [],
+   "cited_passages": [],
+   "tools": [
+    {
+     "name": "search_datasets",
+     "input": {
+      "query": "Which datasets have the world production of oil and the world demand for oil?"
+     },
+     "is_error": false
+    }
+   ],
+   "errors": [],
+   "model": "gpt-6-luna",
+   "requests": 2,
+   "input_tokens": 4002,
+   "output_tokens": 65,
+   "cost_usd": 0.00043270000000000006,
+   "latency_ms": 90.2,
+   "code_pass": true
+  },
+  {
+   "id": "t013",
+   "language": "en",
+   "question": "Which dataset has passenger and cargo traffic at domestic airports?",
+   "expected_dataset_ids": [
+    "saudi-aircraft-traffic-passengercargo-by-domestic-airports-in-2008-and-2009"
+   ],
+   "expected_chunk_ids": [],
+   "trace_id": "2729728a99740ba6c1debca278e03018",
+   "answer": "Oracle answer.",
+   "dataset_ids": [
+    "saudi-aircraft-traffic-passengercargo-by-domestic-airports-in-2008-and-2009"
+   ],
+   "citations": [],
+   "cited_passages": [],
+   "tools": [
+    {
+     "name": "search_datasets",
+     "input": {
+      "query": "Which dataset has passenger and cargo traffic at domestic airports?"
+     },
+     "is_error": false
+    }
+   ],
+   "errors": [],
+   "model": "gpt-6-luna",
+   "requests": 2,
+   "input_tokens": 4092,
+   "output_tokens": 66,
+   "cost_usd": 0.0004422,
+   "latency_ms": 95.3,
+   "code_pass": true
+  },
+  {
+   "id": "t014",
+   "language": "en",
+   "question": "I need data on ships that arrive at Saudi ports. Which dataset has it, and what fields does it have?",
+   "expected_dataset_ids": [
+    "ships-arriving-at-saudi-ports-by-country-of-registration-and-port-2008-ad"
+   ],
+   "expected_chunk_ids": [],
+   "trace_id": "17f363950e9712d200bfbce250d46960",
+   "answer": "Oracle answer.",
+   "dataset_ids": [
+    "ships-arriving-at-saudi-ports-by-country-of-registration-and-port-2008-ad"
+   ],
+   "citations": [],
+   "cited_passages": [],
+   "tools": [
+    {
+     "name": "search_datasets",
+     "input": {
+      "query": "I need data on ships that arrive at Saudi ports. Which dataset has it, and what fields does it have?"
+     },
+     "is_error": false
+    }
+   ],
+   "errors": [],
+   "model": "gpt-6-luna",
+   "requests": 2,
+   "input_tokens": 4149,
+   "output_tokens": 73,
+   "cost_usd": 0.0004514000000000001,
+   "latency_ms": 98.3,
+   "code_pass": true
+  },
+  {
+   "id": "t015",
+   "language": "en",
+   "question": "Which dataset has household waste per person?",
+   "expected_dataset_ids": [
+    "waste_production_rate_per_individual_en_0"
+   ],
+   "expected_chunk_ids": [],
+   "trace_id": "f5d8d3c69f152c112bd32c06b724eacd",
+   "answer": "Oracle answer.",
+   "dataset_ids": [
+    "waste_production_rate_per_individual_en_0"
+   ],
+   "citations": [],
+   "cited_passages": [],
+   "tools": [
+    {
+     "name": "search_datasets",
+     "input": {
+      "query": "Which dataset has household waste per person?"
+     },
+     "is_error": false
+    }
+   ],
+   "errors": [],
+   "model": "gpt-6-luna",
+   "requests": 2,
+   "input_tokens": 4076,
+   "output_tokens": 51,
+   "cost_usd": 0.00043310000000000006,
+   "latency_ms": 87.8,
+   "code_pass": true
+  },
+  {
+   "id": "t031",
+   "language": "en",
+   "question": "How many points of sale and price quotes are in the sample of the Average Prices of Goods and Services Survey?",
+   "expected_dataset_ids": [],
+   "expected_chunk_ids": [
+    "gastat-average-prices-en:p10:c1"
+   ],
+   "trace_id": "8f4a88cade157d4faa9cabc6e47a5d05",
+   "answer": "Oracle answer.",
+   "dataset_ids": [],
+   "citations": [
+    {
+     "document_title": "Methodology and Quality Report for Average Prices of Goods and Services Statistics 4.1",
+     "page": 10,
+     "chunk_id": "gastat-average-prices-en:p10:c1"
+    }
+   ],
+   "cited_passages": [
+    {
+     "chunk_id": "gastat-average-prices-en:p10:c1",
+     "page": 10,
+     "text": "10 3.8. Sample design A purposive sample was adopted for the Average Prices of Goods and Services Survey, representing all thirteen administrative regions of Saudi Arabia. The sample is selected directly from the field and meets the two criteria of continuity and purchasing activity, ensuring diversity in consumption patterns and market prices. The sample comprises a total of 2,224 points of sale and 25,130 price quotes covering all 170 items in the basket. 3.9. Statistical unit The statistical unit in the Average Prices of Goods and Services survey is the price of a good or service at the point of sale. 3.10. Data collection Survey data collection: The Average Prices of Goods and Services survey data were collected through face-to-face interviews using Computer-Assisted Personal Interviewing (CAPI). The data are stored in GASTAT's databases after being audited and reviewed in accordance with approved statistical methods and recognized quality standards. The data"
+    }
+   ],
+   "tools": [
+    {
+     "name": "search_documents",
+     "input": {
+      "query": "How many points of sale and price quotes are in the sample of the Average Prices of Goods and Services Survey?"
+     },
+     "is_error": false
+    }
+   ],
+   "errors": [],
+   "model": "gpt-6-luna",
+   "requests": 2,
+   "input_tokens": 5715,
+   "output_tokens": 69,
+   "cost_usd": 0.000606,
+   "latency_ms": 24144.5,
+   "code_pass": true
+  },
+  {
+   "id": "t032",
+   "language": "en",
+   "question": "Where does the data for the Hajj statistics come from?",
+   "expected_dataset_ids": [],
+   "expected_chunk_ids": [
+    "gastat-hajj-en:p6:c2"
+   ],
+   "trace_id": "f291736711776693fc9f7a24e68c352e",
+   "answer": "Oracle answer.",
+   "dataset_ids": [],
+   "citations": [
+    {
+     "document_title": "Methodology and Quality Report for Hajj Statistics 2026",
+     "page": 6,
+     "chunk_id": "gastat-hajj-en:p6:c2"
+    }
+   ],
+   "cited_passages": [
+    {
+     "chunk_id": "gastat-hajj-en:p6:c2",
+     "page": 6,
+     "text": "facilitate the journey of pilgrims by completing passport procedures, customs procedures, and health requirements, as well as sorting and tagging baggage at airports in their countries of departure and transporting it directly to their accommodation in Saudi Arabia. 3.4. Data sources The main source of Hajj Statistics is administrative records from: • Ministry of Interior. The key variables disseminated from administrative records data are: • Number of internal pilgrims by nationality. • External pilgrims by ways of arrival. 3.5. Designing the data collection tool Data were collected using standardized data request forms directed to data-owning entities to obtain periodic, harmonized, and well-documented data derived from administrative records relevant to Hajj Statistics indicators."
+    }
+   ],
+   "tools": [
+    {
+     "name": "search_documents",
+     "input": {
+      "query": "Where does the data for the Hajj statistics come from?"
+     },
+     "is_error": false
+    }
+   ],
+   "errors": [],
+   "model": "gpt-6-luna",
+   "requests": 2,
+   "input_tokens": 4675,
+   "output_tokens": 53,
+   "cost_usd": 0.0004940000000000001,
+   "latency_ms": 19996.4,
+   "code_pass": true
+  },
+  {
+   "id": "t033",
+   "language": "en",
+   "question": "How is the average weekly working hours indicator calculated in the labor market statistics?",
+   "expected_dataset_ids": [],
+   "expected_chunk_ids": [
+    "gastat-labor-market-en:p9:c2"
+   ],
+   "trace_id": "d15f73037284f380340a1a2d853ba366",
+   "answer": "Oracle answer.",
+   "dataset_ids": [],
+   "citations": [
+    {
+     "document_title": "Methodology and Quality Report for Labor Market Statistics 4.0",
+     "page": 9,
+     "chunk_id": "gastat-labor-market-en:p9:c2"
+    }
+   ],
+   "cited_passages": [
+    {
+     "chunk_id": "gastat-labor-market-en:p9:c2",
+     "page": 9,
+     "text": "working hours: An indicator that measures the average weekly regular working hours of employed persons (15 years and above), which is the ratio of total hours worked to total employed persons. • Average monthly wage of wage earners: An indicator that measures the average monthly wage of wage earners (15 years and above), which is the sum of the monthly wage to the total number of wage earners or wage trainees (who reported a wage). Concepts and terminology of the Register-based Labor Market Statistics Publication: • Employed persons (based on administrative records): All working individuals who hold jobs in accordance with the laws and regulations approved by the labor market regulatory authorities and are registered in the administrative records. The employed persons in administrative records can be classified according to the laws and regulations they are subject to as follows: − Employed persons according to the Civil Service laws and"
+    }
+   ],
+   "tools": [
+    {
+     "name": "search_documents",
+     "input": {
+      "query": "How is the average weekly working hours indicator calculated in the labor market statistics?"
+     },
+     "is_error": false
+    }
+   ],
+   "errors": [],
+   "model": "gpt-6-luna",
+   "requests": 2,
+   "input_tokens": 5666,
+   "output_tokens": 64,
+   "cost_usd": 0.0005986,
+   "latency_ms": 22804.9,
+   "code_pass": true
+  },
+  {
+   "id": "t056",
+   "language": "ar",
+   "question": "ما هي الفترة المرجعية لإحصاءات الإسقاطات والتقديرات السكانية؟",
+   "expected_dataset_ids": [],
+   "expected_chunk_ids": [
+    "gastat-population-estimates-ar:p7:c1"
+   ],
+   "trace_id": "2f985b844f35a0eac196289e332f236e",
+   "answer": "Oracle answer.",
+   "dataset_ids": [],
+   "citations": [
+    {
+     "document_title": "تقرير المنهجية والجودة لإحصاءات الاسقاطات والتقديرات السكانية 3.2",
+     "page": 7,
+     "chunk_id": "gastat-population-estimates-ar:p7:c1"
+    }
+   ],
+   "cited_passages": [
+    {
+     "chunk_id": "gastat-population-estimates-ar:p7:c1",
+     "page": 7,
+     "text": "7 4 . وحدة القياس • جميع النتائج يتم قياسها بالأعداد (مثل: عدد السكان) (بالملايين .) • :بعض المؤشرات تحسب كمعدلات (مثل النمو ). • ( بعض النتائج تحسب كنسبة مئوية مثل: نسبة السكان الذكور.) 5 . الفترة المرجعية الفترة المرجعية للمتغيرات أو مجموعة البيانات على النحو التالي: منتصف العام الميلادي بتاريخ1 .يوليو 6 . السرية 6.1 . السرية- السياسة تنفيذا لما( نص عليه المرسوم الملكي الكريم رقم23) وتاريخ 07 - 12 - 1397 ه فإن الهيئة العامة للإحصاء ملتزمة بالسرية التامة لكافة البيانات المستوفاة، وعدم استخدامها إلا في الأغراض الحصائي .ة فقط لذلك فإن البيانات محمية في خوادم البيانات الخاصة بالهيئة العامة للإحصاء . 6.2 . السرية– معالجة البيانات يتم عرض البيانات في جداول مناسبة؛ لتسهيل عملية تلخيصها وفهمها واستنتاج النتائج منها ومقارنتها بغيرها من البيانات، والخروج منها بمدلولات إحصائية عن مجتمع الدراسة. كما يسهل الرجوع إليها في صورة جداول دون الاطلاع على البيانات الحساسة أو السرية مما يخل"
+    }
+   ],
+   "tools": [
+    {
+     "name": "search_documents",
+     "input": {
+      "query": "ما هي الفترة المرجعية لإحصاءات الإسقاطات والتقديرات السكانية؟"
+     },
+     "is_error": false
+    }
+   ],
+   "errors": [],
+   "model": "gpt-6-luna",
+   "requests": 2,
+   "input_tokens": 8658,
+   "output_tokens": 126,
+   "cost_usd": 0.0009288,
+   "latency_ms": 23936.7,
+   "code_pass": true
+  },
+  {
+   "id": "t057",
+   "language": "ar",
+   "question": "ما المقصود بتطبيقات التوصيل في إحصاءات التخزين والخدمات اللوجستية؟",
+   "expected_dataset_ids": [],
+   "expected_chunk_ids": [
+    "gastat-warehousing-logistics-ar:p7:c1"
+   ],
+   "trace_id": "05203d6b77edcaf4715853ad8b56e450",
+   "answer": "Oracle answer.",
+   "dataset_ids": [],
+   "citations": [
+    {
+     "document_title": "تقرير المنهجية والجودة لإحصاءات التخزين والخدمات اللوجستية 3.2",
+     "page": 7,
+     "chunk_id": "gastat-warehousing-logistics-ar:p7:c1"
+    }
+   ],
+   "cited_passages": [
+    {
+     "chunk_id": "gastat-warehousing-logistics-ar:p7:c1",
+     "page": 7,
+     "text": "7 هو المكان الذي تم فيه بيع البضائع أو السلع لعملاء التجزئة والجملة ويشمل شركات القطاع الخاص في القطاع اللوجستي . • تراخيص نشاط التخليص الجمركي : ترخيص الانشطة ا لجمركية الخاصة بالبضائع الواردة والصادرة والعابرة وفقا للإجراءات الجمركية المنصوص عليها في نظام الجمارك الموحد . • ت طبيقات التوصيل : هي برامج تسهل الحصول على الاحتياجات دون الخروج من المنزل، فهي تؤمن الطعام والمشروبات المختلفة وغيرها من المستلزمات والخدمات المختلفة، بالضافة إلى التطبيقات التي توفر خدمة التوصيل من مكان لآخ ر . 3.5 . الوحدة الحصائي ة لا ينطبق . 3.6 . المجتمع الحصائي لا ينطبق . 3.7 . المنطقة المرجعية تغطي نشرة إحصاءات التخزين والخدمات اللوجستية كافة المناطق الدارية ال13 في المملكة العربية .السعودية 3.8 . التغطية الزمنية البيانات متاحة من عام2020م إلى الربع ال رابع من عام2023م . 3.9 . فترة الأساس .لا ينطبق"
+    }
+   ],
+   "tools": [
+    {
+     "name": "search_documents",
+     "input": {
+      "query": "ما المقصود بتطبيقات التوصيل في إحصاءات التخزين والخدمات اللوجستية؟"
+     },
+     "is_error": false
+    }
+   ],
+   "errors": [],
+   "model": "gpt-6-luna",
+   "requests": 2,
+   "input_tokens": 9113,
+   "output_tokens": 132,
+   "cost_usd": 0.0009773000000000002,
+   "latency_ms": 26479.9,
+   "code_pass": true
+  },
+  {
+   "id": "t081",
+   "language": "ar",
+   "question": "ما مجموعة البيانات التي تحتوي على إنتاج النفط الخام في المملكة العربية السعودية؟",
+   "expected_dataset_ids": [
+    "saudi-crude-oil-production-from-sama-annual-statistics-2015-dec"
+   ],
+   "expected_chunk_ids": [],
+   "trace_id": "7f60a5a1ff81f59334723c6f981032e5",
+   "answer": "Oracle answer.",
+   "dataset_ids": [
+    "saudi-crude-oil-production-from-sama-annual-statistics-2015-dec"
+   ],
+   "citations": [],
+   "cited_passages": [],
+   "tools": [
+    {
+     "name": "search_datasets",
+     "input": {
+      "query": "ما مجموعة البيانات التي تحتوي على إنتاج النفط الخام في المملكة العربية السعودية؟"
+     },
+     "is_error": false
+    }
+   ],
+   "errors": [],
+   "model": "gpt-6-luna",
+   "requests": 2,
+   "input_tokens": 3750,
+   "output_tokens": 151,
+   "cost_usd": 0.00045050000000000005,
+   "latency_ms": 75.2,
+   "code_pass": true
+  },
+  {
+   "id": "t085",
+   "language": "ar",
+   "question": "هل توجد مجموعة بيانات عن الإسمنت؟",
+   "expected_dataset_ids": [
+    "cement-production-and-sales"
+   ],
+   "expected_chunk_ids": [],
+   "trace_id": "d2543b5ad40cfaf8628306f41f88a70a",
+   "answer": "Oracle answer.",
+   "dataset_ids": [
+    "cement-production-and-sales"
+   ],
+   "citations": [],
+   "cited_passages": [],
+   "tools": [
+    {
+     "name": "search_datasets",
+     "input": {
+      "query": "هل توجد مجموعة بيانات عن الإسمنت؟"
+     },
+     "is_error": false
+    }
+   ],
+   "errors": [],
+   "model": "gpt-6-luna",
+   "requests": 2,
+   "input_tokens": 3493,
+   "output_tokens": 80,
+   "cost_usd": 0.00038930000000000003,
+   "latency_ms": 111.5,
+   "code_pass": true
+  },
+  {
+   "id": "t086",
+   "language": "ar",
+   "question": "ما الأعمدة في مجموعة البيانات عن استهلاك الكهرباء حسب القطاعات؟",
+   "expected_dataset_ids": [
+    "electricity-consumption-by-sectors"
+   ],
+   "expected_chunk_ids": [],
+   "trace_id": "7e356e7a8da9de927afc96a4abaf3380",
+   "answer": "Oracle answer.",
+   "dataset_ids": [
+    "electricity-consumption-by-sectors"
+   ],
+   "citations": [],
+   "cited_passages": [],
+   "tools": [
+    {
+     "name": "search_datasets",
+     "input": {
+      "query": "ما الأعمدة في مجموعة البيانات عن استهلاك الكهرباء حسب القطاعات؟"
+     },
+     "is_error": false
+    }
+   ],
+   "errors": [],
+   "model": "gpt-6-luna",
+   "requests": 2,
+   "input_tokens": 3660,
+   "output_tokens": 122,
+   "cost_usd": 0.0004270000000000001,
+   "latency_ms": 69.9,
+   "code_pass": true
+  }
+ ]
+}
