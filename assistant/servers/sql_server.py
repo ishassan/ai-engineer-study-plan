@@ -1,4 +1,4 @@
-"""Reference solution: the MCP server for read-only SQL."""
+"""Reference solution: the MCP server for read-only SQL, with sign-in (week 19)."""
 
 from __future__ import annotations
 
@@ -8,16 +8,22 @@ from typing import Any, Iterator
 
 import psycopg
 from mcp.server.fastmcp import FastMCP
+from psycopg import sql
 
+from assistant.auth import caller, mcp_auth
 from assistant.config import get_settings
+
+PORT = int(os.environ.get("MCP_PORT", "8091"))
 
 mcp = FastMCP(
     "sql",
     instructions="Read-only SQL on the data tables and the catalogue tables of the data platform.",
     host=os.environ.get("MCP_HOST", "127.0.0.1"),
-    port=int(os.environ.get("MCP_PORT", "8091")),
+    port=PORT,
     stateless_http=True,
     json_response=True,
+    # Week 19: each request needs a token of the realm for the audience mcp-sql.
+    **mcp_auth(get_settings().mcp_sql_audience, PORT),
 )
 
 # Each table of the schema `data`, and the two tables of the catalogue.
@@ -61,11 +67,16 @@ def run_sql(query: str) -> dict[str, Any]:
     was cut): use WHERE, GROUP BY and LIMIT to keep the result small.
     """
     settings = get_settings()
+    identity = caller()
     statement = query.strip().rstrip(";").strip()
     with psycopg.connect(settings.sql_database_url, connect_timeout=5) as connection:
         connection.read_only = True
         with connection.cursor() as cursor:
-            cursor.execute("SELECT set_config('statement_timeout', %s, true)", (f"{int(settings.sql_timeout_seconds * 1000)}ms",))
+            # SET LOCAL lasts until the end of the transaction. The role cannot call set_config(),
+            # so the query of the model cannot change these values (migration 0010).
+            for name, value in (("statement_timeout", f"{int(settings.sql_timeout_seconds * 1000)}ms"),
+                                ("app.user", identity.user), ("app.groups", ",".join(identity.groups))):
+                cursor.execute(sql.SQL("SET LOCAL {} = {}").format(sql.Identifier(name), sql.Literal(value)))
             try:
                 _check_plan(cursor, statement)
                 cursor.execute(statement, prepare=True)

@@ -1,4 +1,4 @@
-"""Reference solution."""
+"""Reference solution: retrieval with the rights of the user (week 19)."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ from typing import Any
 
 from langfuse import get_client
 
-from assistant.db import query
+from assistant.db import query_as_user as query
 from assistant.embeddings import embed, rerank
 from assistant.ingest import normalise_arabic, vector_literal
 

@@ -1,4 +1,4 @@
-"""Reference solution: the MCP server for the catalogue and register_dataset."""
+"""Reference solution: the MCP server for the catalogue, with sign-in (week 19)."""
 
 from __future__ import annotations
 
@@ -8,14 +8,20 @@ import os
 from mcp.server.fastmcp import FastMCP
 
 from assistant import tools
+from assistant.auth import mcp_auth
+from assistant.config import get_settings
+
+PORT = int(os.environ.get("MCP_PORT", "8092"))
 
 mcp = FastMCP(
     "catalogue",
     instructions="Search the dataset catalogue of the data platform, and register new datasets.",
     host=os.environ.get("MCP_HOST", "127.0.0.1"),
-    port=int(os.environ.get("MCP_PORT", "8092")),
+    port=PORT,
     stateless_http=True,
     json_response=True,
+    # Week 19: each request needs a token of the realm for the audience mcp-catalogue.
+    **mcp_auth(get_settings().mcp_catalogue_audience, PORT),
 )
 
 

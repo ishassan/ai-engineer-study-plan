@@ -1,4 +1,4 @@
-"""Reference solution: the graph with a checkpointer, approval, an audit log and MCP tools."""
+"""Reference solution: the graph of Phase 4 with the token of the user (week 19)."""
 
 from __future__ import annotations
 
@@ -17,14 +17,16 @@ from langchain_mcp_adapters.client import MultiServerMCPClient
 from langgraph.config import get_stream_writer
 from langgraph.graph import END, START, StateGraph
 from langgraph.graph.message import REMOVE_ALL_MESSAGES, add_messages
+from langchain_core.runnables import RunnableConfig
 from langgraph.types import Command, interrupt
 from psycopg.types.json import Jsonb
 from pydantic import BaseModel, Field, ValidationError
 
 from assistant import conversations, memory, planner
 from assistant.agent import SYSTEM_PROMPT
+from assistant.auth import Identity, service_identity, service_token
 from assistant.config import get_settings
-from assistant.db import connect
+from assistant.db import as_identity, connect
 from assistant.models import chat_model, system_message, usage_of
 from assistant.persistence import checkpointer
 from assistant.planner import Plan
@@ -94,31 +96,55 @@ def _system(state: State):
 LOCAL_TOOLS = {"search_documents", "save_memory"}
 
 
-@lru_cache
-def _mcp_tools(sql_url: str, catalogue_url: str) -> dict[str, BaseTool]:
-    client = MultiServerMCPClient({
-        "sql": {"url": sql_url, "transport": "streamable_http"},
-        "catalogue": {"url": catalogue_url, "transport": "streamable_http"},
+def _client(token: str) -> MultiServerMCPClient:
+    """A client of both servers that sends the token of the user with each request (week 19)."""
+    settings = get_settings()
+    headers = {"Authorization": f"Bearer {token}"}
+    return MultiServerMCPClient({
+        "sql": {"url": settings.mcp_sql_url, "transport": "streamable_http", "headers": headers},
+        "catalogue": {"url": settings.mcp_catalogue_url, "transport": "streamable_http", "headers": headers},
     })
-    return {tool.name: tool for tool in asyncio.run(client.get_tools())}
+
+
+@lru_cache
+def _mcp_tools(sql_url: str, catalogue_url: str) -> tuple[dict[str, BaseTool], dict[str, str]]:
+    """The definitions of the server tools (the same for each user) and the server of each tool.
+
+    The list needs a token too: the service token. A tool call never uses these tool objects,
+    because they hold the headers of the service token.
+    """
+    client, tools, servers = _client(service_token()), {}, {}
+    for server in ("sql", "catalogue"):
+        for tool in asyncio.run(client.get_tools(server_name=server)):
+            tools[tool.name], servers[tool.name] = tool, server
+    return tools, servers
 
 
 def mcp_tools() -> dict[str, BaseTool]:
     settings = get_settings()
-    return _mcp_tools(settings.mcp_sql_url, settings.mcp_catalogue_url)
+    return _mcp_tools(settings.mcp_sql_url, settings.mcp_catalogue_url)[0]
+
+
+def _server_of(name: str) -> str | None:
+    settings = get_settings()
+    return _mcp_tools(settings.mcp_sql_url, settings.mcp_catalogue_url)[1].get(name)
 
 
 def tool_definitions() -> list[Any]:
     return [*(tool for tool in TOOLS if tool["name"] in LOCAL_TOOLS), *mcp_tools().values()]
 
 
-def call_tool(call: dict[str, Any], state: State) -> str:
-    """Run one tool call and return the text for the model. Raise an exception for an error."""
+def call_tool(call: dict[str, Any], state: State, identity: Identity) -> str:
+    """Run one tool call with the rights of `identity`. Raise an exception for an error."""
     if call["name"] in LOCAL_TOOLS:
-        return run_tool(call["name"], call["args"], state["user"], state.get("conversation_id"))
-    tool = mcp_tools().get(call["name"])
-    if tool is None:
+        # The document search reads the chunks with the rights of the user (row security).
+        with as_identity(identity):
+            return run_tool(call["name"], call["args"], state["user"], state.get("conversation_id"))
+    server = _server_of(call["name"])
+    if server is None:
         raise ValueError(f"Unknown tool: {call['name']}")
+    found = {tool.name: tool for tool in asyncio.run(_client(identity.token).get_tools(server_name=server))}
+    tool = found[call["name"]]
     # An adapter tool is a LangChain tool: with the callbacks of the run it makes its own tool
     # observation in Langfuse, next to the one of run_tools. No callbacks here.
     tool_call = {"name": call["name"], "args": call["args"], "id": call["id"], "type": "tool_call"}
@@ -192,8 +218,9 @@ def approve(state: State) -> dict[str, Any]:
                           for call in calls}}
 
 
-def run_tools(state: State) -> dict[str, Any]:
+def run_tools(state: State, config: RunnableConfig) -> dict[str, Any]:
     writer = get_stream_writer()
+    identity = config["configurable"]["identity"]
     reply = state["messages"][-1]
     results, chunks, failed = [], dict(state.get("chunks") or {}), None
     for call in reply.tool_calls:
@@ -208,7 +235,7 @@ def run_tools(state: State) -> dict[str, Any]:
                 span.update(output=output)
             else:
                 try:
-                    output, is_error = call_tool(call, state), False
+                    output, is_error = call_tool(call, state, identity), False
                     span.update(output=output)
                 except Exception as error:
                     output, is_error = f"{type(error).__name__}: {error}", True
@@ -320,8 +347,10 @@ def build_graph():
     return graph.compile(checkpointer=checkpointer())
 
 
-def _config(conversation_id: str) -> dict[str, Any]:
-    return {"configurable": {"thread_id": conversation_id}, "callbacks": [CallbackHandler()],
+def _config(conversation_id: str, identity: Identity) -> dict[str, Any]:
+    # The identity is an object, not a string: LangGraph copies only plain values of
+    # `configurable` into the metadata of a checkpoint, so the token is not stored in Postgres.
+    return {"configurable": {"thread_id": conversation_id, "identity": identity}, "callbacks": [CallbackHandler()],
             "recursion_limit": 4 * get_settings().max_turns + 10}
 
 
@@ -354,12 +383,15 @@ def _run(graph: Any, value: Any, config: dict[str, Any]) -> Iterator[tuple[str, 
 
 @observe(name="ask", as_type="agent")
 def answer_events(
-    question: str, conversation_id: str | None = None, user: str = "anonymous"
+    question: str, conversation_id: str | None = None, user: str = "anonymous", identity: Identity | None = None
 ) -> Iterator[tuple[str, dict[str, Any]]]:
+    """Answer one question. The API passes the identity of the token. A job without a person
+    (an evaluation) passes none, and the graph uses the service account."""
     conversation_id = conversation_id or str(uuid.uuid4())
+    identity = identity or service_identity()
     # The checkpointer has no owner for a thread: the table conversations has.
     conversations.open_conversation(conversation_id, user)
-    graph, config = build_graph(), _config(conversation_id)
+    graph, config = build_graph(), _config(conversation_id, identity)
     if graph.get_state(config).interrupts:
         raise RuntimeError("This conversation waits for an approval. Send POST /approve first.")
     start = {"question": question, "user": user, "conversation_id": conversation_id,
@@ -368,8 +400,11 @@ def answer_events(
 
 
 @observe(name="approve", as_type="agent")
-def resume_events(conversation_id: str, approved: bool, approver: str) -> Iterator[tuple[str, dict[str, Any]]]:
-    graph, config = build_graph(), _config(conversation_id)
+def resume_events(
+    conversation_id: str, approved: bool, approver: str, identity: Identity | None = None
+) -> Iterator[tuple[str, dict[str, Any]]]:
+    """Go on after a decision. The tools of the rest of the run use the token of the approver."""
+    graph, config = build_graph(), _config(conversation_id, identity or service_identity())
     if not graph.get_state(config).interrupts:
         raise LookupError(f"Nothing in the conversation {conversation_id} waits for an approval.")
     yield from _run(graph, Command(resume={"approved": approved, "approver": approver}), config)

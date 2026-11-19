@@ -1,4 +1,6 @@
-"""The HTTP service. This is the Phase 4 copy of the file, and it is complete.
+"""Reference solution: the HTTP service with sign-in (week 19).
+
+The Phase 4 copy. current_user() reads the access token, and the graph gets the identity.
 
 POST /ask sends each event of answer_events() to the client as a server-sent
 event:
@@ -34,10 +36,11 @@ import logging
 import uuid
 from typing import Any, Callable, Iterator
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
+from assistant.auth import Identity, verify
 from assistant.config import get_settings
 
 logger = logging.getLogger("assistant.api")
@@ -56,9 +59,26 @@ class ApproveRequest(BaseModel):
     approved: bool
 
 
-def current_user(request: Request) -> str:
-    """The user of a request. This is the only place that reads it."""
-    return request.headers.get("X-User", "").strip() or "anonymous"
+def current_user(request: Request) -> Identity:
+    """The identity of the access token of a request. Week 19: the header X-User is not read.
+
+    A request without a valid token gets 401, before the stream starts.
+    """
+    scheme, _, token = request.headers.get("Authorization", "").partition(" ")
+    identity = verify(token.strip(), get_settings().api_audience) if scheme.lower() == "bearer" else None
+    if identity is None:
+        raise HTTPException(status_code=401, detail="A valid access token is needed.",
+                            headers={"WWW-Authenticate": 'Bearer realm="assistant"'})
+    return identity
+
+
+def run_agent(question: str, conversation_id: str, identity: Identity) -> Iterator[tuple[str, dict[str, Any]]]:
+    """The events of the loop of AGENT_IMPL. The graph gets the identity with its token."""
+    if get_settings().agent_impl == "langgraph":
+        from assistant.graph import answer_events
+
+        return answer_events(question, conversation_id=conversation_id, user=identity.user, identity=identity)
+    return agent()(question, conversation_id=conversation_id, user=identity.user)
 
 
 def agent() -> AnswerEvents:
@@ -105,18 +125,16 @@ def streaming(events: Iterator[str]) -> StreamingResponse:
 @app.post("/ask")
 def ask(body: AskRequest, request: Request) -> StreamingResponse:
     conversation_id = body.conversation_id or str(uuid.uuid4())
-    user = current_user(request)
-    return streaming(event_stream(
-        lambda: agent()(body.question, conversation_id=conversation_id, user=user), conversation_id
-    ))
+    identity = current_user(request)
+    return streaming(event_stream(lambda: run_agent(body.question, conversation_id, identity), conversation_id))
 
 
-def resume(conversation_id: str, approved: bool, approver: str) -> Iterator[tuple[str, dict[str, Any]]]:
+def resume(conversation_id: str, approved: bool, approver: Identity) -> Iterator[tuple[str, dict[str, Any]]]:
     if get_settings().agent_impl != "langgraph":
         raise RuntimeError("Approval needs the graph. Set AGENT_IMPL=langgraph.")
     from assistant.graph import resume_events
 
-    return resume_events(conversation_id, approved=approved, approver=approver)
+    return resume_events(conversation_id, approved=approved, approver=approver.user, identity=approver)
 
 
 @app.post("/approve")
