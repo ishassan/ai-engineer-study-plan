@@ -1,0 +1,77 @@
+# The evaluation suite of the assistant, on each pull request. Week 11.
+#
+# `make start PHASE=3` copies this file to .github/workflows/evals.yml. The job starts the same
+# services as `make up` (without the API and without Langfuse), restores the documents and the
+# chunks from data/snapshot/chunks.sql.gz, and runs `make evals`. The job fails when a score of
+# the suite is below its threshold.
+#
+# Before the first run:
+# - Run `make snapshot` and commit data/snapshot/chunks.sql.gz.
+# - Add the secret ANTHROPIC_API_KEY in the settings of the repository on GitHub
+#   (Settings, Secrets and variables, Actions).
+name: Evals
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: evals-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      # The runners of GitHub are x86 machines.
+      TEI_TAG: cpu-1.9.4
+      # The model files go to folders, so that actions/cache can keep them between runs.
+      EMBEDDINGS_MODEL_VOLUME: ./.cache/models/embeddings
+      RERANKER_MODEL_VOLUME: ./.cache/models/reranker
+      # A replay from the response cache is an old answer. CI measures new answers.
+      RESPONSE_CACHE: "off"
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Turn on the packages and services of phases 1 to 3
+        run: printf '1\n2\n3\n' > .lab-phases
+
+      # The first run downloads the two models (4.6 GB) and saves them in the cache. A cache
+      # that a pull request saves is only for that pull request. To fill the cache for all pull
+      # requests, run the workflow one time on the default branch (Actions, Evals, Run workflow).
+      - name: Restore the model files
+        id: models
+        uses: actions/cache/restore@v6
+        with:
+          path: .cache/models
+          key: tei-models-${{ hashFiles('compose.yaml') }}
+
+      - name: Start Postgres and the two model services
+        run: docker compose --profile phase2 up -d --wait db embeddings reranker
+
+      # Save the models now, so that a run whose suite fails still fills the cache.
+      - name: Save the model files
+        if: steps.models.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: .cache/models
+          key: tei-models-${{ hashFiles('compose.yaml') }}
+
+      - uses: astral-sh/setup-uv@v10.3.3
+
+      - name: Install the Python packages
+        run: uv sync --group phase1 --group phase2 --group phase3
+
+      - name: Create the tables, load the catalogue, restore the chunks
+        run: |
+          uv run python scripts/migrate.py
+          uv run python scripts/load_catalogue.py
+          make restore
+
+      - name: Run the evaluation suite
+        run: make evals ARGS="-rA"

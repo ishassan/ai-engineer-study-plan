@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from langfuse import get_client
+
 from assistant.db import query
 from assistant.embeddings import embed, rerank
 from assistant.ingest import normalise_arabic, vector_literal
@@ -77,6 +79,17 @@ def _hybrid(query_text: str, k: int) -> list[dict[str, Any]]:
 def retrieve(query_text: str, mode: str = "rerank", k: int = 5) -> list[dict[str, Any]]:
     if mode not in MODES:
         raise ValueError(f"Unknown mode {mode!r}. Use one of {', '.join(MODES)}.")
+    with get_client().start_as_current_observation(
+        as_type="retriever", name=f"retrieve-{mode}", input={"query": query_text, "mode": mode, "k": k}
+    ) as span:
+        rows = _retrieve(query_text, mode, k)
+        span.update(
+            output=[{"chunk_id": row["chunk_id"], "score": round(float(row["score"]), 4)} for row in rows]
+        )
+    return rows
+
+
+def _retrieve(query_text: str, mode: str, k: int) -> list[dict[str, Any]]:
     if mode == "vector":
         return vector_search(query_text, k)
     if mode == "hybrid":

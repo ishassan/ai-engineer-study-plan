@@ -1,4 +1,4 @@
-"""Reference, state at the end of week 7: document search and checked citations."""
+"""Reference solution: the agent of week 7 with Langfuse tracing."""
 
 from __future__ import annotations
 
@@ -6,6 +6,7 @@ import json
 from typing import Any, Iterator
 
 from anthropic import transform_schema
+from langfuse import get_client, observe
 from pydantic import ValidationError
 
 from assistant.config import get_settings
@@ -76,6 +77,10 @@ def returned_chunk_ids(output: str) -> set[str]:
     return {row["chunk_id"] for row in rows if isinstance(row, dict) and "chunk_id" in row}
 
 
+# observe() keeps the trace open across the yields of the generator. Starlette runs each
+# step of a streaming response in a worker thread, so a plain `with` block around the loop
+# would lose the current span after the first yield.
+@observe(name="ask", as_type="agent")
 def answer_events(question: str) -> Iterator[tuple[str, dict[str, Any]]]:
     settings = get_settings()
     messages: list[dict[str, Any]] = [{"role": "user", "content": question}]
@@ -115,10 +120,15 @@ def answer_events(question: str) -> Iterator[tuple[str, dict[str, Any]]]:
             for block in message.content:
                 if block.type != "tool_use":
                     continue
-                try:
-                    output, is_error = run_tool(block.name, block.input), False
-                except Exception as error:
-                    output, is_error = f"{type(error).__name__}: {error}", True
+                with get_client().start_as_current_observation(
+                    as_type="tool", name=block.name, input=block.input
+                ) as span:
+                    try:
+                        output, is_error = run_tool(block.name, block.input), False
+                        span.update(output=output)
+                    except Exception as error:
+                        output, is_error = f"{type(error).__name__}: {error}", True
+                        span.update(output=output, level="ERROR", status_message=output)
                 if block.name == "search_documents" and not is_error:
                     known_chunk_ids |= returned_chunk_ids(output)
                 results.append(

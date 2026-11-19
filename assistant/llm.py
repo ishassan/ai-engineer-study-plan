@@ -12,6 +12,7 @@ from typing import Any, Iterator
 
 import anthropic
 from anthropic.types import Message, Usage
+from langfuse import get_client
 
 from assistant.config import PRICES_PER_MTOK, get_settings
 
@@ -26,7 +27,9 @@ class ClaudeResult:
 
 @lru_cache(maxsize=1)
 def client() -> anthropic.Anthropic:
-    return anthropic.Anthropic()
+    # The SDK makes its own span for each API call when a tracer is registered. The generation
+    # below replaces it, so it is off: two generations for one call count the cost twice.
+    return anthropic.Anthropic(open_telemetry=False)
 
 
 def cost_usd(model: str, usage: Usage) -> float:
@@ -70,28 +73,48 @@ def _log(result: ClaudeResult) -> None:
 def stream_claude(request: dict[str, Any]) -> Iterator[tuple[str, Any]]:
     settings = get_settings()
     path = settings.response_cache_dir / f"{request_hash(request)}.json"
-    started = time.perf_counter()
-    if settings.response_cache and path.exists():
-        message = Message.model_validate_json(path.read_text())
-        for block in message.content:
-            if block.type == "text":
-                yield "text", block.text
-        replayed = True
-    else:
-        with client().messages.stream(**request) as stream:
-            for text in stream.text_stream:
-                yield "text", text
-            message = stream.get_final_message()
-        replayed = False
-        if settings.response_cache:
-            path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_text(message.model_dump_json(exclude_none=True))
-    result = ClaudeResult(
-        message=message,
-        cost_usd=0.0 if replayed else cost_usd(message.model, message.usage),
-        latency_ms=round((time.perf_counter() - started) * 1000, 1),
-        replayed=replayed,
-    )
+    langfuse = get_client()
+    with langfuse.start_as_current_observation(
+        as_type="generation",
+        name="claude",
+        model=request["model"],
+        input=request["messages"],
+        model_parameters={"max_tokens": request["max_tokens"]},
+    ) as generation:
+        started = time.perf_counter()
+        if settings.response_cache and path.exists():
+            message = Message.model_validate_json(path.read_text())
+            for block in message.content:
+                if block.type == "text":
+                    yield "text", block.text
+            replayed = True
+        else:
+            with client().messages.stream(**request) as stream:
+                for text in stream.text_stream:
+                    yield "text", text
+                message = stream.get_final_message()
+            replayed = False
+            if settings.response_cache:
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(message.model_dump_json(exclude_none=True))
+        result = ClaudeResult(
+            message=message,
+            cost_usd=0.0 if replayed else cost_usd(message.model, message.usage),
+            latency_ms=round((time.perf_counter() - started) * 1000, 1),
+            replayed=replayed,
+        )
+        usage = message.usage
+        generation.update(
+            output=[block.model_dump(mode="json", exclude_none=True) for block in message.content],
+            usage_details={
+                "input": usage.input_tokens,
+                "output": usage.output_tokens,
+                "cache_creation_input_tokens": usage.cache_creation_input_tokens or 0,
+                "cache_read_input_tokens": usage.cache_read_input_tokens or 0,
+            },
+            cost_details={"total": result.cost_usd},
+            metadata={"stop_reason": message.stop_reason, "replayed": replayed},
+        )
     _log(result)
     yield "result", result
 
