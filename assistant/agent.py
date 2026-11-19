@@ -1,7 +1,8 @@
-"""Reference, state at the end of week 3: typed answer and prompt caching."""
+"""Reference, state at the end of week 7: document search and checked citations."""
 
 from __future__ import annotations
 
+import json
 from typing import Any, Iterator
 
 from anthropic import transform_schema
@@ -36,12 +37,18 @@ the owner of a dataset, get the stats of the dataset before you answer.
 - When a tool returns an error, read the message, correct the input and try again one time.
 - When no dataset fits the question, say that the catalogue has no dataset for it. Do not \
 invent a dataset, an id, a column or a number.
+- When the question is about how a statistic is made (a definition, a data source, a sample, a \
+base year, a unit, a reference period), search the documents with search_documents. Answer only \
+from the passages that it returns.
 
 How to answer:
 - Give a short answer in plain text: two to four sentences. Name each dataset by its title.
 - In dataset_ids, list the id of each dataset that the answer uses. Copy each id exactly as \
 the tool returned it. List only datasets that answer the question, and not each search result.
 - In tools_called, list the name of each tool that you called, one time each.
+- In citations, give one item for each passage that supports the answer: the title of the \
+document, the page and the chunk_id. Copy the three values exactly from the result of \
+search_documents. Never cite a chunk_id that search_documents did not return in this conversation.
 - Answer in the language of the question.
 """
 
@@ -60,6 +67,15 @@ def build_request(messages: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def returned_chunk_ids(output: str) -> set[str]:
+    """The chunk ids in one result of search_documents."""
+    try:
+        rows = json.loads(output)
+    except json.JSONDecodeError:
+        return set()
+    return {row["chunk_id"] for row in rows if isinstance(row, dict) and "chunk_id" in row}
+
+
 def answer_events(question: str) -> Iterator[tuple[str, dict[str, Any]]]:
     settings = get_settings()
     messages: list[dict[str, Any]] = [{"role": "user", "content": question}]
@@ -74,6 +90,8 @@ def answer_events(question: str) -> Iterator[tuple[str, dict[str, Any]]]:
     requests = 0
     stop = "max_turns"
     model = settings.model
+    known_chunk_ids: set[str] = set()
+    retried = False
     for _ in range(settings.max_turns):
         text = ""
         for kind, value in stream_claude(build_request(messages)):
@@ -101,6 +119,8 @@ def answer_events(question: str) -> Iterator[tuple[str, dict[str, Any]]]:
                     output, is_error = run_tool(block.name, block.input), False
                 except Exception as error:
                     output, is_error = f"{type(error).__name__}: {error}", True
+                if block.name == "search_documents" and not is_error:
+                    known_chunk_ids |= returned_chunk_ids(output)
                 results.append(
                     {
                         "type": "tool_result",
@@ -120,6 +140,26 @@ def answer_events(question: str) -> Iterator[tuple[str, dict[str, Any]]]:
             answer = Answer.model_validate_json(text)
         except ValidationError as error:
             yield "error", {"message": f"The answer is not valid: {error.errors()[0]['msg']}"}
+            break
+        wrong = sorted({c.chunk_id for c in answer.citations} - known_chunk_ids)
+        if wrong and not retried:
+            # Reject the answer: keep it in the conversation, name the wrong ids, and ask again.
+            retried = True
+            stop = "max_turns"
+            messages.append({"role": "assistant", "content": message.content})
+            messages.append(
+                {
+                    "role": "user",
+                    "content": (
+                        "Your answer cites chunk ids that search_documents did not return in this "
+                        f"conversation: {', '.join(wrong)}. Give the answer again. Cite only chunk "
+                        "ids from the tool results, or search again first."
+                    ),
+                }
+            )
+            continue
+        if wrong:
+            yield "error", {"message": f"The answer cites unknown chunk ids: {', '.join(wrong)}"}
             break
         yield "answer", answer.model_dump()
         break

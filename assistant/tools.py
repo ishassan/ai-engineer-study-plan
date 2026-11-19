@@ -6,6 +6,7 @@ import json
 from typing import Any
 
 from assistant.db import query
+from assistant.retrieval import retrieve
 
 TOOLS: list[dict[str, Any]] = [
     {
@@ -60,6 +61,29 @@ TOOLS: list[dict[str, Any]] = [
                 "dataset_id": {"type": "string", "description": "The id of the dataset."},
             },
             "required": ["dataset_id"],
+        },
+    },
+    {
+        "name": "search_documents",
+        "description": (
+            "Search the text of the methodology and quality reports of the General Authority "
+            "for Statistics, in English and Arabic. Use it for questions about how a statistic "
+            "is made: definitions of terms, data sources, sample design, base years, units and "
+            "reference periods. Do not use it to find a dataset: use search_datasets for that. "
+            "Write the query as a full question in the language of the user. The tool returns "
+            "the best passages, each with its chunk_id, the title of the document, the page and "
+            "the text. Cite a passage with exactly these three values."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string", "description": "The question, in English or Arabic."},
+                "limit": {
+                    "type": "integer",
+                    "description": "Maximum number of passages to return. Default 5, maximum 10.",
+                },
+            },
+            "required": ["query"],
         },
     },
 ]
@@ -125,6 +149,14 @@ def get_dataset_stats(dataset_id: str) -> dict[str, Any]:
     }
 
 
+def search_documents(query_text: str, limit: int = 5) -> list[dict[str, Any]]:
+    limit = max(1, min(int(limit), 10))
+    return [
+        {"chunk_id": row["chunk_id"], "title": row["title"], "page": row["page"], "text": row["text"]}
+        for row in retrieve(query_text, "rerank", limit)
+    ]
+
+
 def run_tool(name: str, tool_input: dict[str, Any]) -> str:
     if name == "search_datasets":
         result: Any = search_datasets(tool_input["query"], tool_input.get("limit", 5))
@@ -132,6 +164,8 @@ def run_tool(name: str, tool_input: dict[str, Any]) -> str:
         result = get_dataset_schema(tool_input["dataset_id"])
     elif name == "get_dataset_stats":
         result = get_dataset_stats(tool_input["dataset_id"])
+    elif name == "search_documents":
+        result = search_documents(tool_input["query"], tool_input.get("limit", 5))
     else:
         raise ValueError(f"Unknown tool: {name}")
     return json.dumps(result, ensure_ascii=False)
